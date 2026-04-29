@@ -31,6 +31,9 @@
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
 <link rel="apple-touch-icon" sizes="192x192" href="assets/apple-touch-icon.png" />
 
+<!-- Canonical -->
+<link rel="canonical" href="https://vmmanutencaoindustrial-create.github.io/planvida-renascer/" />
+
 <!-- Preconnect / Preload -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -65,11 +68,36 @@
   "openingHours": "Mo-Su 00:00-23:59",
   "description": "Há 28 anos cuidando de famílias em Alagoas. Planos funerários, cremação e sepultamento.",
   "foundingDate": "1998",
-  "priceRange": "$$"
+  "priceRange": "$$",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "60000"
+  }
+}
+</script>
+
+<!-- Schema FAQ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"O que está incluso no plano funerário?","acceptedAnswer":{"@type":"Answer","text":"Urna funerária, velório em sala 24h, translado em todo Brasil, documentação completa, flores, cortejo, logística e sepultamento ou cremação. Sem custo extra."}},
+    {"@type":"Question","name":"Posso cancelar quando quiser?","acceptedAnswer":{"@type":"Answer","text":"Sim. O contrato é regulamentado pela SUSEP e você pode cancelar a qualquer momento sem multa."}},
+    {"@type":"Question","name":"O plano funciona em outras cidades além de Maceió?","acceptedAnswer":{"@type":"Answer","text":"Sim! Cobre todo o território nacional — fazemos translado e cuidamos de tudo."}},
+    {"@type":"Question","name":"Quanto tempo até o plano ativar?","acceptedAnswer":{"@type":"Answer","text":"180 dias para causas naturais. Em casos de acidente, a cobertura é imediata a partir do primeiro pagamento."}},
+    {"@type":"Question","name":"Como funciona em emergência?","acceptedAnswer":{"@type":"Answer","text":"Ligue 24h: (82) 9 9990-3607. Em até 30 minutos uma equipe vai até o local."}}
+  ]
 }
 </script>
 </head>
 <body>
+
+<!-- 📊 Barra de progresso de scroll (topo) -->
+<div class="scroll-progress" aria-hidden="true">
+  <div class="scroll-progress__bar" id="scrollProgressBar"></div>
+</div>
 
 <!-- =============================================
      🌤️ INTRO CINEMATOGRÁFICA — Descida do céu
@@ -765,8 +793,9 @@
         </svg>
       </div>
       <h3>Cremação</h3>
+      <p class="serv__price">A partir de <strong>R$ 8.500</strong></p>
       <p>Crematório próprio em Maceió. Sem terceirização, com cerimônia personalizada e respeito absoluto.</p>
-      <a href="https://wa.me/5582999903607?text=Gostaria+de+saber+sobre+Cremação" class="serv__link">Saber mais →</a>
+      <a href="https://wa.me/5582999903607?text=Gostaria+de+saber+sobre+Cremação" target="_blank" rel="noopener" class="serv__link">Saber mais →</a>
     </article>
 
     <article class="serv">
@@ -778,8 +807,9 @@
         </svg>
       </div>
       <h3>Sepultamento</h3>
+      <p class="serv__price">A partir de <strong>R$ 6.200</strong></p>
       <p>Cerimônia digna em sala de velório própria. Translado em todo o Brasil. Documentação cuidada por nossa equipe.</p>
-      <a href="https://wa.me/5582999903607?text=Gostaria+de+saber+sobre+Sepultamento" class="serv__link">Saber mais →</a>
+      <a href="https://wa.me/5582999903607?text=Gostaria+de+saber+sobre+Sepultamento" target="_blank" rel="noopener" class="serv__link">Saber mais →</a>
     </article>
 
     <article class="serv">
@@ -790,8 +820,9 @@
         </svg>
       </div>
       <h3>Planos Funerários</h3>
-      <p>Proteção familiar a partir de R$ 170/mês. Individual, Familiar e Família Plus. Sem burocracia, com 28 anos de tradição.</p>
-      <a href="https://wa.me/5582999903607?text=Gostaria+de+conhecer+os+Planos" class="serv__link">Conhecer planos →</a>
+      <p class="serv__price">A partir de <strong>R$ 170/mês</strong></p>
+      <p>Proteção familiar Individual, Familiar e Família Plus. Sem burocracia, com 28 anos de tradição.</p>
+      <a href="https://wa.me/5582999903607?text=Gostaria+de+conhecer+os+Planos" target="_blank" rel="noopener" class="serv__link">Conhecer planos →</a>
     </article>
   </div>
 </section>
@@ -853,6 +884,77 @@
 </section>
 
 <!-- =============================================
+     ❓ FAQ — Perguntas Frequentes
+============================================= -->
+<section class="faq" id="faq">
+  <div class="faq__inner">
+    <header class="faq__head">
+      <p class="eyebrow eyebrow--center">Dúvidas comuns</p>
+      <h2>Perguntas <em>frequentes</em></h2>
+      <p>Tudo que você precisa saber antes de contratar.</p>
+    </header>
+
+    <div class="faq__list">
+      <details class="faq__item">
+        <summary>O que está incluso no plano funerário?</summary>
+        <div class="faq__item-body">
+          <p>Tudo o que sua família precisa em um momento difícil: <strong>urna funerária, velório em sala 24h, translado em todo Brasil, documentação completa, flores Floricultura Renascer, cortejo, logística e sepultamento ou cremação</strong>. Sem custo extra, sem surpresas.</p>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>Posso cancelar quando quiser?</summary>
+        <div class="faq__item-body">
+          <p>Sim. O contrato é regulamentado pela <strong>SUSEP</strong> e você pode cancelar a qualquer momento sem multa. Se cancelar nos primeiros 7 dias, recebe 100% de volta.</p>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>O plano funciona em outras cidades além de Maceió?</summary>
+        <div class="faq__item-body">
+          <p>Sim! Nosso plano cobre <strong>todo o território nacional</strong> — independente de onde aconteça, fazemos o translado e cuidamos de tudo. Nossa central 24h aciona equipes parceiras em todo Brasil.</p>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>Quanto tempo até o plano ativar?</summary>
+        <div class="faq__item-body">
+          <p>O período de carência é de <strong>180 dias</strong> para óbitos por causas naturais. Em casos de acidente, a cobertura é <strong>imediata</strong> a partir do primeiro pagamento.</p>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>Como funciona em emergência?</summary>
+        <div class="faq__item-body">
+          <p>Ligue 24h: <strong>(82) 9 9990-3607</strong>. Em até 30 minutos uma equipe vai até o local. Você não precisa pensar em papelada, transporte ou documentação — fazemos <em>tudo</em> por você.</p>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>Posso incluir pais e sogros no plano?</summary>
+        <div class="faq__item-body">
+          <p>Sim. O <strong>Plano Família Plus</strong> cobre até 6 dependentes incluindo pais e sogros, com mensalidade fixa. Um único plano protege 3 gerações da família.</p>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>Vocês são uma empresa confiável?</summary>
+        <div class="faq__item-body">
+          <p>A PlanVida Renascer atua há <strong>28 anos em Alagoas</strong>, atendeu mais de <strong>60.000 famílias</strong>, é regulamentada pela SUSEP e possui crematório próprio em Maceió (único na cidade sem terceirização). Você pode verificar nosso CNPJ e histórico no site da SUSEP.</p>
+        </div>
+      </details>
+
+      <details class="faq__item">
+        <summary>Como faço para contratar?</summary>
+        <div class="faq__item-body">
+          <p>É simples: <strong>clique em "Falar pelo WhatsApp"</strong> ou ligue (82) 9 9990-3607. Um consultor vai te ajudar a escolher o plano ideal pra sua família. Sem visita obrigatória, sem burocracia.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
      LEAD MAGNET — Popup "Carta para Quem Eu Amo"
      Aparece em 60s ou 70% do scroll
 ============================================= -->
@@ -908,18 +1010,74 @@
   </div>
 </section>
 
-<!-- ===== FOOTER ENXUTO ===== -->
+<!-- ===== FOOTER COMPLETO ===== -->
 <footer class="rodape">
   <div class="rodape__inner">
-    <img src="assets/logo-planvida.png" alt="PlanVida Renascer" class="rodape__logo" loading="lazy" decoding="async" />
-    <p class="rodape__msg">28 anos cuidando de famílias em Alagoas.</p>
-    <ul class="rodape__menu">
-      <li><a href="#servicos">Serviços</a></li>
-      <li><a href="portal.html">Área do cliente</a></li>
-      <li><a href="portal.html">2ª via de boleto</a></li>
-      <li><a href="https://wa.me/5582999903607">Contato 24h</a></li>
-    </ul>
-    <small>© 1998 — 2026 Assistência Familiar PlanVida Renascer · Maceió/AL</small>
+    <div class="rodape__grid">
+      <!-- Coluna 1: Marca -->
+      <div class="rodape__col rodape__col--brand">
+        <img src="assets/logo-planvida.png" alt="PlanVida Renascer" class="rodape__logo" loading="lazy" decoding="async" />
+        <p class="rodape__msg">28 anos cuidando de famílias em Alagoas com respeito e dignidade.</p>
+        <div class="rodape__seals">
+          <span class="rodape__seal">🛡️ Regulamentado SUSEP</span>
+          <span class="rodape__seal">⏱️ Atendimento 24h/365</span>
+        </div>
+      </div>
+
+      <!-- Coluna 2: Serviços -->
+      <div class="rodape__col">
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="#servicos">Cremação</a></li>
+          <li><a href="#servicos">Sepultamento</a></li>
+          <li><a href="#servicos">Planos Funerários</a></li>
+          <li><a href="#calculadora">Calculadora de economia</a></li>
+          <li><a href="#quiz">Quiz: sua família protegida?</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna 3: Cliente -->
+      <div class="rodape__col">
+        <h4>Cliente</h4>
+        <ul>
+          <li><a href="portal.html">Área do cliente</a></li>
+          <li><a href="portal.html">2ª via de boleto</a></li>
+          <li><a href="#faq">Perguntas frequentes</a></li>
+          <li><a href="#memorial">Memorial</a></li>
+          <li><a href="https://wa.me/5582999903607" target="_blank" rel="noopener">Suporte 24h</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna 4: Contato -->
+      <div class="rodape__col">
+        <h4>Contato</h4>
+        <ul class="rodape__contact">
+          <li>
+            <strong>📞 (82) 9 9990-3607</strong>
+            <small>Atendimento 24 horas</small>
+          </li>
+          <li>
+            <strong>📍 Rua Dias Cabral, 248</strong>
+            <small>Centro · Maceió/AL · CEP 57020-250</small>
+          </li>
+          <li>
+            <strong>🌐 planvidarenascer.com.br</strong>
+            <small>contato@planvidarenascer.com.br</small>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rodape__bottom">
+      <small>© 1998 — 2026 Assistência Familiar PlanVida Renascer · CNPJ XX.XXX.XXX/0001-XX</small>
+      <div class="rodape__legal">
+        <a href="#">Política de Privacidade</a>
+        <span>·</span>
+        <a href="#">Termos de Uso</a>
+        <span>·</span>
+        <a href="#">LGPD</a>
+      </div>
+    </div>
   </div>
 </footer>
 

@@ -1155,23 +1155,86 @@ document.getElementById('leadMagnetForm')?.addEventListener('submit', (e) => {
   enviarLeadMagnet();
 });
 
-// Trigger por scroll (70% da página)
+// Trigger inteligente — só abre se: (scroll >75%) E (tempo >40s) E (não está em form/quiz)
 let scrollTriggered = false;
-window.addEventListener('scroll', () => {
-  if (scrollTriggered || leadMagnetShown) return;
-  const scrolled = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
-  if (scrolled >= 0.55) {
-    scrollTriggered = true;
-    setTimeout(abrirLeadMagnet, 800);
-  }
-}, { passive: true });
+const startTime = Date.now();
 
-// Trigger por tempo (60s)
+function isUserInteracting() {
+  const active = document.activeElement;
+  if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return true;
+  // Não abrir durante quiz, calc, memorial form
+  const inForm = document.querySelector('.quiz__capture:focus-within, .memorial__sharer:focus-within');
+  if (inForm) return true;
+  return false;
+}
+
+function checkLeadMagnet() {
+  if (scrollTriggered || leadMagnetShown) return;
+  if (isUserInteracting()) return;
+  const scrolled = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+  const elapsed = (Date.now() - startTime) / 1000;
+  // Só abre se scroll alto E tempo razoável
+  if (scrolled >= 0.75 && elapsed >= 40) {
+    scrollTriggered = true;
+    setTimeout(abrirLeadMagnet, 1200);
+  }
+}
+window.addEventListener('scroll', checkLeadMagnet, { passive: true });
+// Check periódico de tempo
+setInterval(checkLeadMagnet, 5000);
+
+// Fallback: abre depois de 90s se ainda não abriu
 setTimeout(() => {
-  if (!leadMagnetShown && !scrollTriggered) {
+  if (!leadMagnetShown && !scrollTriggered && !isUserInteracting()) {
     abrirLeadMagnet();
   }
-}, 60000);
+}, 90000);
+
+// =============================================
+// 📊 BARRA DE PROGRESSO DE SCROLL
+// =============================================
+const scrollBar = document.getElementById('scrollProgressBar');
+if (scrollBar) {
+  const updateScrollBar = () => {
+    const max = document.body.scrollHeight - window.innerHeight;
+    const pct = (window.scrollY / max) * 100;
+    scrollBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+  };
+  window.addEventListener('scroll', updateScrollBar, { passive: true });
+  updateScrollBar();
+}
+
+// =============================================
+// ❓ FAQ — accordion com fechamento automático
+// =============================================
+document.querySelectorAll('.faq__item').forEach(item => {
+  item.addEventListener('toggle', (e) => {
+    if (item.open) {
+      // Fecha os outros (single open accordion)
+      document.querySelectorAll('.faq__item[open]').forEach(other => {
+        if (other !== item) other.open = false;
+      });
+    }
+  });
+});
+
+// Reveal FAQ quando entra no viewport
+gsap.from('.faq__head > *', {
+  opacity: 0,
+  y: 30,
+  duration: 1,
+  stagger: 0.12,
+  ease: "power3.out",
+  scrollTrigger: { trigger: ".faq", start: "top 80%" }
+});
+gsap.from('.faq__item', {
+  opacity: 0,
+  y: 20,
+  duration: 0.8,
+  stagger: 0.06,
+  ease: "power2.out",
+  scrollTrigger: { trigger: ".faq__list", start: "top 80%" }
+});
 
 // Fechar com ESC
 document.addEventListener('keydown', (e) => {
