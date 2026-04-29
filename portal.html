@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Área do Cliente — PlanVida Renascer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="portal.css" />
+</head>
+<body class="portal-body">
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="annbar">
+  <span><strong>Área do Cliente</strong> · 2ª via, Pix, dependentes e mais</span>
+</div>
+
+<!-- NAVBAR -->
+<nav class="nav is-scrolled" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__brand">
+      <svg class="nav__logo" viewBox="0 0 48 48" width="36" height="36" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1"/>
+        <path d="M16 28 Q24 14 32 28 Q24 34 16 28" fill="currentColor" opacity="0.85"/>
+        <circle cx="24" cy="24" r="2" fill="var(--c-bg)"/>
+      </svg>
+      <span class="nav__name"><em>PlanVida</em> Renascer</span>
+    </a>
+    <ul class="nav__menu">
+      <li><a href="index.html">Site principal</a></li>
+      <li><a href="#" class="active">Minha conta</a></li>
+    </ul>
+    <div class="nav__actions">
+      <a href="https://wa.me/5582999903607" class="btn btn--ghost">Ajuda 24h</a>
+    </div>
+  </div>
+</nav>
+
+<!-- LOGIN -->
+<section class="login" id="login">
+  <div class="login__card">
+    <p class="eyebrow">Área do cliente</p>
+    <h1>Acesse sua conta</h1>
+    <p class="login__sub">Digite seu CPF e data de nascimento. Enviaremos um código de 6 dígitos por SMS para o número cadastrado.</p>
+
+    <form class="login__form" onsubmit="event.preventDefault(); fakeLogin();">
+      <label>
+        <span>CPF</span>
+        <input type="text" placeholder="000.000.000-00" value="123.456.789-00" id="cpf" required />
+      </label>
+      <label>
+        <span>Data de nascimento</span>
+        <input type="text" placeholder="DD/MM/AAAA" value="15/08/1965" required />
+      </label>
+      <button type="submit" class="btn btn--solid btn--lg btn--block">Entrar</button>
+    </form>
+
+    <div class="login__help">
+      <p>Esqueceu seus dados? <a href="https://wa.me/5582999903607">Falar com atendimento 24h</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<main class="dash" id="dash" hidden>
+  <div class="dash__header">
+    <div>
+      <p class="eyebrow">Bem-vinda de volta</p>
+      <h1>Olá, Maria 👋</h1>
+      <p class="dash__sub">Plano <strong>Familiar</strong> · Status <span class="badge badge--ok">Ativo</span> · Cliente desde 2018</p>
+    </div>
+    <button class="btn btn--ghost" onclick="logout()">Sair</button>
+  </div>
+
+  <!-- Próximo pagamento -->
+  <section class="card card--feature">
+    <div class="card__head">
+      <h2>Próximo pagamento</h2>
+      <span class="card__chip">Vence em 7 dias</span>
+    </div>
+    <div class="card__body">
+      <div class="pgto__valor">
+        <span class="cifrao">R$</span>
+        <span class="valor">290,00</span>
+        <span class="periodo">· Mensalidade Familiar · 05/05/2026</span>
+      </div>
+
+      <div class="pgto__opts">
+        <div class="pgto__tabs">
+          <button class="active" data-tab="pix">Pix</button>
+          <button data-tab="boleto">Boleto</button>
+          <button data-tab="cartao">Cartão</button>
+        </div>
+
+        <div class="pgto__panel pgto__panel--pix is-active">
+          <div class="pix__qr">
+            <svg viewBox="0 0 200 200" width="180" height="180" aria-label="QR Code Pix" style="background:#fff;border-radius:1px;padding:12px;">
+              <rect width="200" height="200" fill="#fff"/>
+              <g fill="#1c3a2e">
+                <rect x="10" y="10" width="40" height="40"/>
+                <rect x="20" y="20" width="20" height="20" fill="#fff"/>
+                <rect x="150" y="10" width="40" height="40"/>
+                <rect x="160" y="20" width="20" height="20" fill="#fff"/>
+                <rect x="10" y="150" width="40" height="40"/>
+                <rect x="20" y="160" width="20" height="20" fill="#fff"/>
+                <rect x="60" y="10" width="10" height="10"/><rect x="80" y="10" width="10" height="10"/>
+                <rect x="100" y="20" width="10" height="10"/><rect x="120" y="10" width="10" height="10"/>
+                <rect x="60" y="60" width="10" height="10"/><rect x="80" y="80" width="10" height="10"/>
+                <rect x="100" y="60" width="10" height="10"/><rect x="120" y="80" width="10" height="10"/>
+                <rect x="140" y="100" width="10" height="10"/><rect x="60" y="100" width="10" height="10"/>
+                <rect x="80" y="120" width="10" height="10"/><rect x="100" y="140" width="10" height="10"/>
+                <rect x="120" y="120" width="10" height="10"/><rect x="140" y="140" width="10" height="10"/>
+                <rect x="60" y="140" width="10" height="10"/><rect x="160" y="60" width="10" height="10"/>
+                <rect x="180" y="80" width="10" height="10"/><rect x="160" y="100" width="10" height="10"/>
+                <rect x="180" y="120" width="10" height="10"/><rect x="160" y="140" width="10" height="10"/>
+                <rect x="60" y="160" width="10" height="10"/><rect x="80" y="160" width="10" height="10"/>
+                <rect x="100" y="180" width="10" height="10"/><rect x="120" y="160" width="10" height="10"/>
+                <rect x="140" y="180" width="10" height="10"/>
+              </g>
+            </svg>
+            <p>Aponte a câmera do app do seu banco para o QR code.</p>
+          </div>
+          <div class="pix__copy">
+            <p class="pix__label">Ou copie o código Pix:</p>
+            <div class="pix__field">
+              <code id="pixCode">00020126360014BR.GOV.BCB.PIX0114+5582999903607520400005303986540329000.005802BR5919PLANVIDA RENASCER LTDA6006MACEIO62070503***6304ABCD</code>
+              <button class="btn btn--ghost" onclick="copy('pixCode', this)">Copiar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pgto__panel pgto__panel--boleto">
+          <div class="boleto__head">
+            <p><strong>Boleto bancário</strong> · Vencimento 05/05/2026</p>
+            <p>Após pago, a baixa acontece em até 3 dias úteis.</p>
+          </div>
+          <div class="boleto__cb">
+            <p class="pix__label">Linha digitável:</p>
+            <div class="pix__field">
+              <code id="boletoCode">23793.38128 60082.018804 91100.401016 7 90510000029000</code>
+              <button class="btn btn--ghost" onclick="copy('boletoCode', this)">Copiar</button>
+            </div>
+          </div>
+          <div class="boleto__actions">
+            <a href="#" class="btn btn--solid">📄 Baixar PDF</a>
+            <a href="#" class="btn btn--ghost">📧 Enviar por email</a>
+            <a href="https://wa.me/5582999903607" class="btn btn--ghost">📱 Receber no WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="pgto__panel pgto__panel--cartao">
+          <p>Pague no cartão de crédito recorrente: cadastre uma única vez e nunca mais se preocupe.</p>
+          <a href="#" class="btn btn--solid">Cadastrar cartão</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Atalhos -->
+  <section class="atalhos">
+    <a href="#" class="atalho"><span class="atalho__icon">📋</span><h3>Carteirinha digital</h3><p>Acesse e baixe sua identificação</p></a>
+    <a href="#" class="atalho"><span class="atalho__icon">👨‍👩‍👧</span><h3>Meus dependentes</h3><p>3 ativos · gerenciar cobertura</p></a>
+    <a href="#" class="atalho"><span class="atalho__icon">🩺</span><h3>Agendar check-up</h3><p>Centro Ambulatorial PlanVida</p></a>
+    <a href="#" class="atalho"><span class="atalho__icon">🦷</span><h3>Clínica Odontológica</h3><p>Avaliação anual gratuita</p></a>
+    <a href="#historico" class="atalho"><span class="atalho__icon">📊</span><h3>Histórico de pagamentos</h3><p>Últimos 12 meses</p></a>
+    <a href="#" class="atalho"><span class="atalho__icon">⚙️</span><h3>Atualizar cadastro</h3><p>Telefone, email, endereço</p></a>
+  </section>
+
+  <!-- Histórico -->
+  <section class="card" id="historico">
+    <div class="card__head">
+      <h2>Histórico de pagamentos</h2>
+      <a href="#" class="card__link">Ver tudo →</a>
+    </div>
+    <div class="historico__list">
+      <div class="hist__item">
+        <span class="hist__data">05/04/2026</span>
+        <span class="hist__desc">Mensalidade · Plano Familiar</span>
+        <span class="hist__forma">Pix</span>
+        <span class="hist__valor">R$ 290,00</span>
+        <span class="hist__status status--ok">Pago</span>
+      </div>
+      <div class="hist__item">
+        <span class="hist__data">05/03/2026</span>
+        <span class="hist__desc">Mensalidade · Plano Familiar</span>
+        <span class="hist__forma">Boleto</span>
+        <span class="hist__valor">R$ 290,00</span>
+        <span class="hist__status status--ok">Pago</span>
+      </div>
+      <div class="hist__item">
+        <span class="hist__data">05/02/2026</span>
+        <span class="hist__desc">Mensalidade · Plano Familiar</span>
+        <span class="hist__forma">Cartão</span>
+        <span class="hist__valor">R$ 290,00</span>
+        <span class="hist__status status--ok">Pago</span>
+      </div>
+      <div class="hist__item">
+        <span class="hist__data">05/01/2026</span>
+        <span class="hist__desc">Mensalidade · Plano Familiar</span>
+        <span class="hist__forma">Pix</span>
+        <span class="hist__valor">R$ 290,00</span>
+        <span class="hist__status status--ok">Pago</span>
+      </div>
+      <div class="hist__item">
+        <span class="hist__data">05/12/2025</span>
+        <span class="hist__desc">Mensalidade · Plano Familiar</span>
+        <span class="hist__forma">Boleto</span>
+        <span class="hist__valor">R$ 290,00</span>
+        <span class="hist__status status--ok">Pago</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Suporte -->
+  <section class="card card--soft">
+    <div class="card__head">
+      <h2>Precisa de ajuda?</h2>
+    </div>
+    <div class="suporte__grid">
+      <a href="https://wa.me/5582999903607" class="suporte__op"><span>💬</span><strong>WhatsApp 24h</strong><small>(82) 9 9990-3607</small></a>
+      <a href="tel:558298862020" class="suporte__op"><span>🩺</span><strong>Centro Ambulatorial</strong><small>(82) 9 8862-0220</small></a>
+      <a href="tel:558298116829" class="suporte__op"><span>🕊️</span><strong>Funerária Renascer</strong><small>(82) 9 8116-8529</small></a>
+      <a href="mailto:contato@planvidarenascer.com.br" class="suporte__op"><span>📧</span><strong>Email</strong><small>contato@planvidarenascer.com.br</small></a>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function fakeLogin(){
+    const login = document.getElementById('login');
+    const dash = document.getElementById('dash');
+    login.style.opacity = 0;
+    login.style.transition = 'opacity .6s ease';
+    setTimeout(()=>{
+      login.hidden = true;
+      dash.hidden = false;
+      window.scrollTo(0,0);
+      dash.animate([{opacity:0,transform:'translateY(20px)'},{opacity:1,transform:'translateY(0)'}],{duration:600,easing:'cubic-bezier(.22,.61,.36,1)'});
+    }, 500);
+  }
+  function logout(){ location.reload(); }
+
+  document.querySelectorAll('.pgto__tabs button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.pgto__tabs button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.pgto__panel').forEach(p=>p.classList.remove('is-active'));
+      document.querySelector('.pgto__panel--'+tab).classList.add('is-active');
+    });
+  });
+
+  function copy(id, btn){
+    const text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text);
+    const original = btn.textContent;
+    btn.textContent = '✓ Copiado!';
+    btn.style.background = 'var(--c-pine)';
+    btn.style.color = 'var(--c-bg)';
+    setTimeout(()=>{
+      btn.textContent = original;
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 1800);
+  }
+</script>
+</body>
+</html>
