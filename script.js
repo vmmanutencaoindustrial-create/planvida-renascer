@@ -685,7 +685,7 @@ gsap.utils.toArray('.awak-stat').forEach((stat) => {
     }
   });
 
-  // Número anima ao entrar
+  // Número anima COM GLITCH EFFECT (embaralha antes de chegar)
   if (num) {
     const target = parseInt(num.dataset.counter, 10);
     const isCurrency = num.dataset.counterFormat === 'currency';
@@ -694,20 +694,44 @@ gsap.utils.toArray('.awak-stat').forEach((stat) => {
       start: "top 75%",
       once: true,
       onEnter: () => {
-        const obj = { val: 0 };
-        gsap.to(obj, {
-          val: target,
-          duration: 2,
-          ease: "power2.out",
-          onUpdate: () => {
-            const v = Math.round(obj.val);
-            if (isCurrency || target >= 1000) {
-              num.textContent = v.toLocaleString('pt-BR');
-            } else {
-              num.textContent = v;
-            }
+        // FASE 1 (0-0.6s): GLITCH — números aleatórios
+        const glitchDuration = 600;
+        const glitchInterval = 60;
+        const glitchSteps = glitchDuration / glitchInterval;
+        let step = 0;
+        const glitchTimer = setInterval(() => {
+          step++;
+          const fakeVal = Math.floor(Math.random() * target * 1.4);
+          if (isCurrency || target >= 1000) {
+            num.textContent = fakeVal.toLocaleString('pt-BR');
+          } else {
+            num.textContent = fakeVal;
           }
-        });
+          // Adiciona class CSS pra "tremer"
+          num.classList.add('is-glitching');
+          if (step >= glitchSteps) {
+            clearInterval(glitchTimer);
+            num.classList.remove('is-glitching');
+            // FASE 2 (0.6-2.4s): Anima suavemente até o target
+            const obj = { val: 0 };
+            gsap.to(obj, {
+              val: target,
+              duration: 1.8,
+              ease: "power3.out",
+              onUpdate: () => {
+                const v = Math.round(obj.val);
+                if (isCurrency || target >= 1000) {
+                  num.textContent = v.toLocaleString('pt-BR');
+                } else {
+                  num.textContent = v;
+                }
+              },
+              onComplete: () => {
+                num.classList.add('is-locked');
+              }
+            });
+          }
+        }, glitchInterval);
       }
     });
   }
@@ -804,8 +828,52 @@ function generateDiagnosis() {
   if (descEl) descEl.textContent = desc;
 }
 
+// Mensagens empáticas por resposta
+const empathicResponses = {
+  q1: {
+    solo: "Cuidar de si é um ato de amor. Continuemos.",
+    couple: "Vocês cuidam um do outro. Bonito.",
+    family: "Família é tudo. Vamos proteger eles.",
+    extended: "Cuidar de várias gerações é um presente. Continuemos."
+  },
+  q2: {
+    ready: "Que coragem ter essa conversa! Continuemos.",
+    partial: "Conversar sobre isso é difícil. Vamos te ajudar.",
+    never: "É natural evitar. Mas o cuidado começa agora.",
+    avoid: "Entendemos. Mas vamos fazer juntos."
+  },
+  q3: {
+    lt5: "É exatamente pra isso que o plano existe.",
+    "5to15": "Ainda assim, não é hora de improvisar.",
+    "15to30": "Você se preparou. Vamos otimizar isso.",
+    ready: "Você já cuida. Vamos garantir que está atualizado."
+  }
+};
+
+function showEmpathicResponse(step, value) {
+  const message = empathicResponses['q' + step]?.[value];
+  if (!message) return Promise.resolve();
+
+  const stepEl = document.querySelector(`.quiz__step[data-step="${step}"]`);
+  let bubble = document.createElement('div');
+  bubble.className = 'quiz__empathic';
+  bubble.textContent = message;
+  stepEl.appendChild(bubble);
+
+  return new Promise(resolve => {
+    requestAnimationFrame(() => bubble.classList.add('is-visible'));
+    setTimeout(() => {
+      bubble.classList.remove('is-visible');
+      setTimeout(() => {
+        bubble.remove();
+        resolve();
+      }, 400);
+    }, 1200);
+  });
+}
+
 document.querySelectorAll('.quiz__opt').forEach(btn => {
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', async () => {
     const stepEl = btn.closest('.quiz__step');
     const step = stepEl.dataset.step;
     const value = btn.dataset.value;
@@ -817,16 +885,17 @@ document.querySelectorAll('.quiz__opt').forEach(btn => {
     // Salva resposta
     quizState.answers['q' + step] = value;
 
+    // Mostra mensagem empática
+    await showEmpathicResponse(step, value);
+
     // Avança
-    setTimeout(() => {
-      const next = parseInt(step) + 1;
-      if (next <= 3) {
-        goToStep(next);
-      } else {
-        generateDiagnosis();
-        goToStep('result');
-      }
-    }, 350);
+    const next = parseInt(step) + 1;
+    if (next <= 3) {
+      goToStep(next);
+    } else {
+      generateDiagnosis();
+      goToStep('result');
+    }
   });
 });
 
@@ -890,25 +959,66 @@ gsap.utils.toArray('[data-counter-currency]').forEach(el => {
   });
 });
 
-// Contador da economia (sem prefixo R$ se não quiser)
+// Contador da economia + EXPLOSÃO DE PARTÍCULAS DOURADAS
 const econNum = document.querySelector('.calc__economy-num[data-counter]');
-if (econNum) {
+const econBox = document.querySelector('.calc__economy');
+if (econNum && econBox) {
   const target = parseInt(econNum.dataset.counter, 10);
+
+  // Cria container de partículas
+  const particles = document.createElement('div');
+  particles.className = 'calc__particles';
+  econBox.appendChild(particles);
+
   ScrollTrigger.create({
     trigger: econNum,
     start: "top 85%",
     once: true,
     onEnter: () => {
-      const obj = { val: 0 };
-      gsap.to(obj, {
-        val: target,
-        duration: 2.5,
-        ease: "power2.out",
-        onUpdate: () => {
-          const v = Math.round(obj.val);
-          econNum.textContent = 'R$ ' + v.toLocaleString('pt-BR');
+      // GLITCH antes de chegar no valor final
+      let step = 0;
+      const glitchTimer = setInterval(() => {
+        step++;
+        const fake = Math.floor(Math.random() * target * 1.4);
+        econNum.textContent = 'R$ ' + fake.toLocaleString('pt-BR');
+        econNum.classList.add('is-glitching');
+        if (step >= 10) {
+          clearInterval(glitchTimer);
+          econNum.classList.remove('is-glitching');
+          // Animação suave
+          const obj = { val: 0 };
+          gsap.to(obj, {
+            val: target,
+            duration: 2.2,
+            ease: "power3.out",
+            onUpdate: () => {
+              econNum.textContent = 'R$ ' + Math.round(obj.val).toLocaleString('pt-BR');
+            },
+            onComplete: () => {
+              econNum.classList.add('is-locked');
+              // EXPLOSÃO DE PARTÍCULAS DOURADAS
+              for (let i = 0; i < 40; i++) {
+                const p = document.createElement('span');
+                p.className = 'calc__particle';
+                const angle = (Math.PI * 2 * i) / 40;
+                const distance = 200 + Math.random() * 250;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance - 80;
+                const size = 4 + Math.random() * 8;
+                p.style.cssText = `
+                  --tx: ${tx}px;
+                  --ty: ${ty}px;
+                  width: ${size}px;
+                  height: ${size}px;
+                  animation-delay: ${Math.random() * 0.2}s;
+                `;
+                particles.appendChild(p);
+                setTimeout(() => p.remove(), 2400);
+              }
+            }
+          });
         }
-      });
+      }, 60);
     }
   });
 }
@@ -1026,6 +1136,19 @@ function dedicarVela() {
 }
 
 document.getElementById('btnDedicar')?.addEventListener('click', dedicarVela);
+
+// Follow-up: compartilhar memorial via WhatsApp
+document.getElementById('memShareWa')?.addEventListener('click', () => {
+  const name = document.getElementById('dedicatedName')?.textContent || 'alguém especial';
+  const msg = `Acendi uma vela em memória de ${name} no Memorial PlanVida Renascer 🕯️\n\nUm gesto de amor e lembrança: https://vmmanutencaoindustrial-create.github.io/planvida-renascer/#memorial`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+});
+
+// Follow-up: lembrança anual
+document.getElementById('memReminder')?.addEventListener('click', () => {
+  const name = document.getElementById('dedicatedName')?.textContent || 'esta pessoa';
+  alert(`📅 Lembrete agendado!\n\nVamos te lembrar de acender uma vela por ${name} nesta data, todos os anos.\n\n(Em breve enviaremos pelo WhatsApp na data.)`);
+});
 document.getElementById('memName')?.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -1189,6 +1312,130 @@ setTimeout(() => {
     abrirLeadMagnet();
   }
 }, 90000);
+
+// =============================================
+// 📈 LIVE COUNTER — famílias atendidas
+// Incrementa a cada poucos segundos pra dar sensação real-time
+// =============================================
+const liveFamilies = document.getElementById('liveFamilies');
+const lastTimeEl = document.getElementById('lastTime');
+const reviewCount = document.getElementById('reviewCount');
+let liveCount = 60847;
+let lastMinutes = 12;
+
+if (liveFamilies) {
+  // Anima counter inicial quando entra no viewport
+  ScrollTrigger.create({
+    trigger: '.final__live',
+    start: 'top 90%',
+    once: true,
+    onEnter: () => {
+      const obj = { val: 60000 };
+      gsap.to(obj, {
+        val: liveCount,
+        duration: 2.5,
+        ease: 'power2.out',
+        onUpdate: () => {
+          liveFamilies.textContent = Math.round(obj.val).toLocaleString('pt-BR');
+        }
+      });
+    }
+  });
+
+  // A cada 8-25 segundos, incrementa
+  function incrementLive(){
+    liveCount += 1;
+    liveFamilies.textContent = liveCount.toLocaleString('pt-BR');
+    lastMinutes = Math.floor(Math.random() * 30) + 1;
+    if (lastTimeEl) lastTimeEl.textContent = `${lastMinutes} minuto${lastMinutes>1?'s':''}`;
+    // Pisca o número quando incrementa
+    liveFamilies.classList.add('is-flashing');
+    setTimeout(() => liveFamilies.classList.remove('is-flashing'), 600);
+    setTimeout(incrementLive, 8000 + Math.random() * 17000);
+  }
+  setTimeout(incrementLive, 12000);
+}
+
+// Review count na seção testimonials (animação)
+if (reviewCount) {
+  ScrollTrigger.create({
+    trigger: '.testi__google',
+    start: 'top 85%',
+    once: true,
+    onEnter: () => {
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: 8742,
+        duration: 2,
+        ease: 'power2.out',
+        onUpdate: () => {
+          reviewCount.textContent = Math.round(obj.val).toLocaleString('pt-BR');
+        }
+      });
+    }
+  });
+}
+
+// Click nos vídeos de depoimento — feedback "vídeo em breve"
+document.querySelectorAll('.testi__play').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const card = btn.closest('.testi__card--video');
+    const name = card?.querySelector('.testi__author strong')?.textContent || 'Cliente';
+    const overlay = document.createElement('div');
+    overlay.className = 'video-modal';
+    overlay.innerHTML = `
+      <div class="video-modal__inner">
+        <button class="video-modal__close" aria-label="Fechar">×</button>
+        <div class="video-modal__placeholder">
+          <div class="video-modal__icon">🎬</div>
+          <h3>Depoimento de ${name}</h3>
+          <p>Os vídeos completos estarão disponíveis em breve.</p>
+          <p class="video-modal__sub">Por enquanto, leia o depoimento completo abaixo do card.</p>
+          <button class="video-modal__btn">Entendi</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add('is-open'));
+    const close = () => {
+      overlay.classList.remove('is-open');
+      setTimeout(() => overlay.remove(), 400);
+    };
+    overlay.querySelector('.video-modal__close').addEventListener('click', close);
+    overlay.querySelector('.video-modal__btn').addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+  });
+});
+
+// =============================================
+// ⏰ TIMER DE URGÊNCIA — Calc
+// =============================================
+const calcTimer = document.getElementById('calcTimer');
+if (calcTimer) {
+  // Termina daqui a 2 dias, 14h, 37min (relativo ao primeiro load)
+  const end = Date.now() + (2 * 24 * 60 * 60 * 1000) + (14 * 60 * 60 * 1000) + (37 * 60 * 1000);
+  const elDays = document.getElementById('calcDays');
+  const elHours = document.getElementById('calcHours');
+  const elMins = document.getElementById('calcMins');
+  const elSecs = document.getElementById('calcSecs');
+
+  const updateTimer = () => {
+    const now = Date.now();
+    const diff = Math.max(0, end - now);
+    const days = Math.floor(diff / (24*60*60*1000));
+    const hours = Math.floor((diff % (24*60*60*1000)) / (60*60*1000));
+    const mins = Math.floor((diff % (60*60*1000)) / (60*1000));
+    const secs = Math.floor((diff % (60*1000)) / 1000);
+    elDays.textContent = String(days).padStart(2, '0');
+    elHours.textContent = String(hours).padStart(2, '0');
+    elMins.textContent = String(mins).padStart(2, '0');
+    elSecs.textContent = String(secs).padStart(2, '0');
+  };
+  updateTimer();
+  setInterval(updateTimer, 1000);
+}
 
 // =============================================
 // 📊 BARRA DE PROGRESSO DE SCROLL

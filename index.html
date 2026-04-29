@@ -140,81 +140,44 @@
   <button class="intro__skip" type="button" id="introSkip">Pular intro →</button>
 </div>
 
-<!-- ===== POMBA BRANCA QUE VOA PELA TELA ===== -->
-<svg id="dove" class="dove" viewBox="0 0 240 140" width="240" height="140" aria-hidden="true">
+<!-- ===== POMBA SIMBÓLICA DOURADA — silhueta elegante (marca) ===== -->
+<svg id="dove" class="dove" viewBox="0 0 200 100" width="200" height="100" aria-hidden="true">
   <defs>
-    <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="60%" stop-color="#F4F4F7"/>
-      <stop offset="100%" stop-color="#D8D8DD"/>
+    <linearGradient id="doveGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE600"/>
+      <stop offset="50%" stop-color="#FFD400"/>
+      <stop offset="100%" stop-color="#C9A200"/>
     </linearGradient>
-    <linearGradient id="wingGradient" x1="0%" y1="0%" x2="40%" y2="100%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="50%" stop-color="#EFEFF3"/>
-      <stop offset="100%" stop-color="#C4C4CA"/>
-    </linearGradient>
-    <radialGradient id="headGradient" cx="40%" cy="40%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="100%" stop-color="#E0E0E5"/>
-    </radialGradient>
-    <filter id="doveShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" />
-      <feOffset dx="0" dy="4" result="shadow" />
-      <feFlood flood-color="#000000" flood-opacity="0.25"/>
-      <feComposite in2="shadow" operator="in" />
+    <filter id="doveGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
       <feMerge>
-        <feMergeNode/>
+        <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
   </defs>
-
-  <g filter="url(#doveShadow)">
+  <!-- Silhueta de pomba em voo elegante (estilo logo) -->
+  <g filter="url(#doveGlow)">
+    <!-- Asa de cima (alongada, em voo) -->
+    <path id="doveWingUp"
+          d="M30,55 Q50,15 95,18 Q130,20 145,42 Q120,50 85,52 Q55,54 30,55 Z"
+          fill="url(#doveGoldGrad)" opacity="0.95"
+          style="transform-origin: 50% 90%"/>
+    <!-- Corpo elegante -->
+    <path d="M40,55 Q60,42 110,42 Q150,42 175,52 Q180,55 175,59 Q165,63 130,65 Q90,67 60,62 Q45,60 40,55 Z"
+          fill="url(#doveGoldGrad)"/>
+    <!-- Cabeça arredondada -->
+    <circle cx="172" cy="48" r="7" fill="url(#doveGoldGrad)"/>
+    <!-- Bico delicado -->
+    <path d="M178,46 L186,47 L178,50 Z" fill="#FFD400"/>
+    <!-- Asa de baixo (mais discreta) -->
+    <path id="doveWingLow"
+          d="M55,57 Q40,75 22,82 Q35,68 55,65 Q70,62 80,60 Z"
+          fill="url(#doveGoldGrad)" opacity="0.6"
+          style="transform-origin: 60% 50%"/>
     <!-- Cauda em leque -->
-    <path d="M55,68 L25,62 L18,68 L20,76 L28,74 L38,72 L55,72 Z"
-          fill="#E5E5EA" stroke="#C8C8CE" stroke-width="0.5" stroke-linejoin="round"/>
-    <path d="M30,66 L25,68 M35,68 L30,71 M40,70 L36,73"
-          stroke="#C8C8CE" stroke-width="0.4" opacity="0.6"/>
-
-    <!-- Asa de baixo (mais distante) -->
-    <path id="wingLow"
-          d="M65,68 Q50,90 25,98 Q40,82 60,80 Q75,78 80,72 Z"
-          fill="#D8D8DD" opacity="0.85" stroke="#B8B8BE" stroke-width="0.5"/>
-    <path d="M40,90 Q50,86 60,84 M45,94 Q55,90 65,86"
-          stroke="#B8B8BE" stroke-width="0.5" fill="none" opacity="0.5"/>
-
-    <!-- Corpo -->
-    <path d="M55,65 Q70,48 110,46 Q160,46 195,55 Q205,58 200,65 Q195,70 175,72 Q140,78 100,76 Q75,74 55,65 Z"
-          fill="url(#bodyGradient)" stroke="#C8C8CE" stroke-width="0.6" stroke-linejoin="round"/>
-
-    <!-- Sombra interna do corpo -->
-    <path d="M70,68 Q90,75 130,75 Q170,75 195,68"
-          stroke="#D0D0D5" stroke-width="1" fill="none" opacity="0.4"/>
-
-    <!-- Cabeça -->
-    <ellipse cx="195" cy="55" rx="12" ry="10" fill="url(#headGradient)" stroke="#C8C8CE" stroke-width="0.5"/>
-
-    <!-- Bico cinza-coral -->
-    <path d="M205,53 L218,52 L206,57 Z" fill="#9A8470" stroke="#7A6450" stroke-width="0.4" stroke-linejoin="round"/>
-
-    <!-- Olho -->
-    <circle cx="198" cy="52" r="2" fill="#1A1A1A"/>
-    <circle cx="198.5" cy="51.5" r="0.6" fill="#FFFFFF"/>
-
-    <!-- Asa de cima estendida em voo -->
-    <path id="wingUp"
-          d="M75,58 Q85,18 130,18 Q175,20 165,55 Q140,62 75,58 Z"
-          fill="url(#wingGradient)" stroke="#B8B8BE" stroke-width="0.6" stroke-linejoin="round"/>
-
-    <!-- Penas individuais na asa de cima -->
-    <path d="M90,40 Q92,55 92,58" stroke="#C8C8CE" stroke-width="0.6" fill="none" opacity="0.6"/>
-    <path d="M105,32 Q106,52 106,57" stroke="#C8C8CE" stroke-width="0.6" fill="none" opacity="0.6"/>
-    <path d="M120,28 Q120,52 120,56" stroke="#C8C8CE" stroke-width="0.6" fill="none" opacity="0.6"/>
-    <path d="M135,28 Q133,50 133,55" stroke="#C8C8CE" stroke-width="0.6" fill="none" opacity="0.6"/>
-    <path d="M150,32 Q146,50 146,54" stroke="#C8C8CE" stroke-width="0.6" fill="none" opacity="0.6"/>
-
-    <!-- Pé direito (sutil, dobrado) -->
-    <path d="M155,75 L160,82 L158,84 M160,82 L165,82" stroke="#9A8470" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+    <path d="M40,55 L20,52 L15,57 L18,62 L25,60 L40,58 Z"
+          fill="url(#doveGoldGrad)" opacity="0.85"/>
   </g>
 </svg>
 
@@ -267,6 +230,24 @@
       <p class="screen__brand">PlanVida Renascer · Maceió/AL</p>
       <h1>Cuidando de cada detalhe<br/><em>com respeito.</em></h1>
       <p class="screen__sub">Há 28 anos em Alagoas.</p>
+
+      <!-- CTA dupla -->
+      <div class="hero__cta">
+        <a href="#servicos" class="btn btn--gold">Conhecer planos</a>
+        <a href="https://wa.me/5582999903607" target="_blank" rel="noopener" class="btn btn--outline-light">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.2-.7.9-.9 1-.2.2-.3.2-.6.1-.3-.2-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.1 1.7 2.7 4.2 3.7 2.1.8 2.5.7 3 .6.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.2-.1-.4-.2-.7-.4z"/></svg>
+          Atendimento 24h
+        </a>
+      </div>
+
+      <!-- Selos de confiança -->
+      <div class="hero__seals">
+        <span class="hero__seal">⭐ <strong>4.9</strong> Google Reviews</span>
+        <span class="hero__seal-divider"></span>
+        <span class="hero__seal">🛡️ Regulamentado SUSEP</span>
+        <span class="hero__seal-divider"></span>
+        <span class="hero__seal">⏱️ Resposta em 30min</span>
+      </div>
     </div>
 
     <!-- Camada 8: PRÉVIA da cena 2 que vai emergir (família no jardim) -->
@@ -670,7 +651,24 @@
       <p>Sua família <em>economiza até</em></p>
       <strong class="calc__economy-num" data-counter="14620">R$ 0</strong>
       <p>+ a tranquilidade de não ter que pensar nisso na hora difícil.</p>
-      <a href="https://wa.me/5582999903607?text=Vi+a+calculadora+e+quero+conhecer+os+planos" class="btn btn--gold btn--lg">Quero proteger minha família →</a>
+
+      <!-- Timer de urgência -->
+      <div class="calc__urgency">
+        <div class="calc__urgency-tag">
+          <span class="calc__urgency-pulse"></span>
+          OFERTA LIMITADA
+        </div>
+        <p class="calc__urgency-text">Promoção de Maio · Última semana</p>
+        <div class="calc__timer" id="calcTimer">
+          <div class="calc__timer-block"><strong id="calcDays">02</strong><small>dias</small></div>
+          <div class="calc__timer-block"><strong id="calcHours">14</strong><small>horas</small></div>
+          <div class="calc__timer-block"><strong id="calcMins">37</strong><small>min</small></div>
+          <div class="calc__timer-block"><strong id="calcSecs">00</strong><small>seg</small></div>
+        </div>
+        <p class="calc__urgency-spots">⚡ <strong id="calcSpots">7</strong> vagas disponíveis este mês</p>
+      </div>
+
+      <a href="https://wa.me/5582999903607?text=Vi+a+calculadora+e+quero+aproveitar+a+promo%C3%A7%C3%A3o" target="_blank" rel="noopener" class="btn btn--gold btn--lg">Garantir minha vaga agora →</a>
     </div>
   </div>
 </section>
@@ -720,6 +718,23 @@
       <p>Vela acesa em memória de</p>
       <strong id="dedicatedName"></strong>
       <p class="memorial__dedicated-msg">"A memória de quem amamos nunca apaga."</p>
+
+      <!-- Follow-up: opções pós-dedicação -->
+      <div class="memorial__followup">
+        <p class="memorial__followup-pre">Faça mais por essa memória:</p>
+        <div class="memorial__followup-actions">
+          <button type="button" id="memShareWa" class="memorial__followup-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.2-.7.9-.9 1-.2.2-.3.2-.6.1-.3-.2-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.1 1.7 2.7 4.2 3.7 2.1.8 2.5.7 3 .6.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.2-.1-.4-.2-.7-.4z"/></svg>
+            Compartilhar com a família
+          </button>
+          <button type="button" id="memReminder" class="memorial__followup-btn">
+            🔔 Lembrar nesta data anualmente
+          </button>
+          <a href="https://wa.me/5582999903607?text=Quero+conhecer+os+planos+familiares" target="_blank" rel="noopener" class="memorial__followup-btn">
+            💛 Conhecer planos para minha família
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -837,45 +852,96 @@
       Quem confiou,<br/><em>fala por nós.</em>
     </h2>
 
+    <!-- Selo Google Reviews -->
+    <div class="testi__google">
+      <div class="testi__google-stars">
+        <span class="testi__google-star">★</span>
+        <span class="testi__google-star">★</span>
+        <span class="testi__google-star">★</span>
+        <span class="testi__google-star">★</span>
+        <span class="testi__google-star">★</span>
+      </div>
+      <div class="testi__google-rating">
+        <strong>4.9</strong>
+        <span>de 5 estrelas no Google</span>
+      </div>
+      <div class="testi__google-count">
+        Baseado em <strong id="reviewCount">0</strong> avaliações verificadas
+      </div>
+    </div>
+
     <div class="testi__grid">
-      <article class="testi__card">
-        <div class="testi__quote-mark">"</div>
-        <p class="testi__text">No momento mais difícil da nossa família, a PlanVida cuidou de cada detalhe. Não tive que pensar em papelada, em translado, em nada. Pude simplesmente <em>estar com a minha mãe.</em></p>
-        <div class="testi__author">
-          <div class="testi__avatar testi__avatar--photo">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" alt="Maria Helena" loading="lazy" />
-          </div>
-          <div>
-            <strong>Maria Helena S.</strong>
-            <small>Cliente há 12 anos · Maceió</small>
+      <article class="testi__card testi__card--video">
+        <div class="testi__video-cover">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80" alt="Depoimento Maria Helena" loading="lazy" />
+          <button class="testi__play" type="button" aria-label="Reproduzir depoimento de Maria Helena">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
+          <span class="testi__video-duration">1:42</span>
+        </div>
+        <div class="testi__card-body">
+          <div class="testi__quote-mark">"</div>
+          <p class="testi__text">No momento mais difícil da nossa família, a PlanVida cuidou de cada detalhe. Pude simplesmente <em>estar com a minha mãe.</em></p>
+          <div class="testi__author">
+            <div class="testi__avatar testi__avatar--photo">
+              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" alt="Maria Helena" loading="lazy" />
+            </div>
+            <div>
+              <strong>Maria Helena S.</strong>
+              <small>Cliente há 12 anos · Maceió</small>
+            </div>
           </div>
         </div>
       </article>
 
-      <article class="testi__card">
-        <div class="testi__quote-mark">"</div>
-        <p class="testi__text">Meu pai sempre dizia: "deixa tudo certo pra ninguém precisar se preocupar." Quando ele se foi, entendi o tamanho do <em>presente</em> que ele tinha deixado pra gente.</p>
-        <div class="testi__author">
-          <div class="testi__avatar testi__avatar--photo">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Roberto C." loading="lazy" />
-          </div>
-          <div>
-            <strong>Roberto C.</strong>
-            <small>Filho de associado · Arapiraca</small>
+      <article class="testi__card testi__card--video">
+        <div class="testi__video-cover">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80" alt="Depoimento Roberto" loading="lazy" />
+          <button class="testi__play" type="button" aria-label="Reproduzir depoimento de Roberto">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
+          <span class="testi__video-duration">2:15</span>
+        </div>
+        <div class="testi__card-body">
+          <div class="testi__quote-mark">"</div>
+          <p class="testi__text">Meu pai sempre dizia: "deixa tudo certo." Quando ele se foi, entendi o <em>presente</em> que ele deixou.</p>
+          <div class="testi__author">
+            <div class="testi__avatar testi__avatar--photo">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" alt="Roberto C." loading="lazy" />
+            </div>
+            <div>
+              <strong>Roberto C.</strong>
+              <small>Filho de associado · Arapiraca</small>
+            </div>
           </div>
         </div>
       </article>
 
-      <article class="testi__card">
-        <div class="testi__quote-mark">"</div>
-        <p class="testi__text">Atendimento humano, real. Em 30 minutos estavam aqui em casa. <em>28 anos de história não se constroem por acaso.</em></p>
-        <div class="testi__author">
-          <div class="testi__avatar testi__avatar--photo">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Antônio P." loading="lazy" />
-          </div>
-          <div>
-            <strong>Antônio P.</strong>
-            <small>Cliente · Maceió</small>
+      <article class="testi__card testi__card--video">
+        <div class="testi__video-cover">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80" alt="Depoimento Antônio" loading="lazy" />
+          <button class="testi__play" type="button" aria-label="Reproduzir depoimento de Antônio">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
+          <span class="testi__video-duration">1:08</span>
+        </div>
+        <div class="testi__card-body">
+          <div class="testi__quote-mark">"</div>
+          <p class="testi__text">Atendimento humano. Em 30 minutos estavam aqui. <em>28 anos não se constroem por acaso.</em></p>
+          <div class="testi__author">
+            <div class="testi__avatar testi__avatar--photo">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Antônio P." loading="lazy" />
+            </div>
+            <div>
+              <strong>Antônio P.</strong>
+              <small>Cliente · Maceió</small>
+            </div>
           </div>
         </div>
       </article>
@@ -988,7 +1054,7 @@
 </div>
 
 <!-- =============================================
-     FINAL — Convite suave
+     FINAL — Convite suave + Mapa + Live Counter
 ============================================= -->
 <section class="final">
   <div class="final__inner">
@@ -996,8 +1062,18 @@
     <h2>Estaremos <em>aqui.</em></h2>
     <p class="final__sub">A qualquer hora. Em qualquer lugar de Alagoas.</p>
 
+    <!-- LIVE COUNTER de famílias atendidas em tempo real -->
+    <div class="final__live">
+      <div class="final__live-pulse"></div>
+      <div class="final__live-text">
+        <strong id="liveFamilies">60.847</strong>
+        <span>famílias já atendidas</span>
+      </div>
+      <small class="final__live-recent">Última atendida há <strong id="lastTime">12 minutos</strong></small>
+    </div>
+
     <div class="final__contact">
-      <a href="https://wa.me/5582999903607" class="btn btn--gold">
+      <a href="https://wa.me/5582999903607" target="_blank" rel="noopener" class="btn btn--gold">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.2-.7.9-.9 1-.2.2-.3.2-.6.1-.3-.2-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.1 1.7 2.7 4.2 3.7 2.1.8 2.5.7 3 .6.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.2-.1-.4-.2-.7-.4z"/></svg>
         Falar pelo WhatsApp
       </a>
@@ -1006,7 +1082,21 @@
       </a>
     </div>
 
-    <p class="final__addr">Rua Dias Cabral, 248 · Maceió/AL</p>
+    <p class="final__addr">📍 Rua Dias Cabral, 248 · Centro · Maceió/AL</p>
+
+    <!-- Mapa Google Maps embed -->
+    <div class="final__map">
+      <iframe
+        src="https://www.google.com/maps?q=Rua+Dias+Cabral+248+Maceio+AL&output=embed"
+        width="100%"
+        height="320"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Localização PlanVida Renascer">
+      </iframe>
+    </div>
   </div>
 </section>
 
