@@ -218,7 +218,9 @@ dadosForm?.addEventListener('submit', e => {
   }
 
   state.dados = dados;
-  sessionStorage.setItem('planvida_cadastro', JSON.stringify({ plano: state.plano, dados: { ...dados, password: undefined } }));
+  // NUNCA persistir senha — só campos não-sensíveis pra UX (voltar ao form)
+  const { password, ...nonSensitive } = dados;
+  sessionStorage.setItem('planvida_cadastro', JSON.stringify({ plano: state.plano, dados: nonSensitive }));
 
   $('#sumPlano').textContent = state.plano.nome;
   $('#sumNome').textContent  = dados.nome;
@@ -302,13 +304,15 @@ btnGerarPag?.addEventListener('click', async () => {
   $('#boletoDue').textContent = due.toLocaleDateString('pt-BR');
   $('#pixCopyCode').textContent = gerarPixCopiaCola(state.dados.nome, state.plano.preco);
 
-  // Persiste cliente local pra portal demo
+  // Persiste cliente local pra portal demo (sem senha em plain — apenas hash leve pra demo)
+  const senhaHashLeve = await hashLeve(state.dados.password);
+  const { password: _omit, ...dadosSemSenha } = state.dados;
   const sessionData = {
     plano: state.plano,
-    dados: state.dados,
+    dados: dadosSemSenha,
     pagamento: state.pagamento,
     cadastradoEm: new Date().toISOString(),
-    senha_inicial: state.dados.password,
+    senha_hash: senhaHashLeve,
     status: 'pending',
   };
   localStorage.setItem('planvida_cliente_atual', JSON.stringify(sessionData));
@@ -319,6 +323,9 @@ btnGerarPag?.addEventListener('click', async () => {
   goStep(4);
   btnGerarPag.textContent = original;
 });
+
+// hashLeve agora vem de window.PlanvidaAPI.hashLeve (compartilhado)
+const hashLeve = (s) => window.PlanvidaAPI?.hashLeve(s) ?? Promise.resolve('');
 
 // ===========================================================
 // HELPERS — Mock PIX/Boleto realistas

@@ -11,6 +11,7 @@
 //   GET  /api/admin/export/clientes.csv
 //   GET  /api/admin/export/pagamentos.csv
 // =========================================================
+import crypto from 'node:crypto';
 import { Router } from 'express';
 import { z } from 'zod';
 import { prisma } from '../lib/prisma.js';
@@ -42,9 +43,12 @@ router.post('/login', asyncH(async (req, res) => {
     return res.status(503).json({ error: 'admin_disabled', message: 'Login admin não configurado no servidor.' });
   }
 
-  const ok = email === ADMIN_EMAIL.toLowerCase() && password === ADMIN_PASSWORD;
+  // Comparação em tempo constante — anti timing-attack
+  const emailOk = timingSafeEqualStr(email, ADMIN_EMAIL.toLowerCase());
+  const passOk  = timingSafeEqualStr(password, ADMIN_PASSWORD);
+  const ok      = emailOk && passOk;
+
   if(!ok){
-    // Anti-timing attack: aguarda 600ms antes de devolver erro
     await new Promise(r => setTimeout(r, 600));
     return res.status(401).json({ error: 'invalid_credentials', message: 'Email ou senha inválidos.' });
   }
@@ -52,6 +56,21 @@ router.post('/login', asyncH(async (req, res) => {
   const token = signToken({ sub: 'admin', email, role: 'admin' });
   res.json({ token, admin: { email, role: 'admin' } });
 }));
+
+// -----------------------------------------------------
+// GET /api/admin/me — valida token + retorna dados admin
+// -----------------------------------------------------
+router.get('/me', requireAdmin, asyncH(async (req, res) => {
+  res.json({ admin: { email: req.adminEmail, role: 'admin' } });
+}));
+
+// Comparação string em tempo constante (string -> Buffer)
+function timingSafeEqualStr(a, b){
+  const A = Buffer.from(String(a || ''), 'utf8');
+  const B = Buffer.from(String(b || ''), 'utf8');
+  if(A.length !== B.length) return false;
+  return crypto.timingSafeEqual(A, B);
+}
 
 // -----------------------------------------------------
 // GET /api/admin/stats — KPIs

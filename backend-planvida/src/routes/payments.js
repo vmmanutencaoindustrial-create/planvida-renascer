@@ -4,12 +4,14 @@
 //   GET  /api/payments        (auth)  histórico do logado
 //   GET  /api/payments/:id    (auth)  detalhe (precisa ser dono)
 //   POST /api/payments/webhook         Mercado Pago notifica aqui
+//                                      (validação x-signature + idempotência)
 // =========================================================
 import { Router } from 'express';
 import { prisma } from '../lib/prisma.js';
-import { buscarPagamento } from '../lib/mercadopago.js';
+import { buscarPagamento, verifyWebhookSignature } from '../lib/mercadopago.js';
 import { requireAuth } from '../middleware/auth.js';
 import { asyncH } from '../middleware/error.js';
+import { log } from '../lib/logger.js';
 
 const router = Router();
 
@@ -32,7 +34,7 @@ function mapMPStatus(s){
 function mapMPMethod(s){
   if(!s) return 'OTHER';
   if(s === 'pix')          return 'PIX';
-  if(s === 'bolbradesco' || s === 'pagofacil' || s === 'bolboleto' || s.includes('boleto')) return 'BOLETO';
+  if(s === 'bolbradesco' || s === 'pagofacil' || s === 'bolboleto' || String(s).includes('boleto')) return 'BOLETO';
   if(s === 'credit_card')  return 'CREDIT_CARD';
   if(s === 'debit_card')   return 'DEBIT_CARD';
   return 'OTHER';
@@ -64,7 +66,7 @@ router.get('/', requireAuth, asyncH(async (req, res) => {
 }));
 
 // -----------------------------------------------------
-// GET /api/payments/:id — detalhe
+// GET /api/payments/:id — detalhe (autorização: dono)
 // -----------------------------------------------------
 router.get('/:id', requireAuth, asyncH(async (req, res) => {
   const p = await prisma.payment.findUnique({ where: { id: req.params.id } });
@@ -88,98 +90,156 @@ router.get('/:id', requireAuth, asyncH(async (req, res) => {
 // -----------------------------------------------------
 // POST /api/payments/webhook — notificação do Mercado Pago
 //
-// O MP manda chamadas pra essa URL com vários formatos.
-// Aqui tratamos o "payment" topic (mais comum).
-// Payload típico: { type: 'payment', data: { id: '12345' } }
-// ou query string: ?topic=payment&id=12345
+// SEGURANÇA:
+//   1. Valida x-signature HMAC SHA-256 (anti-forge)
+//   2. Verifica timestamp pra evitar replay attacks (5 min)
+//   3. Idempotência via mpPaymentId @unique no DB
+//   4. Confere external_reference local antes de ativar nada
+//
+// CONVENÇÃO MP:
+//   Devolve 200 quando processou OK (ou ignorou intencionalmente).
+//   Devolve 5xx APENAS em erro transitório (DB fora) — MP reenvia.
 // -----------------------------------------------------
 router.post('/webhook', asyncH(async (req, res) => {
-  // MP exige resposta rápida (200) — registramos e processamos.
-  // Sempre devolver 200 mesmo em erro pra MP não reenviar infinitamente.
+  // === 1. VALIDAÇÃO DE ASSINATURA ===
+  const sig = verifyWebhookSignature({ headers: req.headers, query: req.query, body: req.body });
+  if(!sig.valid){
+    log.warn('webhook_signature_invalid', { reason: sig.reason, ip: req.ip });
+    return res.status(401).json({ error: 'invalid_signature' });
+  }
+  if(sig.devBypass){
+    log.warn('webhook_signature_dev_bypass');
+  }
 
+  // === 2. EXTRAI tipo + ID ===
   const topic =
     req.body?.type ||
     req.body?.topic ||
     req.query?.type ||
     req.query?.topic;
 
-  const mpPaymentId =
+  const mpPaymentId = String(
     req.body?.data?.id ||
     req.body?.id ||
     req.query?.id ||
-    req.query?.['data.id'];
+    req.query?.['data.id'] ||
+    ''
+  );
 
-  console.log('[webhook] received', { topic, mpPaymentId, body: req.body });
+  log.info('webhook_received', { topic, mpPaymentId });
 
   if(topic !== 'payment' || !mpPaymentId){
-    // Outros topics: merchant_order, etc — ignora por enquanto
-    return res.status(200).json({ received: true, ignored: true });
+    return res.status(200).json({ received: true, ignored: true, reason: 'topic_or_id_missing' });
   }
 
+  // === 3. IDEMPOTÊNCIA: já processamos esse mpPaymentId? ===
+  // Se já existe Payment com esse mpPaymentId E status final, retorna 200 sem reprocessar.
+  const existing = await prisma.payment.findUnique({ where: { mpPaymentId } }).catch(() => null);
+  if(existing && ['APPROVED', 'REFUNDED', 'CANCELED', 'REJECTED'].includes(existing.status)){
+    log.info('webhook_idempotent_skip', { mpPaymentId, status: existing.status });
+    return res.status(200).json({ received: true, idempotent: true });
+  }
+
+  // === 4. BUSCA PAGAMENTO NO MP ===
+  let mpPayment;
   try{
-    // 1. Busca o pagamento no MP
-    const mpPayment = await buscarPagamento(mpPaymentId);
+    mpPayment = await buscarPagamento(mpPaymentId);
+  }catch(err){
+    log.error('webhook_mp_fetch_failed', { mpPaymentId, err: err?.message });
+    // 5xx pra MP reenviar
+    return res.status(503).json({ error: 'mp_fetch_failed' });
+  }
 
-    // external_reference = "pid:xxx|sub:yyy|user:zzz"
-    const ref = mpPayment.external_reference || '';
-    const parts = Object.fromEntries(
-      ref.split('|').map(p => {
-        const [k, v] = p.split(':');
-        return [k, v];
-      }).filter(([k,v]) => k && v)
-    );
-    const paymentId = parts.pid;
+  // === 5. EXTERNAL_REFERENCE deve apontar pro nosso payment ===
+  const ref = mpPayment.external_reference || '';
+  const parts = Object.fromEntries(
+    ref.split('|').map(p => {
+      const [k, v] = p.split(':');
+      return [k, v];
+    }).filter(([k,v]) => k && v)
+  );
+  const localPaymentId = parts.pid;
 
-    if(!paymentId){
-      console.warn('[webhook] external_reference sem pid', ref);
-      return res.status(200).json({ received: true, error: 'no_pid' });
-    }
+  if(!localPaymentId){
+    log.warn('webhook_no_external_ref', { ref, mpPaymentId });
+    return res.status(200).json({ received: true, ignored: true, reason: 'no_external_ref' });
+  }
 
-    const localPayment = await prisma.payment.findUnique({
-      where: { id: paymentId },
-      include: { subscription: true },
+  const localPayment = await prisma.payment.findUnique({
+    where: { id: localPaymentId },
+    include: { subscription: true, user: { select: { id: true, email: true } } },
+  });
+
+  if(!localPayment){
+    log.warn('webhook_local_not_found', { localPaymentId, mpPaymentId });
+    return res.status(200).json({ received: true, ignored: true, reason: 'local_not_found' });
+  }
+
+  // === 6. VALIDA QUE O VALOR BATE (anti-tampering) ===
+  const expectedAmount = Number(localPayment.amount);
+  const mpAmount = Number(mpPayment.transaction_amount);
+  if(Math.abs(expectedAmount - mpAmount) > 0.01){
+    log.warn('webhook_amount_mismatch', {
+      localPaymentId, mpPaymentId, expectedAmount, mpAmount,
     });
-    if(!localPayment){
-      console.warn('[webhook] payment local não encontrado', paymentId);
-      return res.status(200).json({ received: true, error: 'payment_not_found' });
-    }
+    return res.status(200).json({ received: true, ignored: true, reason: 'amount_mismatch' });
+  }
 
-    const newStatus = mapMPStatus(mpPayment.status);
-    const method    = mapMPMethod(mpPayment.payment_method_id);
+  // === 7. ATUALIZA EM TRANSAÇÃO ATÔMICA ===
+  const newStatus = mapMPStatus(mpPayment.status);
+  const method    = mapMPMethod(mpPayment.payment_method_id);
+  const pix       = mpPayment.point_of_interaction?.transaction_data || {};
 
-    // QR PIX (se aplicável)
-    const pix = mpPayment.point_of_interaction?.transaction_data || {};
-
-    await prisma.payment.update({
-      where: { id: localPayment.id },
-      data: {
-        mpPaymentId: String(mpPayment.id),
-        status: newStatus,
-        method,
-        paidAt: newStatus === 'APPROVED' ? new Date() : null,
-        mpQrCode: pix.qr_code || localPayment.mpQrCode,
-        mpQrCodeBase64: pix.qr_code_base64 || localPayment.mpQrCodeBase64,
-        mpPayload: mpPayment,
-      },
-    });
-
-    // Ativa assinatura se aprovado
-    if(newStatus === 'APPROVED' && localPayment.subscription){
-      const startDate   = new Date();
-      const nextDueDate = new Date();
-      nextDueDate.setMonth(nextDueDate.getMonth() + 1);
-
-      await prisma.subscription.update({
-        where: { id: localPayment.subscription.id },
-        data: { status: 'ACTIVE', startDate, nextDueDate },
+  try{
+    await prisma.$transaction(async (tx) => {
+      await tx.payment.update({
+        where: { id: localPayment.id },
+        data: {
+          mpPaymentId,
+          status: newStatus,
+          method,
+          paidAt: newStatus === 'APPROVED' ? new Date() : null,
+          mpQrCode: pix.qr_code || localPayment.mpQrCode,
+          mpQrCodeBase64: pix.qr_code_base64 || localPayment.mpQrCodeBase64,
+          mpPayload: mpPayment,
+        },
       });
-      console.log(`[webhook] subscription ${localPayment.subscription.id} ATIVADA`);
-    }
+
+      if(newStatus === 'APPROVED' && localPayment.subscription){
+        const startDate   = localPayment.subscription.startDate || new Date();
+        const nextDueDate = new Date();
+        nextDueDate.setMonth(nextDueDate.getMonth() + 1);
+
+        await tx.subscription.update({
+          where: { id: localPayment.subscription.id },
+          data:  { status: 'ACTIVE', startDate, nextDueDate },
+        });
+      }
+
+      if((newStatus === 'REFUNDED' || newStatus === 'CANCELED') && localPayment.subscription){
+        // Se primeiro pagamento foi reembolsado → suspende
+        if(localPayment.subscription.status === 'PENDING'){
+          await tx.subscription.update({
+            where: { id: localPayment.subscription.id },
+            data:  { status: 'CANCELED', canceledAt: new Date() },
+          });
+        }
+      }
+    });
+
+    log.info('webhook_processed', {
+      localPaymentId,
+      mpPaymentId,
+      status: newStatus,
+      userId: localPayment.userId,
+      subscriptionId: localPayment.subscriptionId,
+    });
 
     res.status(200).json({ received: true, processed: true, status: newStatus });
   }catch(err){
-    console.error('[webhook] erro processando:', err?.message || err);
-    res.status(200).json({ received: true, error: 'processing_failed' });
+    log.error('webhook_db_failed', { localPaymentId, mpPaymentId, err: err?.message });
+    // 5xx pra MP reenviar
+    res.status(503).json({ error: 'db_failed' });
   }
 }));
 

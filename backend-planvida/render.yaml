@@ -35,6 +35,8 @@ services:
         sync: false   # cole no painel
       - key: MP_PUBLIC_KEY
         sync: false
+      - key: MP_WEBHOOK_SECRET
+        sync: false   # OBRIGATÓRIO em produção (anti-forge)
       - key: DATABASE_URL
         fromDatabase:
           name: planvida-db

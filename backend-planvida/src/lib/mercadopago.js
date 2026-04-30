@@ -1,7 +1,10 @@
 // =========================================================
 // Cliente Mercado Pago — preference creation + payment fetch
+//                       + verificação de assinatura de webhook
 // Docs: https://www.mercadopago.com.br/developers/pt/reference
+// Webhook signature: https://www.mercadopago.com.br/developers/pt/docs/your-integrations/notifications/webhooks
 // =========================================================
+import crypto from 'node:crypto';
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 
 const accessToken = process.env.MP_ACCESS_TOKEN;
@@ -16,6 +19,66 @@ const client = new MercadoPagoConfig({
 
 export const preferenceClient = new Preference(client);
 export const paymentClient    = new Payment(client);
+
+// -----------------------------------------------------
+// VERIFICAÇÃO DE ASSINATURA DO WEBHOOK
+// MP envia headers: x-signature: "ts=123,v1=hash"   x-request-id: "..."
+// HMAC SHA-256 do template: "id:<dataId>;request-id:<requestId>;ts:<ts>;"
+// chave: MP_WEBHOOK_SECRET (gerado no painel MP > Webhooks)
+// -----------------------------------------------------
+/**
+ * Verifica assinatura do webhook do Mercado Pago.
+ * Retorna { valid: boolean, reason?: string }.
+ *
+ * Em DEV (sem secret configurado), aceita tudo mas loga warning.
+ */
+export function verifyWebhookSignature({ headers, query, body }){
+  const secret = process.env.MP_WEBHOOK_SECRET;
+
+  // DEV-only bypass: se não tem secret, aceita mas avisa
+  if(!secret){
+    if(process.env.NODE_ENV === 'production'){
+      return { valid: false, reason: 'MP_WEBHOOK_SECRET não configurado (obrigatório em produção)' };
+    }
+    return { valid: true, devBypass: true };
+  }
+
+  const xSig = headers['x-signature'] || headers['X-Signature'];
+  const xReq = headers['x-request-id'] || headers['X-Request-Id'];
+  if(!xSig || !xReq){
+    return { valid: false, reason: 'headers x-signature/x-request-id ausentes' };
+  }
+
+  // x-signature = "ts=1234,v1=abcdef..."
+  const parts = String(xSig).split(',').reduce((acc, kv) => {
+    const [k, v] = kv.split('=').map(s => s.trim());
+    if(k && v) acc[k] = v;
+    return acc;
+  }, {});
+  const ts = parts.ts;
+  const v1 = parts.v1;
+  if(!ts || !v1) return { valid: false, reason: 'x-signature mal formado' };
+
+  // Tolerância anti-replay: 5 minutos
+  const now = Date.now();
+  const tsMs = parseInt(ts, 10) * (String(ts).length <= 10 ? 1000 : 1);
+  if(Math.abs(now - tsMs) > 5 * 60 * 1000){
+    return { valid: false, reason: 'timestamp expirado (replay attack?)' };
+  }
+
+  const dataId = body?.data?.id || query?.['data.id'] || query?.id;
+  if(!dataId) return { valid: false, reason: 'data.id ausente no payload' };
+
+  const template = `id:${dataId};request-id:${xReq};ts:${ts};`;
+  const expected = crypto.createHmac('sha256', secret).update(template).digest('hex');
+
+  // Comparação em tempo constante
+  const a = Buffer.from(expected, 'hex');
+  const b = Buffer.from(v1, 'hex');
+  if(a.length !== b.length) return { valid: false, reason: 'tamanho de hash diferente' };
+  const ok = crypto.timingSafeEqual(a, b);
+  return ok ? { valid: true } : { valid: false, reason: 'hash não confere' };
+}
 
 /**
  * Cria uma preferência de pagamento no Mercado Pago.

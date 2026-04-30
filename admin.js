@@ -3,9 +3,15 @@
    - Login (API real ou mock se backend offline)
    - Dashboard / Clientes / Pagamentos / Assinaturas
    - Exportar CSV
+   - Logout automático em 401
 ========================================================= */
 
 (function(){
+
+// Logout global em 401 do admin
+window.addEventListener('planvida:logout', () => {
+  localStorage.removeItem('planvida_admin_token');
+});
 
 const $  = (s, ctx) => (ctx || document).querySelector(s);
 const $$ = (s, ctx) => Array.from((ctx || document).querySelectorAll(s));

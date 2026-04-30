@@ -116,8 +116,8 @@ model Payment {
   amount          Decimal       @db.Decimal(10, 2)
 
   // Mercado Pago
-  mpPreferenceId  String?       // id da preference
-  mpPaymentId     String?       // id do payment recebido no webhook
+  mpPreferenceId  String?       @unique  // id da preference (única por payment)
+  mpPaymentId     String?       @unique  // id do payment recebido no webhook (única — idempotência)
   mpInitPoint     String?       // URL pra o usuário pagar
   mpQrCode        String?       // QR copia/cola PIX (se aplicável)
   mpQrCodeBase64  String?       // QR base64 PIX (imagem)
@@ -132,7 +132,6 @@ model Payment {
   subscription Subscription? @relation(fields: [subscriptionId], references: [id])
 
   @@index([userId])
-  @@index([mpPaymentId])
-  @@index([mpPreferenceId])
   @@index([status])
+  @@index([createdAt])
 }

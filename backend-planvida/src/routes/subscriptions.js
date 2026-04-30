@@ -20,27 +20,27 @@ import { signToken } from '../lib/jwt.js';
 import { criarPreferenciaPagamento } from '../lib/mercadopago.js';
 import { requireAuth } from '../middleware/auth.js';
 import { asyncH } from '../middleware/error.js';
+import { validaCPF, onlyDigitsCPF } from '../lib/cpf.js';
+import { log } from '../lib/logger.js';
 
 const router = Router();
 
 const subscribeSchema = z.object({
-  nome:     z.string().min(3).max(120),
-  email:    z.string().email().toLowerCase(),
+  nome:     z.string().trim().min(3).max(120),
+  email:    z.string().trim().email().toLowerCase(),
   password: z.string().min(6).max(72),
-  cpf:      z.string().min(11).max(14),
-  telefone: z.string().min(10).max(20),
-  dataNasc: z.string().optional(),
-  endereco: z.string().optional(),
-  cidade:   z.string().optional(),
-  cep:      z.string().optional(),
+  cpf:      z.string().min(11).max(14).refine(v => validaCPF(v), 'CPF inválido (DVs)'),
+  telefone: z.string().trim().min(10).max(20),
+  dataNasc: z.string().trim().optional(),
+  endereco: z.string().trim().optional(),
+  cidade:   z.string().trim().optional(),
+  cep:      z.string().trim().optional(),
   planSlug: z.enum(['individual', 'familiar', 'plus']),
 });
 
-const onlyDigits = (s = '') => String(s).replace(/\D/g, '');
-
 router.post('/subscribe', asyncH(async (req, res) => {
   const data = subscribeSchema.parse(req.body);
-  const cpfClean = onlyDigits(data.cpf);
+  const cpfClean = onlyDigitsCPF(data.cpf);
 
   // 1. Plano existe?
   const plan = await prisma.plan.findUnique({ where: { slug: data.planSlug } });
@@ -54,12 +54,14 @@ router.post('/subscribe', asyncH(async (req, res) => {
   });
 
   if(user){
-    // Já existe — exige senha correta pra evitar sequestro de conta
+    // Já existe — exige senha correta pra evitar sequestro de conta.
+    // Erro genérico (anti-enumeração).
     const ok = await bcrypt.compare(data.password, user.password);
     if(!ok){
+      await new Promise(r => setTimeout(r, 350));
       return res.status(409).json({
-        error: 'user_exists',
-        message: 'Já existe uma conta com esse email/CPF. Faça login pra contratar um novo plano.',
+        error: 'account_exists',
+        message: 'Já existe conta com esses dados. Faça login para contratar um novo plano.',
       });
     }
     // Atualiza dados que possam ter vindo novos
@@ -126,11 +128,23 @@ router.post('/subscribe', asyncH(async (req, res) => {
       frontendUrl: process.env.FRONTEND_URL,
     });
   }catch(err){
-    console.error('[MP] Erro ao criar preference:', err?.message || err);
+    log.error('subscribe_mp_preference_failed', {
+      userId: user.id, subscriptionId: subscription.id, paymentId: payment.id,
+      err: err?.message,
+    });
+    // Marca pagamento como rejeitado pra não ficar lixo
+    await prisma.payment.update({
+      where: { id: payment.id },
+      data:  { status: 'REJECTED' },
+    }).catch(() => {});
     return res.status(502).json({
       error: 'mp_error',
       message: 'Não foi possível gerar o link de pagamento. Tente novamente em instantes.',
     });
+  }
+  if(!preference?.init_point){
+    log.error('subscribe_mp_no_init_point', { paymentId: payment.id, preference });
+    return res.status(502).json({ error: 'mp_error', message: 'Resposta inválida do gateway de pagamento.' });
   }
 
   // 6. Atualiza payment com dados do MP

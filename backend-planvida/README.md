@@ -232,11 +232,31 @@ Veja `Sites/Funeraria-Demo/cadastro.js` e `portal.js` (já adaptados).
 
 ## ✅ Checklist de produção
 
-- [ ] `JWT_SECRET` setado com 48+ caracteres aleatórios
+- [ ] `JWT_SECRET` setado com 48+ caracteres aleatórios (`openssl rand -base64 48`)
 - [ ] `MP_ACCESS_TOKEN` é credencial **APP_USR** (não TEST)
-- [ ] `BACKEND_URL` aponta pro Render
-- [ ] `FRONTEND_URL` aponta pro GitHub Pages
-- [ ] Webhook configurado no painel MP → `/api/payments/webhook`
-- [ ] `ALLOWED_ORIGINS` contém o domínio do GitHub Pages
+- [ ] **`MP_WEBHOOK_SECRET`** configurado (CRÍTICO — sem isso webhooks falsos podem ativar planos)
+- [ ] `ADMIN_PASSWORD` com 12+ caracteres
+- [ ] `BACKEND_URL` aponta pro Render (HTTPS)
+- [ ] `FRONTEND_URL` aponta pro site público (HTTPS)
+- [ ] Webhook configurado no painel MP → `https://...onrender.com/api/payments/webhook`
+- [ ] No painel MP, copiar a **Secret** do webhook e colar em `MP_WEBHOOK_SECRET`
+- [ ] `ALLOWED_ORIGINS` contém o domínio do GitHub Pages / domínio próprio
 - [ ] Postgres não está no plano free se precisa de uptime garantido
 - [ ] Logs do Render acessíveis (`Logs` no painel)
+- [ ] Health check: `GET /health` (rápido) e `GET /health/db` (com Postgres)
+
+## 🔐 Recursos de segurança implementados
+
+- **JWT** com expiração 7d + failfast em produção se SECRET fraco
+- **bcrypt** (10 rounds) pra senhas
+- **Anti-timing attack**: bcrypt dummy + delay constante mesmo se user não existe
+- **Anti-enumeração**: erro genérico em conflito de email/CPF (não vaza qual está cadastrado)
+- **CPF validado** pelo algoritmo de DV (não só formato)
+- **Rate limit**: 30 req/15min em auth, 120/min em geral, 600/min no webhook
+- **CORS** com whitelist + suporte a `*.github.io` automático
+- **Helmet** com CSP estrito + HSTS em prod
+- **Webhook MP** valida HMAC SHA-256 + timestamp anti-replay (5 min) + idempotência via `mpPaymentId @unique`
+- **Transação atômica** no webhook (Payment + Subscription atualizados juntos)
+- **Validação de valor** no webhook (anti-tampering)
+- **Logs estruturados** em JSON (em produção)
+- **Graceful shutdown** com `prisma.$disconnect()`

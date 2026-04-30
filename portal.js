@@ -3,9 +3,18 @@
    - Login real via API /api/auth/login
    - Dashboard via /api/dashboard (com Bearer token)
    - Fallback mock se API offline (mantém demo funcional)
+   - Logout automático em 401 (evento planvida:logout)
 ========================================================= */
 
 (function(){
+
+// Logout global — disparado por api.js quando recebe 401
+window.addEventListener('planvida:logout', () => {
+  sessionStorage.removeItem('planvida_logado_cpf');
+  if(!document.querySelector('#dashSection')?.hidden){
+    location.reload();
+  }
+});
 
 const $  = (s, ctx) => (ctx || document).querySelector(s);
 const $$ = (s, ctx) => Array.from((ctx || document).querySelectorAll(s));
@@ -120,7 +129,10 @@ loginForm?.addEventListener('submit', async e => {
 
   // ---- FALLBACK MOCK ----
   let cliente = MOCK_CLIENTES[cpfDigits];
-  if(!cliente){
+  let senhaValida = false;
+  if(cliente){
+    senhaValida = senha === cliente.senha; // mocks built-in: senha plain
+  } else {
     const clientes = JSON.parse(localStorage.getItem('planvida_clientes') || '[]');
     const c = clientes.find(x => {
       const cpf = (x.dados?.cpf || '').replace(/\D/g,'');
@@ -128,25 +140,32 @@ loginForm?.addEventListener('submit', async e => {
       return cpf === cpfDigits || email === idInput.toLowerCase();
     });
     if(c){
-      cliente = {
-        nome: c.dados.nome,
-        cpf: c.dados.cpf,
-        email: c.dados.email,
-        senha: c.senha_inicial || '123456',
-        plano: c.plano,
-        cadastradoEm: c.cadastradoEm,
-        dependentes: c.plano?.slug === 'plus' ? 5 : (c.plano?.slug === 'familiar' ? 3 : 0),
-        carteiraNumero: '0' + (Math.floor(Math.random() * 90000) + 10000) + '-001',
-        proxVencimento: getNextDay(7),
-        tel: c.dados.tel,
-      };
+      // Compara hash leve (compatível com cadastro novo)
+      const hashTry = await (window.PlanvidaAPI?.hashLeve ? window.PlanvidaAPI.hashLeve(senha) : senha);
+      senhaValida = c.senha_hash === hashTry || c.senha_inicial === senha;
+      if(senhaValida){
+        cliente = {
+          nome: c.dados.nome,
+          cpf: c.dados.cpf,
+          email: c.dados.email,
+          plano: c.plano,
+          cadastradoEm: c.cadastradoEm,
+          dependentes: c.plano?.slug === 'plus' ? 5 : (c.plano?.slug === 'familiar' ? 3 : 0),
+          carteiraNumero: '0' + (Math.floor(Math.random() * 90000) + 10000) + '-001',
+          proxVencimento: getNextDay(7),
+          tel: c.dados.tel,
+        };
+      }
     }
   }
 
-  if(!cliente){ erroLogin('CPF/email não encontrado. Cadastre um plano primeiro.'); return; }
-  if(senha !== cliente.senha){ erroLogin('Senha incorreta.'); return; }
+  // Erro genérico anti-enumeração — mesmo erro pra "não existe" e "senha errada"
+  if(!cliente || !senhaValida){
+    erroLogin('Email/CPF ou senha inválidos.');
+    return;
+  }
 
-  sessionStorage.setItem('planvida_logado_cpf', cpfDigits || cliente.cpf.replace(/\D/g,''));
+  sessionStorage.setItem('planvida_logado_cpf', cpfDigits || (cliente.cpf || '').replace(/\D/g,''));
   entrarPortal(cliente);
 });
 
@@ -326,6 +345,10 @@ function populateDashMock(cliente){
   bindCopyButtons();
 }
 
+function escapeHtml(s){
+  return String(s ?? '').replace(/[&<>"']/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m]));
+}
+
 function ajustarDependentes(cliente){
   const list = $('#dependentesList');
   if(!list) return;
@@ -354,13 +377,13 @@ function ajustarDependentes(cliente){
     return;
   }
   list.innerHTML = deps.map(d => {
-    const initials = d.nome.split(' ').map(p => p[0]).slice(0,2).join('');
+    const initials = (d.nome || '').split(' ').map(p => p[0]).slice(0,2).join('');
     return `
       <div class="dependente">
-        <div class="dependente__avatar">${initials}</div>
+        <div class="dependente__avatar">${escapeHtml(initials)}</div>
         <div class="dependente__info">
-          <strong>${d.nome}</strong>
-          <small>${d.tipo} · ${d.idade} anos · CPF ***.***.***-**</small>
+          <strong>${escapeHtml(d.nome)}</strong>
+          <small>${escapeHtml(d.tipo)} · ${escapeHtml(d.idade)} anos · CPF ***.***.***-**</small>
         </div>
         <span class="badge-portal badge-portal--ok">Ativo</span>
       </div>`;
@@ -378,10 +401,10 @@ function popularHistoricoFromAPI(pagamentos, ctx){
     html += `
       <div class="hist-item">
         <span class="hist-item__data">${data.toLocaleDateString('pt-BR')}</span>
-        <span class="hist-item__desc">Mensalidade · ${ctx.plano?.nome || 'Plano'}</span>
-        <span class="hist-item__forma">${methodLabel(p.method)}</span>
+        <span class="hist-item__desc">Mensalidade · ${escapeHtml(ctx.plano?.nome || 'Plano')}</span>
+        <span class="hist-item__forma">${escapeHtml(methodLabel(p.method))}</span>
         <span class="hist-item__valor">R$ ${Number(p.amount).toFixed(2).replace('.',',')}</span>
-        <span class="hist-item__status ${isPago ? 'is-pago' : (isPend ? 'is-pendente' : 'is-pendente')}">${statusLabel(p.status)}</span>
+        <span class="hist-item__status ${isPago ? 'is-pago' : (isPend ? 'is-pendente' : 'is-pendente')}">${escapeHtml(statusLabel(p.status))}</span>
       </div>`;
   });
   if(!pagamentos.length){
