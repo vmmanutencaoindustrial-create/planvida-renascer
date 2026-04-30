@@ -1,0 +1,985 @@
+/* =========================================================
+   PlanVida Renascer — Cadastro Funnel
+   Design alinhado com o site principal
+========================================================= */
+
+.cad-body{
+  background: var(--bg);
+  min-height: 100vh;
+  font-family: var(--sans);
+  color: var(--text);
+}
+
+/* ===== HEADER ===== */
+.cad-header{
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250, 248, 244, 0.96);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+}
+.cad-header__brand img{
+  height: 56px;
+  width: auto;
+  filter: drop-shadow(0 4px 12px rgba(255,230,0,0.3));
+}
+.cad-header__right{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cad-header__help,
+.cad-header__client{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--navy-deep);
+  padding: 9px 18px;
+  border-radius: 100px;
+  border: 1.5px solid transparent;
+  transition: all 0.3s var(--ease);
+}
+.cad-header__help{
+  background: rgba(255, 230, 0, 0.15);
+}
+.cad-header__help:hover{
+  background: var(--gold);
+}
+.cad-header__client{
+  border-color: var(--line);
+}
+.cad-header__client:hover{
+  border-color: var(--navy-deep);
+  background: var(--navy-deep);
+  color: white;
+}
+
+/* ===== STEPPER ===== */
+.cad-stepper{
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--line);
+  padding: 28px 24px;
+}
+.cad-stepper__inner{
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cad-stepper__step{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.cad-stepper__num{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  transition: all 0.4s var(--ease);
+}
+.cad-stepper__label{
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.cad-stepper__step.is-active .cad-stepper__num{
+  background: var(--navy-deep);
+  border-color: var(--navy-deep);
+  color: var(--gold);
+}
+.cad-stepper__step.is-active .cad-stepper__label{
+  color: var(--navy-deep);
+  font-weight: 600;
+}
+.cad-stepper__step.is-done .cad-stepper__num{
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy-deep);
+}
+.cad-stepper__step.is-done .cad-stepper__num::before{
+  content: "✓";
+}
+.cad-stepper__step.is-done .cad-stepper__num span{
+  display: none;
+}
+.cad-stepper__line{
+  flex: 1;
+  height: 1.5px;
+  background: var(--line);
+  transition: background 0.4s;
+}
+.cad-stepper__line.is-done{
+  background: var(--gold);
+}
+
+@media (max-width: 720px){
+  .cad-stepper__label{ display: none; }
+  .cad-stepper__inner{ gap: 4px; }
+}
+
+/* ===== STAGE ===== */
+.cad-stage{
+  position: relative;
+  min-height: calc(100vh - 200px);
+}
+.cad-step{
+  display: none;
+  animation: cadFadeIn 0.5s var(--ease);
+}
+.cad-step.is-active{
+  display: block;
+}
+@keyframes cadFadeIn{
+  from{ opacity: 0; transform: translateY(20px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+.cad-step__inner{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+.cad-step__inner--narrow{
+  max-width: 720px;
+}
+
+.cad-step__head{
+  text-align: center;
+  margin-bottom: 56px;
+}
+.cad-step__head h1{
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 12px 0 20px;
+  letter-spacing: -0.02em;
+}
+.cad-step__head h1 em{
+  color: var(--navy);
+  font-style: italic;
+  font-weight: 400;
+}
+.cad-step__sub{
+  font-size: 1.06rem;
+  color: var(--text-muted);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+
+/* ===== STEP 1 — PLANOS ===== */
+.planos-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.plano-card{
+  position: relative;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 4px;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: all 0.4s var(--ease);
+  cursor: pointer;
+}
+.plano-card:hover{
+  transform: translateY(-6px);
+  border-color: var(--navy);
+  box-shadow: 0 24px 60px rgba(61, 69, 184, 0.12);
+}
+.plano-card--featured{
+  border-color: var(--gold);
+  background: linear-gradient(180deg, #FFFEF5 0%, #FFFFFF 100%);
+  box-shadow: 0 12px 40px rgba(255, 230, 0, 0.25);
+  transform: scale(1.04);
+}
+.plano-card--featured:hover{
+  transform: scale(1.04) translateY(-6px);
+  border-color: var(--gold-deep);
+}
+.plano-card__badge{
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: var(--navy-deep);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 100px;
+}
+.plano-card__head h3{
+  font-family: var(--serif);
+  font-size: 1.85rem;
+  font-weight: 400;
+  color: var(--navy-deep);
+  margin-bottom: 6px;
+}
+.plano-card__sub{
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.plano-card__price{
+  display: flex;
+  align-items: baseline;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.plano-card__cifrao{
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  color: var(--navy-deep);
+  margin-right: 4px;
+  font-weight: 400;
+}
+.plano-card__valor{
+  font-family: var(--serif);
+  font-size: 3.6rem;
+  font-weight: 400;
+  color: var(--navy-deep);
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+.plano-card__periodo{
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-left: 6px;
+}
+.plano-card__list{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.plano-card__list li{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: var(--text);
+  line-height: 1.5;
+  padding-left: 20px;
+  position: relative;
+}
+.plano-card__list li::before{
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--navy);
+  font-weight: 700;
+}
+.plano-card__list strong{
+  color: var(--navy-deep);
+}
+.plano-card__btn{
+  width: 100%;
+  margin-top: auto;
+}
+.plano-card.is-selected{
+  border-color: var(--navy-deep);
+  background: linear-gradient(180deg, #F4F5FF 0%, #FFFFFF 100%);
+}
+.plano-card.is-selected .plano-card__btn{
+  background: var(--gold);
+  color: var(--navy-deep);
+}
+
+/* ===== BOTÕES EXTRAS ===== */
+.btn--outline-navy{
+  background: transparent;
+  border: 1.5px solid var(--navy-deep);
+  color: var(--navy-deep);
+}
+.btn--outline-navy:hover{
+  background: var(--navy-deep);
+  color: var(--white);
+}
+.btn--ghost{
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  padding: 14px 22px;
+}
+.btn--ghost:hover{
+  color: var(--navy-deep);
+}
+.btn--lg{
+  padding: 20px 44px;
+  font-size: 1rem;
+}
+.btn--sm{
+  padding: 8px 16px;
+  font-size: 0.84rem;
+}
+
+/* ===== AJUDA NO STEP ===== */
+.cad-help{
+  text-align: center;
+  margin-top: 36px;
+  padding: 28px;
+  background: rgba(61, 69, 184, 0.05);
+  border-radius: 4px;
+}
+.cad-help p{
+  color: var(--text-muted);
+  font-size: 0.96rem;
+}
+.cad-help a{
+  color: var(--navy-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: var(--gold);
+}
+
+/* ===== STEP 2 — FORMULÁRIO ===== */
+.cad-form{
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 44px 40px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+}
+.cad-form__grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 24px;
+  margin-bottom: 28px;
+}
+.cad-field{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cad-field--full{
+  grid-column: 1 / -1;
+}
+.cad-field span{
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--navy-deep);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.cad-field input,
+.cad-field select{
+  padding: 14px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 4px;
+  background: #fafaf6;
+  font-family: var(--sans);
+  font-size: 0.96rem;
+  color: var(--ink);
+  transition: all 0.25s;
+}
+.cad-field input:focus,
+.cad-field select:focus{
+  outline: none;
+  border-color: var(--navy-deep);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(61, 69, 184, 0.08);
+}
+.cad-field input.is-invalid{
+  border-color: #d23030;
+  background: #fff7f7;
+}
+.cad-trust{
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+  background: rgba(61, 69, 184, 0.05);
+  border-radius: 4px;
+  color: var(--navy-deep);
+  margin-bottom: 24px;
+}
+.cad-trust svg{
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.cad-trust p{
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+.cad-actions{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* ===== STEP 3 — RESUMO + PAGAMENTO ===== */
+.cad-summary{
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 32px;
+  margin-bottom: 28px;
+}
+.cad-summary__head{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 12px;
+}
+.cad-summary__head h3{
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--navy-deep);
+}
+.cad-summary__edit{
+  font-size: 0.84rem;
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--gold);
+}
+.cad-summary__row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.cad-summary__row:last-of-type{
+  border-bottom: none;
+}
+.cad-summary__row span{
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+.cad-summary__row strong{
+  color: var(--ink);
+  font-weight: 600;
+}
+.cad-summary__row--total{
+  margin-top: 12px;
+  padding-top: 20px;
+  border-top: 2px solid var(--navy-deep);
+}
+.cad-summary__row--total span{
+  font-size: 1rem;
+  color: var(--navy-deep);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.cad-summary__row--total strong{
+  font-family: var(--serif);
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: var(--navy-deep);
+  line-height: 1;
+}
+.cad-summary__row--total strong em{
+  font-size: 1.2rem;
+  margin-right: 2px;
+  font-style: normal;
+}
+.cad-summary__row--total strong small{
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  margin-left: 4px;
+  font-family: var(--sans);
+}
+
+.cad-payment__title{
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--navy-deep);
+  margin-bottom: 20px;
+}
+.cad-payment__options{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.cad-payment__opt{
+  cursor: pointer;
+  display: block;
+}
+.cad-payment__opt input{
+  display: none;
+}
+.cad-payment__opt-body{
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 4px;
+  transition: all 0.3s var(--ease);
+}
+.cad-payment__opt:hover .cad-payment__opt-body{
+  border-color: var(--navy);
+  background: rgba(61, 69, 184, 0.02);
+}
+.cad-payment__opt input:checked + .cad-payment__opt-body{
+  border-color: var(--navy-deep);
+  background: rgba(61, 69, 184, 0.06);
+  box-shadow: 0 0 0 4px rgba(61, 69, 184, 0.05);
+}
+.cad-payment__opt-icon{
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.cad-payment__opt-body strong{
+  display: block;
+  font-size: 1.04rem;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.cad-payment__opt-body p{
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.cad-payment__opt-tag{
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: rgba(61, 69, 184, 0.1);
+  color: var(--navy-deep);
+}
+.cad-payment__opt-tag--gold{
+  background: var(--gold);
+  color: var(--navy-deep);
+}
+
+.cad-aceite{
+  background: var(--bg-soft);
+  padding: 20px;
+  border-radius: 4px;
+  margin-bottom: 28px;
+}
+.cad-aceite__check{
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+.cad-aceite__check input{
+  margin-top: 4px;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--navy-deep);
+}
+.cad-aceite__check a{
+  color: var(--navy-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.btn:disabled{
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ===== STEP 4 — PAGAMENTO ===== */
+.cad-pay-stage{
+  position: relative;
+  margin-bottom: 28px;
+}
+.cad-pay-panel{
+  display: none;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  animation: cadFadeIn 0.4s var(--ease);
+}
+.cad-pay-panel.is-active{
+  display: block;
+}
+.cad-pay-panel__head{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 28px;
+  background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-darker) 100%);
+  color: white;
+}
+.cad-pay-panel__head h3{
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+.cad-pay-panel__chip{
+  background: var(--gold);
+  color: var(--navy-deep);
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cad-pay-panel__body{
+  padding: 36px 32px;
+}
+
+/* PIX */
+.cad-pix{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.cad-pix__qr-wrap{
+  text-align: center;
+}
+.cad-pix__qr{
+  background: white;
+  padding: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--line);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.cad-pix__qr-help{
+  margin-top: 14px;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+.cad-pix__valor{
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.cad-pix__valor span{
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+.cad-pix__valor strong{
+  font-family: var(--serif);
+  font-size: 2.6rem;
+  color: var(--navy-deep);
+  font-weight: 400;
+  line-height: 1;
+}
+.cad-pix__copy{
+  margin-bottom: 18px;
+}
+.cad-pix__copy-label{
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--navy-deep);
+  margin-bottom: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.cad-pix__field{
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  background: var(--bg-soft);
+  border-radius: 4px;
+  padding: 6px;
+}
+.cad-pix__field code{
+  flex: 1;
+  background: transparent;
+  padding: 11px 14px;
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 0.78rem;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cad-pix__bullets{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cad-pix__bullets li{
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+
+/* BOLETO */
+.cad-boleto__head{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  padding: 18px 22px;
+  background: var(--bg-soft);
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+.cad-boleto__head span{
+  display: block;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.cad-boleto__head strong{
+  font-family: var(--serif);
+  font-size: 1.06rem;
+  color: var(--navy-deep);
+  font-weight: 500;
+}
+.cad-boleto__cb{
+  margin-bottom: 24px;
+}
+.cad-boleto__actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* CARTÃO */
+.cad-cartao{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.cad-cartao__msg{
+  padding: 14px 16px;
+  background: rgba(255, 230, 0, 0.1);
+  border-left: 3px solid var(--gold);
+  font-size: 0.86rem;
+  color: var(--text);
+  line-height: 1.5;
+  border-radius: 4px;
+}
+
+/* CONTRATO */
+.cad-contrato{
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 28px 32px;
+  background: linear-gradient(135deg, #FFFEF5 0%, #FFFFFF 100%);
+  border: 1.5px solid var(--gold);
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+.cad-contrato__icon{
+  flex-shrink: 0;
+  color: var(--navy-deep);
+  background: var(--gold);
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.cad-contrato__body h4{
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--navy-deep);
+  margin-bottom: 8px;
+}
+.cad-contrato__body p{
+  font-size: 0.94rem;
+  color: var(--text);
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+
+/* STATUS CHECKERS */
+.cad-status{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  background: var(--bg-soft);
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+.cad-status__item{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+.cad-status__dot{
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gold);
+  position: relative;
+  flex-shrink: 0;
+}
+.cad-status__dot::after{
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  opacity: 0;
+  animation: pulseRing 1.6s ease infinite;
+}
+@keyframes pulseRing{
+  0%{ transform: scale(0.85); opacity: 1; }
+  100%{ transform: scale(1.6); opacity: 0; }
+}
+.cad-status__item.is-done .cad-status__dot{
+  background: #2f7d32;
+  animation: none;
+}
+.cad-status__item.is-done .cad-status__dot::after{
+  display: none;
+}
+.cad-status__item.is-done .cad-status__dot::before{
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: white;
+}
+.cad-status__item.is-done .cad-status__text{
+  color: #2f7d32;
+  font-weight: 600;
+}
+
+/* SUCCESS */
+.cad-success{
+  text-align: center;
+  padding: 56px 32px;
+  background: linear-gradient(135deg, #f0fff4 0%, #ffffff 100%);
+  border: 2px solid #2f7d32;
+  border-radius: 4px;
+  margin-bottom: 28px;
+  animation: cadFadeIn 0.6s var(--ease);
+}
+.cad-success__icon{
+  display: inline-flex;
+  width: 72px;
+  height: 72px;
+  background: #2f7d32;
+  color: white;
+  font-size: 2.4rem;
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-bottom: 18px;
+}
+.cad-success h3{
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--navy-deep);
+  margin-bottom: 12px;
+}
+.cad-success p{
+  color: var(--text);
+  margin-bottom: 24px;
+  font-size: 1.04rem;
+}
+.cad-success p strong{
+  color: var(--navy-deep);
+}
+
+.cad-support{
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+.cad-support a{
+  color: var(--navy-deep);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--gold);
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 960px){
+  .planos-grid{
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .plano-card--featured{
+    transform: none;
+    order: -1;
+  }
+  .plano-card--featured:hover{
+    transform: translateY(-6px);
+  }
+}
+@media (max-width: 720px){
+  .cad-form{ padding: 28px 22px; }
+  .cad-form__grid{ grid-template-columns: 1fr; gap: 16px; }
+  .cad-step__head{ margin-bottom: 36px; }
+  .cad-pix{ grid-template-columns: 1fr; gap: 28px; text-align: center; }
+  .cad-boleto__head{ grid-template-columns: 1fr; gap: 14px; }
+  .cad-pay-panel__body{ padding: 24px 20px; }
+  .cad-contrato{ flex-direction: column; padding: 22px; }
+  .cad-actions{ flex-direction: column-reverse; }
+  .cad-actions .btn{ width: 100%; }
+  .cad-header{ padding: 12px 18px; }
+  .cad-header__brand img{ height: 44px; }
+  .cad-header__help span{ display: none; }
+}

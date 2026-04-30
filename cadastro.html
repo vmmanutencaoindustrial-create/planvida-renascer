@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#3D45B8" />
+<title>Contratar Plano — PlanVida Renascer</title>
+<meta name="description" content="Contrate seu plano funerário PlanVida em 3 minutos. Sem visita, sem burocracia. Atendimento 24h em Maceió/AL." />
+<meta name="robots" content="noindex, follow" />
+
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
+<link rel="apple-touch-icon" sizes="192x192" href="assets/apple-touch-icon.png" />
+<link rel="canonical" href="https://vmmanutencaoindustrial-create.github.io/planvida-renascer/cadastro.html" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="cadastro.css" />
+</head>
+<body class="cad-body">
+
+<!-- ===== HEADER MINIMALISTA ===== -->
+<header class="cad-header">
+  <a href="index.html" class="cad-header__brand">
+    <img src="assets/logo-planvida.png" alt="PlanVida Renascer" />
+  </a>
+  <div class="cad-header__right">
+    <a href="https://wa.me/5582999903607" target="_blank" rel="noopener" class="cad-header__help">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.2-.7.9-.9 1-.2.2-.3.2-.6.1-.3-.2-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.1 1.7 2.7 4.2 3.7 2.1.8 2.5.7 3 .6.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.2-.1-.4-.2-.7-.4z"/></svg>
+      Precisa de ajuda?
+    </a>
+    <a href="portal.html" class="cad-header__client">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+      Sou cliente
+    </a>
+  </div>
+</header>
+
+<!-- ===== INDICADOR DE STEPS ===== -->
+<div class="cad-stepper" id="cadStepper">
+  <div class="cad-stepper__inner">
+    <div class="cad-stepper__step is-active" data-step="1">
+      <span class="cad-stepper__num">1</span>
+      <span class="cad-stepper__label">Plano</span>
+    </div>
+    <div class="cad-stepper__line"></div>
+    <div class="cad-stepper__step" data-step="2">
+      <span class="cad-stepper__num">2</span>
+      <span class="cad-stepper__label">Dados</span>
+    </div>
+    <div class="cad-stepper__line"></div>
+    <div class="cad-stepper__step" data-step="3">
+      <span class="cad-stepper__num">3</span>
+      <span class="cad-stepper__label">Confirmação</span>
+    </div>
+    <div class="cad-stepper__line"></div>
+    <div class="cad-stepper__step" data-step="4">
+      <span class="cad-stepper__num">4</span>
+      <span class="cad-stepper__label">Pagamento</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STAGE ===== -->
+<main class="cad-stage" id="cadStage">
+
+  <!-- ============================================
+       STEP 1 — ESCOLHA DO PLANO
+  ============================================ -->
+  <section class="cad-step is-active" data-step="1">
+    <div class="cad-step__inner">
+      <div class="cad-step__head">
+        <p class="eyebrow">Passo 1 de 4</p>
+        <h1>Escolha o plano <em>ideal</em><br/>pra sua família.</h1>
+        <p class="cad-step__sub">Cobertura completa em todo o Brasil. Sem visita, sem burocracia. Cancelamento livre a qualquer momento.</p>
+      </div>
+
+      <div class="planos-grid">
+        <!-- Plano Individual -->
+        <article class="plano-card" data-plan="individual" data-price="170">
+          <div class="plano-card__head">
+            <h3>Individual</h3>
+            <p class="plano-card__sub">Pra quem cuida de si mesmo.</p>
+          </div>
+          <div class="plano-card__price">
+            <span class="plano-card__cifrao">R$</span>
+            <strong class="plano-card__valor">170</strong>
+            <span class="plano-card__periodo">/mês</span>
+          </div>
+          <ul class="plano-card__list">
+            <li>1 titular</li>
+            <li>Urna funerária + velório 24h</li>
+            <li>Translado em todo o Brasil</li>
+            <li>Documentação completa</li>
+            <li>Cremação <strong>OU</strong> sepultamento</li>
+            <li>Atendimento 24h</li>
+          </ul>
+          <button type="button" class="btn btn--outline-navy plano-card__btn">Escolher Individual</button>
+        </article>
+
+        <!-- Plano Familiar — DESTAQUE -->
+        <article class="plano-card plano-card--featured" data-plan="familiar" data-price="290">
+          <span class="plano-card__badge">Mais escolhido</span>
+          <div class="plano-card__head">
+            <h3>Familiar</h3>
+            <p class="plano-card__sub">A escolha de 7 em cada 10 famílias.</p>
+          </div>
+          <div class="plano-card__price">
+            <span class="plano-card__cifrao">R$</span>
+            <strong class="plano-card__valor">290</strong>
+            <span class="plano-card__periodo">/mês</span>
+          </div>
+          <ul class="plano-card__list">
+            <li>Titular + cônjuge</li>
+            <li>Até 4 filhos (até 21 anos)</li>
+            <li>Tudo do plano Individual</li>
+            <li>Floricultura Renascer inclusa</li>
+            <li>Centro Ambulatorial PlanVida</li>
+            <li>Suporte familiar pós-perda</li>
+          </ul>
+          <button type="button" class="btn btn--gold plano-card__btn">Escolher Familiar</button>
+        </article>
+
+        <!-- Plano Família Plus -->
+        <article class="plano-card" data-plan="plus" data-price="450">
+          <div class="plano-card__head">
+            <h3>Família Plus</h3>
+            <p class="plano-card__sub">Cobre 3 gerações com um plano só.</p>
+          </div>
+          <div class="plano-card__price">
+            <span class="plano-card__cifrao">R$</span>
+            <strong class="plano-card__valor">450</strong>
+            <span class="plano-card__periodo">/mês</span>
+          </div>
+          <ul class="plano-card__list">
+            <li>Até 6 dependentes</li>
+            <li>Inclui pais e sogros</li>
+            <li>Tudo do plano Familiar</li>
+            <li>Clínica odontológica gratuita</li>
+            <li>Cobertura imediata por acidente</li>
+            <li>Carteirinha digital + app</li>
+          </ul>
+          <button type="button" class="btn btn--outline-navy plano-card__btn">Escolher Plus</button>
+        </article>
+      </div>
+
+      <div class="cad-help">
+        <p><strong>Não sabe qual escolher?</strong> Faça o <a href="index.html#quiz">quiz de 30 segundos</a> ou fale com um consultor: <a href="https://wa.me/5582999903607" target="_blank" rel="noopener">(82) 9 9990-3607</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       STEP 2 — DADOS PESSOAIS
+  ============================================ -->
+  <section class="cad-step" data-step="2">
+    <div class="cad-step__inner cad-step__inner--narrow">
+      <div class="cad-step__head">
+        <p class="eyebrow">Passo 2 de 4</p>
+        <h1>Seus dados.</h1>
+        <p class="cad-step__sub">Tudo confidencial. Apenas o necessário pra preparar seu contrato e cobrança.</p>
+      </div>
+
+      <form class="cad-form" id="dadosForm" autocomplete="on">
+        <div class="cad-form__grid">
+          <label class="cad-field cad-field--full">
+            <span>Nome completo</span>
+            <input type="text" name="nome" id="fNome" required autocomplete="name" placeholder="Maria Helena Silva" />
+          </label>
+
+          <label class="cad-field">
+            <span>CPF</span>
+            <input type="text" name="cpf" id="fCpf" required inputmode="numeric" placeholder="000.000.000-00" maxlength="14" />
+          </label>
+
+          <label class="cad-field">
+            <span>Data de nascimento</span>
+            <input type="text" name="nasc" id="fNasc" required inputmode="numeric" placeholder="DD/MM/AAAA" maxlength="10" />
+          </label>
+
+          <label class="cad-field">
+            <span>WhatsApp</span>
+            <input type="tel" name="tel" id="fTel" required inputmode="tel" autocomplete="tel" placeholder="(82) 9 9999-9999" maxlength="16" />
+          </label>
+
+          <label class="cad-field">
+            <span>Email</span>
+            <input type="email" name="email" id="fEmail" required autocomplete="email" placeholder="seu@email.com" />
+          </label>
+
+          <label class="cad-field cad-field--full">
+            <span>Endereço completo</span>
+            <input type="text" name="endereco" id="fEndereco" required autocomplete="street-address" placeholder="Rua, número, bairro" />
+          </label>
+
+          <label class="cad-field">
+            <span>Cidade</span>
+            <input type="text" name="cidade" id="fCidade" required autocomplete="address-level2" placeholder="Maceió" value="Maceió" />
+          </label>
+
+          <label class="cad-field">
+            <span>CEP</span>
+            <input type="text" name="cep" id="fCep" required inputmode="numeric" placeholder="00000-000" maxlength="9" />
+          </label>
+        </div>
+
+        <div class="cad-trust">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M12 2L4 7v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V7l-8-5z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+          <p><strong>Seus dados estão seguros.</strong> Criptografia SSL · Conformidade LGPD · Não compartilhamos com terceiros.</p>
+        </div>
+
+        <div class="cad-actions">
+          <button type="button" class="btn btn--ghost" data-prev>← Voltar</button>
+          <button type="submit" class="btn btn--gold btn--lg">Continuar →</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============================================
+       STEP 3 — CONFIRMAÇÃO + FORMA DE PAGAMENTO
+  ============================================ -->
+  <section class="cad-step" data-step="3">
+    <div class="cad-step__inner cad-step__inner--narrow">
+      <div class="cad-step__head">
+        <p class="eyebrow">Passo 3 de 4</p>
+        <h1>Confirme e <em>escolha</em><br/>a forma de pagamento.</h1>
+        <p class="cad-step__sub">Você pode mudar a forma de pagamento a qualquer momento na área do cliente.</p>
+      </div>
+
+      <!-- Resumo -->
+      <div class="cad-summary">
+        <header class="cad-summary__head">
+          <h3>Resumo da contratação</h3>
+          <a href="#" class="cad-summary__edit" data-go-step="2">Editar dados →</a>
+        </header>
+
+        <div class="cad-summary__row">
+          <span>Plano contratado</span>
+          <strong id="sumPlano">Plano Familiar</strong>
+        </div>
+        <div class="cad-summary__row">
+          <span>Titular</span>
+          <strong id="sumNome">—</strong>
+        </div>
+        <div class="cad-summary__row">
+          <span>CPF</span>
+          <strong id="sumCpf">—</strong>
+        </div>
+        <div class="cad-summary__row">
+          <span>WhatsApp</span>
+          <strong id="sumTel">—</strong>
+        </div>
+        <div class="cad-summary__row">
+          <span>Email</span>
+          <strong id="sumEmail">—</strong>
+        </div>
+        <div class="cad-summary__row cad-summary__row--total">
+          <span>Mensalidade</span>
+          <strong><em>R$</em> <span id="sumValor">290</span><small>/mês</small></strong>
+        </div>
+      </div>
+
+      <!-- Forma de pagamento -->
+      <div class="cad-payment">
+        <h3 class="cad-payment__title">Como você prefere pagar a primeira mensalidade?</h3>
+
+        <div class="cad-payment__options">
+          <label class="cad-payment__opt">
+            <input type="radio" name="formapag" value="pix" checked />
+            <div class="cad-payment__opt-body">
+              <div class="cad-payment__opt-icon">⚡</div>
+              <div>
+                <strong>PIX</strong>
+                <p>Pagamento instantâneo. Plano ativa em segundos após confirmação.</p>
+                <span class="cad-payment__opt-tag cad-payment__opt-tag--gold">Recomendado · Mais rápido</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="cad-payment__opt">
+            <input type="radio" name="formapag" value="boleto" />
+            <div class="cad-payment__opt-body">
+              <div class="cad-payment__opt-icon">🧾</div>
+              <div>
+                <strong>Boleto bancário</strong>
+                <p>Vencimento em 3 dias. Compensação em até 3 dias úteis após pagamento.</p>
+              </div>
+            </div>
+          </label>
+
+          <label class="cad-payment__opt">
+            <input type="radio" name="formapag" value="cartao" />
+            <div class="cad-payment__opt-body">
+              <div class="cad-payment__opt-icon">💳</div>
+              <div>
+                <strong>Cartão de crédito recorrente</strong>
+                <p>Cobrança automática todo mês. Sem precisar lembrar.</p>
+                <span class="cad-payment__opt-tag">Mais cômodo</span>
+              </div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Aceite -->
+      <div class="cad-aceite">
+        <label class="cad-aceite__check">
+          <input type="checkbox" id="aceiteTermos" />
+          <span>Li e concordo com os <a href="#" target="_blank">termos de uso</a>, <a href="#" target="_blank">política de privacidade (LGPD)</a> e o <a href="#" target="_blank">contrato de adesão</a> regulamentado pela SUSEP.</span>
+        </label>
+      </div>
+
+      <div class="cad-actions">
+        <button type="button" class="btn btn--ghost" data-prev>← Voltar</button>
+        <button type="button" class="btn btn--gold btn--lg" id="btnGerarPagamento" disabled>Gerar pagamento →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       STEP 4 — PAGAMENTO + ASSINATURA CONTRATO
+  ============================================ -->
+  <section class="cad-step" data-step="4">
+    <div class="cad-step__inner cad-step__inner--narrow">
+      <div class="cad-step__head">
+        <p class="eyebrow eyebrow--gold">Quase lá</p>
+        <h1>Última etapa:<br/><em>pagamento + contrato.</em></h1>
+        <p class="cad-step__sub">Pague a primeira mensalidade e assine o contrato digital. Tudo em um clique.</p>
+      </div>
+
+      <!-- Painéis dinâmicos por forma de pagamento -->
+      <div class="cad-pay-stage" id="payStage">
+
+        <!-- Painel PIX -->
+        <div class="cad-pay-panel cad-pay-panel--pix is-active" data-method="pix">
+          <header class="cad-pay-panel__head">
+            <h3>⚡ Pague com PIX</h3>
+            <span class="cad-pay-panel__chip">Confirma em segundos</span>
+          </header>
+
+          <div class="cad-pay-panel__body">
+            <div class="cad-pix">
+              <div class="cad-pix__qr-wrap">
+                <svg class="cad-pix__qr" id="pixQrSvg" viewBox="0 0 200 200" width="220" height="220" aria-label="QR Code PIX">
+                  <rect width="200" height="200" fill="#fff"/>
+                  <!-- QR Mock visual realista — gerado por padrão -->
+                  <g fill="#1A1A1A" id="qrPattern">
+                    <!-- 3 marcadores de canto -->
+                    <rect x="10" y="10" width="40" height="40"/>
+                    <rect x="20" y="20" width="20" height="20" fill="#fff"/>
+                    <rect x="25" y="25" width="10" height="10"/>
+                    <rect x="150" y="10" width="40" height="40"/>
+                    <rect x="160" y="20" width="20" height="20" fill="#fff"/>
+                    <rect x="165" y="25" width="10" height="10"/>
+                    <rect x="10" y="150" width="40" height="40"/>
+                    <rect x="20" y="160" width="20" height="20" fill="#fff"/>
+                    <rect x="25" y="165" width="10" height="10"/>
+                    <!-- Padrão pseudo-random (visual de QR real) -->
+                    <rect x="60" y="10" width="10" height="10"/><rect x="80" y="10" width="10" height="10"/>
+                    <rect x="100" y="20" width="10" height="10"/><rect x="120" y="10" width="10" height="10"/>
+                    <rect x="140" y="20" width="10" height="10"/><rect x="60" y="30" width="10" height="10"/>
+                    <rect x="90" y="30" width="10" height="10"/><rect x="110" y="30" width="10" height="10"/>
+                    <rect x="130" y="30" width="10" height="10"/><rect x="60" y="50" width="10" height="10"/>
+                    <rect x="80" y="50" width="10" height="10"/><rect x="100" y="40" width="10" height="10"/>
+                    <rect x="120" y="50" width="10" height="10"/><rect x="140" y="40" width="10" height="10"/>
+                    <rect x="60" y="60" width="10" height="10"/><rect x="80" y="80" width="10" height="10"/>
+                    <rect x="100" y="60" width="10" height="10"/><rect x="120" y="80" width="10" height="10"/>
+                    <rect x="140" y="100" width="10" height="10"/><rect x="60" y="100" width="10" height="10"/>
+                    <rect x="70" y="80" width="10" height="10"/><rect x="90" y="100" width="10" height="10"/>
+                    <rect x="110" y="100" width="10" height="10"/><rect x="130" y="80" width="10" height="10"/>
+                    <rect x="80" y="120" width="10" height="10"/><rect x="100" y="140" width="10" height="10"/>
+                    <rect x="120" y="120" width="10" height="10"/><rect x="140" y="140" width="10" height="10"/>
+                    <rect x="60" y="140" width="10" height="10"/><rect x="160" y="60" width="10" height="10"/>
+                    <rect x="180" y="80" width="10" height="10"/><rect x="160" y="100" width="10" height="10"/>
+                    <rect x="180" y="120" width="10" height="10"/><rect x="160" y="140" width="10" height="10"/>
+                    <rect x="170" y="60" width="10" height="10"/><rect x="170" y="120" width="10" height="10"/>
+                    <rect x="60" y="160" width="10" height="10"/><rect x="80" y="160" width="10" height="10"/>
+                    <rect x="100" y="180" width="10" height="10"/><rect x="120" y="160" width="10" height="10"/>
+                    <rect x="140" y="180" width="10" height="10"/><rect x="70" y="180" width="10" height="10"/>
+                    <rect x="110" y="160" width="10" height="10"/><rect x="130" y="180" width="10" height="10"/>
+                    <rect x="160" y="170" width="10" height="10"/><rect x="170" y="180" width="10" height="10"/>
+                    <rect x="180" y="160" width="10" height="10"/>
+                  </g>
+                </svg>
+                <p class="cad-pix__qr-help">Aponte a câmera do app do seu banco</p>
+              </div>
+
+              <div class="cad-pix__info">
+                <div class="cad-pix__valor">
+                  <span>Valor</span>
+                  <strong>R$ <span id="pixValor">290,00</span></strong>
+                </div>
+
+                <div class="cad-pix__copy">
+                  <p class="cad-pix__copy-label">Ou copie o código PIX:</p>
+                  <div class="cad-pix__field">
+                    <code id="pixCopyCode">00020126360014BR.GOV.BCB.PIX0114+5582999903607520400005303986540329000.005802BR5919PLANVIDA RENASCER LTDA6006MACEIO62070503***6304ABCD</code>
+                    <button type="button" class="btn btn--ghost btn--sm" id="btnCopyPix">Copiar</button>
+                  </div>
+                </div>
+
+                <ul class="cad-pix__bullets">
+                  <li>✓ Validade: <strong>15 minutos</strong></li>
+                  <li>✓ Confirmação: <strong>imediata</strong></li>
+                  <li>✓ CNPJ destinatário: <strong>XX.XXX.XXX/0001-XX</strong></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Painel Boleto -->
+        <div class="cad-pay-panel cad-pay-panel--boleto" data-method="boleto">
+          <header class="cad-pay-panel__head">
+            <h3>🧾 Boleto bancário</h3>
+            <span class="cad-pay-panel__chip">Vence em 3 dias</span>
+          </header>
+
+          <div class="cad-pay-panel__body">
+            <div class="cad-boleto">
+              <div class="cad-boleto__head">
+                <div>
+                  <span>Beneficiário</span>
+                  <strong>PlanVida Renascer Ltda</strong>
+                </div>
+                <div>
+                  <span>Vencimento</span>
+                  <strong id="boletoDue">—</strong>
+                </div>
+                <div>
+                  <span>Valor</span>
+                  <strong>R$ <span id="boletoValor">290,00</span></strong>
+                </div>
+              </div>
+
+              <div class="cad-boleto__cb">
+                <p class="cad-pix__copy-label">Linha digitável:</p>
+                <div class="cad-pix__field">
+                  <code id="boletoCode">23793.38128 60082.018804 91100.401016 7 90510000029000</code>
+                  <button type="button" class="btn btn--ghost btn--sm" id="btnCopyBoleto">Copiar</button>
+                </div>
+              </div>
+
+              <div class="cad-boleto__actions">
+                <a href="#" class="btn btn--gold">📄 Baixar PDF</a>
+                <a href="#" class="btn btn--outline-navy" id="btnEmailBoleto">📧 Enviar por email</a>
+                <a href="https://wa.me/5582999903607" target="_blank" rel="noopener" class="btn btn--outline-navy">📱 Receber no WhatsApp</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Painel Cartão -->
+        <div class="cad-pay-panel cad-pay-panel--cartao" data-method="cartao">
+          <header class="cad-pay-panel__head">
+            <h3>💳 Cartão de crédito recorrente</h3>
+            <span class="cad-pay-panel__chip">Cobrança automática</span>
+          </header>
+
+          <div class="cad-pay-panel__body">
+            <form class="cad-cartao">
+              <label class="cad-field cad-field--full">
+                <span>Número do cartão</span>
+                <input type="text" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19" />
+              </label>
+              <div class="cad-form__grid">
+                <label class="cad-field cad-field--full">
+                  <span>Nome impresso no cartão</span>
+                  <input type="text" placeholder="MARIA H SILVA" />
+                </label>
+                <label class="cad-field">
+                  <span>Validade</span>
+                  <input type="text" placeholder="MM/AA" maxlength="5" />
+                </label>
+                <label class="cad-field">
+                  <span>CVV</span>
+                  <input type="text" inputmode="numeric" placeholder="000" maxlength="4" />
+                </label>
+              </div>
+              <div class="cad-cartao__msg">
+                💡 Cartão guardado com criptografia SSL pela <strong>Asaas</strong> (gateway regulamentado pelo Banco Central). Cobrança automática todo mês.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contrato ClickSign -->
+      <div class="cad-contrato">
+        <div class="cad-contrato__icon">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+            <path d="M9 11l1.5 1.5L13 10"/>
+          </svg>
+        </div>
+        <div class="cad-contrato__body">
+          <h4>Contrato digital pra assinar</h4>
+          <p>Enviamos o contrato regulamentado pela SUSEP pro seu email e WhatsApp. Você assina em <strong>30 segundos</strong> direto no celular — válido juridicamente.</p>
+          <a href="#" class="btn btn--outline-navy" id="btnAssinarContrato">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21 11l-6-6-9 9v6h6l9-9zm-3.5-3.5l1.5 1.5"/></svg>
+            Assinar contrato agora
+          </a>
+        </div>
+      </div>
+
+      <!-- Status checkers -->
+      <div class="cad-status">
+        <div class="cad-status__item" id="statusPag">
+          <span class="cad-status__dot"></span>
+          <span class="cad-status__text">Aguardando confirmação do pagamento...</span>
+        </div>
+        <div class="cad-status__item" id="statusContrato">
+          <span class="cad-status__dot"></span>
+          <span class="cad-status__text">Aguardando assinatura do contrato...</span>
+        </div>
+      </div>
+
+      <!-- CTA pra área cliente após pagar+assinar (aparece dinamicamente) -->
+      <div class="cad-success" id="cadSuccess" hidden>
+        <div class="cad-success__icon">✓</div>
+        <h3>Pronto! Plano <em id="sucPlano">Familiar</em> ativado.</h3>
+        <p>Enviamos suas credenciais de acesso pro WhatsApp <strong id="sucTel">—</strong> e email <strong id="sucEmail">—</strong>.</p>
+        <a href="portal.html" class="btn btn--gold btn--lg">Acessar área do cliente →</a>
+      </div>
+
+      <!-- Suporte -->
+      <div class="cad-support">
+        <p>Precisa de ajuda? <a href="https://wa.me/5582999903607" target="_blank" rel="noopener"><strong>Atendimento 24h: (82) 9 9990-3607</strong></a></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script src="cadastro.js"></script>
+</body>
+</html>

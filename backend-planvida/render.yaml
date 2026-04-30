@@ -1,0 +1,43 @@
+# =========================================================
+# Blueprint Render — sobe API + Postgres com 1 clique
+# https://render.com/docs/infrastructure-as-code
+# =========================================================
+services:
+  - type: web
+    name: planvida-api
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: "npm install && npx prisma generate && npx prisma migrate deploy && npm run db:seed"
+    startCommand: "node src/server.js"
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: ALLOWED_ORIGINS
+        value: "https://vmmanutencaoindustrial-create.github.io"
+      - key: FRONTEND_URL
+        value: "https://vmmanutencaoindustrial-create.github.io/planvida-renascer"
+      - key: BACKEND_URL
+        sync: false   # você preenche depois com a URL do próprio Render
+      - key: MP_ACCESS_TOKEN
+        sync: false   # cole no painel
+      - key: MP_PUBLIC_KEY
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: planvida-db
+          property: connectionString
+
+databases:
+  - name: planvida-db
+    plan: free
+    region: oregon
+    postgresMajorVersion: "16"

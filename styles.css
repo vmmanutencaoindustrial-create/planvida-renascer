@@ -114,18 +114,71 @@ em{
   transition: all .4s;
 }
 .nav.is-scrolled .nav__logo{ height:54px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1)); }
+.nav__actions{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+.nav__client{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:.78rem;
+  font-weight:500;
+  color:rgba(255,255,255,0.85);
+  padding:10px 18px;
+  border-radius:100px;
+  letter-spacing:.04em;
+  transition:all .3s;
+}
+.nav__client:hover{
+  background:rgba(255,255,255,0.12);
+  color:var(--white);
+}
+.nav.is-scrolled .nav__client{
+  color:var(--text);
+}
+.nav.is-scrolled .nav__client:hover{
+  background:rgba(0,0,0,0.04);
+  color:var(--navy-deep);
+}
 .nav__cta{
   font-size:.78rem;
   font-weight:600;
-  color:var(--white);
-  padding:11px 24px;
-  border:1.5px solid rgba(255,255,255,0.45);
+  color:var(--navy-deep);
+  background:var(--gold);
+  padding:11px 22px;
+  border:1.5px solid var(--gold);
   border-radius:100px;
-  letter-spacing:.06em;
-  transition: all .3s;
+  letter-spacing:.04em;
+  transition:all .3s;
 }
-.nav.is-scrolled .nav__cta{ color:var(--navy-deep); border-color:var(--navy); }
-.nav__cta:hover{ background:var(--gold); color:var(--navy-deep); border-color:var(--gold); }
+.nav__cta:hover{
+  background:var(--white);
+  border-color:var(--white);
+  transform:translateY(-1px);
+  box-shadow:0 8px 22px rgba(255,230,0,0.35);
+}
+.nav.is-scrolled .nav__cta{
+  background:var(--navy-deep);
+  color:var(--gold);
+  border-color:var(--navy-deep);
+}
+.nav.is-scrolled .nav__cta:hover{
+  background:var(--gold);
+  color:var(--navy-deep);
+  border-color:var(--gold);
+}
+@media (max-width:600px){
+  .nav__client span,
+  .nav__client svg{ display:none; }
+  .nav__client{
+    display:none;
+  }
+  .nav__cta{ padding:9px 16px; font-size:.72rem; }
+  .nav{ padding:14px 18px; }
+  .nav__logo{ height:50px !important; }
+}
 
 /* =============================================
    🌤️ INTRO CINEMATOGRÁFICA — Descida do céu

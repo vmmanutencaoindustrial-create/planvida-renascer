@@ -3,269 +3,394 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#3D45B8" />
 <title>Área do Cliente — PlanVida Renascer</title>
+<meta name="description" content="Área exclusiva do cliente PlanVida. 2ª via, PIX, dependentes, carteirinha digital." />
+<meta name="robots" content="noindex, follow" />
+
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
+<link rel="apple-touch-icon" sizes="192x192" href="assets/apple-touch-icon.png" />
+<link rel="canonical" href="https://vmmanutencaoindustrial-create.github.io/planvida-renascer/portal.html" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="cadastro.css" />
 <link rel="stylesheet" href="portal.css" />
 </head>
-<body class="portal-body">
+<body class="cad-body portal-body-v2">
 
-<!-- ANNOUNCEMENT BAR -->
-<div class="annbar">
-  <span><strong>Área do Cliente</strong> · 2ª via, Pix, dependentes e mais</span>
-</div>
-
-<!-- NAVBAR -->
-<nav class="nav is-scrolled" id="nav">
-  <div class="nav__inner">
-    <a href="index.html" class="nav__brand">
-      <svg class="nav__logo" viewBox="0 0 48 48" width="36" height="36" aria-hidden="true">
-        <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1"/>
-        <path d="M16 28 Q24 14 32 28 Q24 34 16 28" fill="currentColor" opacity="0.85"/>
-        <circle cx="24" cy="24" r="2" fill="var(--c-bg)"/>
-      </svg>
-      <span class="nav__name"><em>PlanVida</em> Renascer</span>
+<!-- ===== HEADER ===== -->
+<header class="cad-header">
+  <a href="index.html" class="cad-header__brand">
+    <img src="assets/logo-planvida.png" alt="PlanVida Renascer" />
+  </a>
+  <div class="cad-header__right">
+    <a href="https://wa.me/5582999903607" target="_blank" rel="noopener" class="cad-header__help">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.2-.7.9-.9 1-.2.2-.3.2-.6.1-.3-.2-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.1 1.7 2.7 4.2 3.7 2.1.8 2.5.7 3 .6.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.2-.1-.4-.2-.7-.4z"/></svg>
+      Ajuda 24h
     </a>
-    <ul class="nav__menu">
-      <li><a href="index.html">Site principal</a></li>
-      <li><a href="#" class="active">Minha conta</a></li>
-    </ul>
-    <div class="nav__actions">
-      <a href="https://wa.me/5582999903607" class="btn btn--ghost">Ajuda 24h</a>
-    </div>
+    <button id="btnLogout" class="cad-header__client" hidden>
+      Sair
+    </button>
   </div>
-</nav>
+</header>
 
-<!-- LOGIN -->
-<section class="login" id="login">
-  <div class="login__card">
-    <p class="eyebrow">Área do cliente</p>
-    <h1>Acesse sua conta</h1>
-    <p class="login__sub">Digite seu CPF e data de nascimento. Enviaremos um código de 6 dígitos por SMS para o número cadastrado.</p>
+<!-- ===== LOGIN ===== -->
+<section class="portal-login" id="loginSection">
+  <div class="portal-login__inner">
+    <div class="portal-login__card">
+      <p class="eyebrow">Área do cliente</p>
+      <h1>Acesse <em>sua conta.</em></h1>
+      <p class="portal-login__sub">Use seu CPF e a senha que enviamos por WhatsApp na contratação.</p>
 
-    <form class="login__form" onsubmit="event.preventDefault(); fakeLogin();">
-      <label>
-        <span>CPF</span>
-        <input type="text" placeholder="000.000.000-00" value="123.456.789-00" id="cpf" required />
-      </label>
-      <label>
-        <span>Data de nascimento</span>
-        <input type="text" placeholder="DD/MM/AAAA" value="15/08/1965" required />
-      </label>
-      <button type="submit" class="btn btn--solid btn--lg btn--block">Entrar</button>
-    </form>
+      <form class="portal-login__form" id="loginForm" autocomplete="on">
+        <label class="cad-field cad-field--full">
+          <span>CPF</span>
+          <input type="text" id="loginCpf" required inputmode="numeric" placeholder="000.000.000-00" maxlength="14" autocomplete="username" />
+        </label>
+        <label class="cad-field cad-field--full">
+          <span>Senha</span>
+          <input type="password" id="loginSenha" required placeholder="6 dígitos" autocomplete="current-password" />
+        </label>
+        <button type="submit" class="btn btn--gold btn--lg" style="width:100%;">Entrar →</button>
+      </form>
 
-    <div class="login__help">
-      <p>Esqueceu seus dados? <a href="https://wa.me/5582999903607">Falar com atendimento 24h</a></p>
+      <div class="portal-login__helpers">
+        <a href="#" id="linkEsqueci">Esqueci minha senha</a>
+        <a href="https://wa.me/5582999903607?text=Preciso+de+ajuda+pra+acessar+minha+%C3%A1rea+do+cliente" target="_blank" rel="noopener">Falar com atendimento 24h</a>
+      </div>
+
+      <div class="portal-login__demo">
+        <p><strong>Demo:</strong> CPF <code>123.456.789-00</code> · Senha <code>123456</code></p>
+      </div>
+
+      <div class="portal-login__cta-cad">
+        <p>Ainda não é cliente?</p>
+        <a href="cadastro.html" class="btn btn--outline-navy">Contratar plano →</a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- DASHBOARD -->
-<main class="dash" id="dash" hidden>
-  <div class="dash__header">
-    <div>
-      <p class="eyebrow">Bem-vinda de volta</p>
-      <h1>Olá, Maria 👋</h1>
-      <p class="dash__sub">Plano <strong>Familiar</strong> · Status <span class="badge badge--ok">Ativo</span> · Cliente desde 2018</p>
+<!-- ===== DASHBOARD ===== -->
+<main class="portal-dash" id="dashSection" hidden>
+
+  <!-- Cabeçalho personalizado -->
+  <section class="portal-hero">
+    <div class="portal-hero__inner">
+      <div class="portal-hero__greeting">
+        <p class="eyebrow">Bem-vinda de volta</p>
+        <h1>Olá, <em id="dashName">—</em></h1>
+        <p class="portal-hero__sub">
+          <strong id="dashPlano">—</strong> ·
+          Status <span class="badge-portal badge-portal--ok">Ativo</span> ·
+          Cliente desde <span id="dashSince">—</span>
+        </p>
+      </div>
+      <div class="portal-hero__quick">
+        <a href="https://wa.me/5582999903607" target="_blank" rel="noopener" class="portal-hero__quick-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.2-.7.9-.9 1-.2.2-.3.2-.6.1-.3-.2-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.1 1.7 2.7 4.2 3.7 2.1.8 2.5.7 3 .6.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.2-.1-.4-.2-.7-.4z"/></svg>
+          Suporte 24h
+        </a>
+      </div>
     </div>
-    <button class="btn btn--ghost" onclick="logout()">Sair</button>
+  </section>
+
+  <div class="portal-grid">
+
+    <!-- ============ Próximo pagamento ============ -->
+    <section class="portal-card portal-card--feature">
+      <header class="portal-card__head">
+        <h2>Próximo pagamento</h2>
+        <span class="portal-card__chip" id="dashVence">Vence em 7 dias</span>
+      </header>
+
+      <div class="portal-card__body">
+        <div class="portal-pgto__valor">
+          <span class="portal-pgto__cifrao">R$</span>
+          <span class="portal-pgto__num" id="dashValor">290,00</span>
+          <span class="portal-pgto__periodo">· Mensalidade · <span id="dashVenceData">05/05/2026</span></span>
+        </div>
+
+        <div class="portal-pgto__tabs" role="tablist">
+          <button class="active" data-tab="pix">⚡ PIX</button>
+          <button data-tab="boleto">🧾 Boleto</button>
+          <button data-tab="cartao">💳 Cartão</button>
+        </div>
+
+        <!-- Painel PIX -->
+        <div class="portal-pgto__panel portal-pgto__panel--pix is-active">
+          <div class="portal-pix">
+            <div class="portal-pix__qr-wrap">
+              <svg class="cad-pix__qr" viewBox="0 0 200 200" width="200" height="200" aria-label="QR PIX">
+                <rect width="200" height="200" fill="#fff"/>
+                <g fill="#1A1A1A">
+                  <rect x="10" y="10" width="40" height="40"/>
+                  <rect x="20" y="20" width="20" height="20" fill="#fff"/>
+                  <rect x="25" y="25" width="10" height="10"/>
+                  <rect x="150" y="10" width="40" height="40"/>
+                  <rect x="160" y="20" width="20" height="20" fill="#fff"/>
+                  <rect x="165" y="25" width="10" height="10"/>
+                  <rect x="10" y="150" width="40" height="40"/>
+                  <rect x="20" y="160" width="20" height="20" fill="#fff"/>
+                  <rect x="25" y="165" width="10" height="10"/>
+                  <rect x="60" y="10" width="10" height="10"/><rect x="80" y="10" width="10" height="10"/>
+                  <rect x="100" y="20" width="10" height="10"/><rect x="120" y="10" width="10" height="10"/>
+                  <rect x="60" y="60" width="10" height="10"/><rect x="80" y="80" width="10" height="10"/>
+                  <rect x="100" y="60" width="10" height="10"/><rect x="120" y="80" width="10" height="10"/>
+                  <rect x="140" y="100" width="10" height="10"/><rect x="60" y="100" width="10" height="10"/>
+                  <rect x="80" y="120" width="10" height="10"/><rect x="100" y="140" width="10" height="10"/>
+                  <rect x="120" y="120" width="10" height="10"/><rect x="140" y="140" width="10" height="10"/>
+                  <rect x="60" y="140" width="10" height="10"/><rect x="160" y="60" width="10" height="10"/>
+                  <rect x="180" y="80" width="10" height="10"/><rect x="160" y="100" width="10" height="10"/>
+                  <rect x="180" y="120" width="10" height="10"/><rect x="160" y="140" width="10" height="10"/>
+                  <rect x="60" y="160" width="10" height="10"/><rect x="80" y="160" width="10" height="10"/>
+                  <rect x="100" y="180" width="10" height="10"/><rect x="120" y="160" width="10" height="10"/>
+                  <rect x="140" y="180" width="10" height="10"/>
+                </g>
+              </svg>
+            </div>
+            <div class="portal-pix__info">
+              <p class="portal-pix__txt">Aponte a câmera do app do seu banco para o QR code.</p>
+              <p class="cad-pix__copy-label">Ou copie o código:</p>
+              <div class="cad-pix__field">
+                <code id="dashPixCode">00020126360014BR.GOV.BCB.PIX0114+5582999903607520400005303986540329000.005802BR5919PLANVIDA RENASCER LTDA6006MACEIO62070503***6304ABCD</code>
+                <button class="btn btn--ghost btn--sm" id="btnCopyPixDash">Copiar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Painel Boleto -->
+        <div class="portal-pgto__panel portal-pgto__panel--boleto">
+          <div class="portal-boleto">
+            <div class="cad-boleto__head">
+              <div><span>Vencimento</span><strong id="dashBoletoDue">—</strong></div>
+              <div><span>Valor</span><strong>R$ <span id="dashBoletoValor">—</span></strong></div>
+              <div><span>Compensação</span><strong>até 3 dias úteis</strong></div>
+            </div>
+            <p class="cad-pix__copy-label">Linha digitável:</p>
+            <div class="cad-pix__field">
+              <code id="dashBoletoCode">23793.38128 60082.018804 91100.401016 7 90510000029000</code>
+              <button class="btn btn--ghost btn--sm" id="btnCopyBoletoDash">Copiar</button>
+            </div>
+            <div class="cad-boleto__actions" style="margin-top:18px;">
+              <a href="#" class="btn btn--gold">📄 Baixar PDF</a>
+              <a href="#" class="btn btn--outline-navy">📧 Enviar por email</a>
+              <a href="https://wa.me/5582999903607" target="_blank" rel="noopener" class="btn btn--outline-navy">📱 Receber no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Painel Cartão -->
+        <div class="portal-pgto__panel portal-pgto__panel--cartao">
+          <div class="portal-card-info">
+            <div class="portal-card-info__cartao">
+              <div class="portal-card-info__chip">💳</div>
+              <span class="portal-card-info__num">•••• •••• •••• 4502</span>
+              <span class="portal-card-info__name">MARIA HELENA SILVA</span>
+              <span class="portal-card-info__brand">Visa</span>
+            </div>
+            <p class="portal-card-info__msg">✓ Cobrança automática habilitada · Próxima cobrança em <strong id="dashCartaoData">—</strong></p>
+            <div class="cad-boleto__actions">
+              <a href="#" class="btn btn--outline-navy">Trocar cartão</a>
+              <a href="#" class="btn btn--ghost">Cancelar recorrência</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Atalhos ============ -->
+    <section class="portal-shortcuts">
+      <a href="#carteirinha" class="portal-shortcut">
+        <span class="portal-shortcut__icon">📋</span>
+        <h3>Carteirinha digital</h3>
+        <p>Acesse e baixe sua identificação</p>
+      </a>
+      <a href="#dependentes" class="portal-shortcut">
+        <span class="portal-shortcut__icon">👨‍👩‍👧</span>
+        <h3>Meus dependentes</h3>
+        <p><strong id="dashDependentes">3</strong> ativos · gerenciar</p>
+      </a>
+      <a href="#" class="portal-shortcut">
+        <span class="portal-shortcut__icon">🩺</span>
+        <h3>Centro Ambulatorial</h3>
+        <p>Agendar check-up gratuito</p>
+      </a>
+      <a href="#" class="portal-shortcut">
+        <span class="portal-shortcut__icon">🦷</span>
+        <h3>Clínica Odontológica</h3>
+        <p>Avaliação anual gratuita</p>
+      </a>
+      <a href="#historico" class="portal-shortcut">
+        <span class="portal-shortcut__icon">📊</span>
+        <h3>Histórico</h3>
+        <p>Últimos 12 meses</p>
+      </a>
+      <a href="#" class="portal-shortcut">
+        <span class="portal-shortcut__icon">⚙️</span>
+        <h3>Atualizar cadastro</h3>
+        <p>Telefone, email, endereço</p>
+      </a>
+    </section>
+
+    <!-- ============ Carteirinha digital ============ -->
+    <section class="portal-card" id="carteirinha">
+      <header class="portal-card__head">
+        <h2>Carteirinha digital</h2>
+        <a href="#" class="portal-card__link">Baixar PDF →</a>
+      </header>
+      <div class="portal-carteirinha">
+        <div class="carteirinha">
+          <div class="carteirinha__top">
+            <img src="assets/logo-planvida.png" alt="PlanVida" class="carteirinha__logo" />
+            <span class="carteirinha__tag" id="cartTag">FAMILIAR</span>
+          </div>
+          <div class="carteirinha__body">
+            <p class="carteirinha__label">TITULAR</p>
+            <p class="carteirinha__nome" id="cartNome">—</p>
+            <div class="carteirinha__row">
+              <div>
+                <p class="carteirinha__label">CPF</p>
+                <p class="carteirinha__val" id="cartCpf">—</p>
+              </div>
+              <div>
+                <p class="carteirinha__label">CARTEIRA Nº</p>
+                <p class="carteirinha__val" id="cartNum">—</p>
+              </div>
+            </div>
+            <div class="carteirinha__row">
+              <div>
+                <p class="carteirinha__label">VIGÊNCIA</p>
+                <p class="carteirinha__val" id="cartVig">—</p>
+              </div>
+              <div>
+                <p class="carteirinha__label">EMERGÊNCIA</p>
+                <p class="carteirinha__val">(82) 9 9990-3607</p>
+              </div>
+            </div>
+          </div>
+          <div class="carteirinha__footer">
+            <span>www.planvidarenascer.com.br</span>
+            <span>SUSEP · 28 anos · Maceió/AL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Dependentes ============ -->
+    <section class="portal-card" id="dependentes">
+      <header class="portal-card__head">
+        <h2>Meus dependentes</h2>
+        <a href="#" class="portal-card__link">+ Adicionar dependente</a>
+      </header>
+      <div class="dependentes-list" id="dependentesList">
+        <div class="dependente">
+          <div class="dependente__avatar">JS</div>
+          <div class="dependente__info">
+            <strong>João Silva</strong>
+            <small>Cônjuge · 58 anos · CPF ***.456.789-**</small>
+          </div>
+          <span class="badge-portal badge-portal--ok">Ativo</span>
+        </div>
+        <div class="dependente">
+          <div class="dependente__avatar">PS</div>
+          <div class="dependente__info">
+            <strong>Pedro Silva</strong>
+            <small>Filho · 19 anos · CPF ***.123.456-**</small>
+          </div>
+          <span class="badge-portal badge-portal--ok">Ativo</span>
+        </div>
+        <div class="dependente">
+          <div class="dependente__avatar">AS</div>
+          <div class="dependente__info">
+            <strong>Ana Silva</strong>
+            <small>Filha · 15 anos · CPF ***.789.012-**</small>
+          </div>
+          <span class="badge-portal badge-portal--ok">Ativo</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Histórico ============ -->
+    <section class="portal-card" id="historico">
+      <header class="portal-card__head">
+        <h2>Histórico de pagamentos</h2>
+        <a href="#" class="portal-card__link">Ver tudo →</a>
+      </header>
+      <div class="historico-list" id="historicoList">
+        <!-- Populado via JS -->
+      </div>
+    </section>
+
+    <!-- ============ Documentos ============ -->
+    <section class="portal-card" id="documentos">
+      <header class="portal-card__head">
+        <h2>Documentos</h2>
+      </header>
+      <div class="documentos-grid">
+        <a href="#" class="documento">
+          <span class="documento__icon">📄</span>
+          <div>
+            <strong>Contrato de adesão</strong>
+            <small>Assinado digitalmente · ClickSign · 28/04/2026</small>
+          </div>
+        </a>
+        <a href="#" class="documento">
+          <span class="documento__icon">🛡️</span>
+          <div>
+            <strong>Apólice de cobertura</strong>
+            <small>Vigência até 28/04/2027 · SUSEP</small>
+          </div>
+        </a>
+        <a href="#" class="documento">
+          <span class="documento__icon">📋</span>
+          <div>
+            <strong>Manual do beneficiário</strong>
+            <small>PDF · 24 páginas · Última atualização Abr/2026</small>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ Suporte ============ -->
+    <section class="portal-card portal-card--soft">
+      <header class="portal-card__head">
+        <h2>Precisa de ajuda?</h2>
+      </header>
+      <div class="suporte-grid">
+        <a href="https://wa.me/5582999903607" target="_blank" rel="noopener" class="suporte-op">
+          <span>💬</span>
+          <strong>WhatsApp 24h</strong>
+          <small>(82) 9 9990-3607</small>
+        </a>
+        <a href="tel:558298862020" class="suporte-op">
+          <span>🩺</span>
+          <strong>Centro Ambulatorial</strong>
+          <small>(82) 9 8862-0220</small>
+        </a>
+        <a href="tel:558298116829" class="suporte-op">
+          <span>🕊️</span>
+          <strong>Funerária Renascer</strong>
+          <small>(82) 9 8116-8529</small>
+        </a>
+        <a href="mailto:contato@planvidarenascer.com.br" class="suporte-op">
+          <span>📧</span>
+          <strong>Email</strong>
+          <small>contato@planvidarenascer.com.br</small>
+        </a>
+      </div>
+    </section>
+
   </div>
-
-  <!-- Próximo pagamento -->
-  <section class="card card--feature">
-    <div class="card__head">
-      <h2>Próximo pagamento</h2>
-      <span class="card__chip">Vence em 7 dias</span>
-    </div>
-    <div class="card__body">
-      <div class="pgto__valor">
-        <span class="cifrao">R$</span>
-        <span class="valor">290,00</span>
-        <span class="periodo">· Mensalidade Familiar · 05/05/2026</span>
-      </div>
-
-      <div class="pgto__opts">
-        <div class="pgto__tabs">
-          <button class="active" data-tab="pix">Pix</button>
-          <button data-tab="boleto">Boleto</button>
-          <button data-tab="cartao">Cartão</button>
-        </div>
-
-        <div class="pgto__panel pgto__panel--pix is-active">
-          <div class="pix__qr">
-            <svg viewBox="0 0 200 200" width="180" height="180" aria-label="QR Code Pix" style="background:#fff;border-radius:1px;padding:12px;">
-              <rect width="200" height="200" fill="#fff"/>
-              <g fill="#1c3a2e">
-                <rect x="10" y="10" width="40" height="40"/>
-                <rect x="20" y="20" width="20" height="20" fill="#fff"/>
-                <rect x="150" y="10" width="40" height="40"/>
-                <rect x="160" y="20" width="20" height="20" fill="#fff"/>
-                <rect x="10" y="150" width="40" height="40"/>
-                <rect x="20" y="160" width="20" height="20" fill="#fff"/>
-                <rect x="60" y="10" width="10" height="10"/><rect x="80" y="10" width="10" height="10"/>
-                <rect x="100" y="20" width="10" height="10"/><rect x="120" y="10" width="10" height="10"/>
-                <rect x="60" y="60" width="10" height="10"/><rect x="80" y="80" width="10" height="10"/>
-                <rect x="100" y="60" width="10" height="10"/><rect x="120" y="80" width="10" height="10"/>
-                <rect x="140" y="100" width="10" height="10"/><rect x="60" y="100" width="10" height="10"/>
-                <rect x="80" y="120" width="10" height="10"/><rect x="100" y="140" width="10" height="10"/>
-                <rect x="120" y="120" width="10" height="10"/><rect x="140" y="140" width="10" height="10"/>
-                <rect x="60" y="140" width="10" height="10"/><rect x="160" y="60" width="10" height="10"/>
-                <rect x="180" y="80" width="10" height="10"/><rect x="160" y="100" width="10" height="10"/>
-                <rect x="180" y="120" width="10" height="10"/><rect x="160" y="140" width="10" height="10"/>
-                <rect x="60" y="160" width="10" height="10"/><rect x="80" y="160" width="10" height="10"/>
-                <rect x="100" y="180" width="10" height="10"/><rect x="120" y="160" width="10" height="10"/>
-                <rect x="140" y="180" width="10" height="10"/>
-              </g>
-            </svg>
-            <p>Aponte a câmera do app do seu banco para o QR code.</p>
-          </div>
-          <div class="pix__copy">
-            <p class="pix__label">Ou copie o código Pix:</p>
-            <div class="pix__field">
-              <code id="pixCode">00020126360014BR.GOV.BCB.PIX0114+5582999903607520400005303986540329000.005802BR5919PLANVIDA RENASCER LTDA6006MACEIO62070503***6304ABCD</code>
-              <button class="btn btn--ghost" onclick="copy('pixCode', this)">Copiar</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="pgto__panel pgto__panel--boleto">
-          <div class="boleto__head">
-            <p><strong>Boleto bancário</strong> · Vencimento 05/05/2026</p>
-            <p>Após pago, a baixa acontece em até 3 dias úteis.</p>
-          </div>
-          <div class="boleto__cb">
-            <p class="pix__label">Linha digitável:</p>
-            <div class="pix__field">
-              <code id="boletoCode">23793.38128 60082.018804 91100.401016 7 90510000029000</code>
-              <button class="btn btn--ghost" onclick="copy('boletoCode', this)">Copiar</button>
-            </div>
-          </div>
-          <div class="boleto__actions">
-            <a href="#" class="btn btn--solid">📄 Baixar PDF</a>
-            <a href="#" class="btn btn--ghost">📧 Enviar por email</a>
-            <a href="https://wa.me/5582999903607" class="btn btn--ghost">📱 Receber no WhatsApp</a>
-          </div>
-        </div>
-
-        <div class="pgto__panel pgto__panel--cartao">
-          <p>Pague no cartão de crédito recorrente: cadastre uma única vez e nunca mais se preocupe.</p>
-          <a href="#" class="btn btn--solid">Cadastrar cartão</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Atalhos -->
-  <section class="atalhos">
-    <a href="#" class="atalho"><span class="atalho__icon">📋</span><h3>Carteirinha digital</h3><p>Acesse e baixe sua identificação</p></a>
-    <a href="#" class="atalho"><span class="atalho__icon">👨‍👩‍👧</span><h3>Meus dependentes</h3><p>3 ativos · gerenciar cobertura</p></a>
-    <a href="#" class="atalho"><span class="atalho__icon">🩺</span><h3>Agendar check-up</h3><p>Centro Ambulatorial PlanVida</p></a>
-    <a href="#" class="atalho"><span class="atalho__icon">🦷</span><h3>Clínica Odontológica</h3><p>Avaliação anual gratuita</p></a>
-    <a href="#historico" class="atalho"><span class="atalho__icon">📊</span><h3>Histórico de pagamentos</h3><p>Últimos 12 meses</p></a>
-    <a href="#" class="atalho"><span class="atalho__icon">⚙️</span><h3>Atualizar cadastro</h3><p>Telefone, email, endereço</p></a>
-  </section>
-
-  <!-- Histórico -->
-  <section class="card" id="historico">
-    <div class="card__head">
-      <h2>Histórico de pagamentos</h2>
-      <a href="#" class="card__link">Ver tudo →</a>
-    </div>
-    <div class="historico__list">
-      <div class="hist__item">
-        <span class="hist__data">05/04/2026</span>
-        <span class="hist__desc">Mensalidade · Plano Familiar</span>
-        <span class="hist__forma">Pix</span>
-        <span class="hist__valor">R$ 290,00</span>
-        <span class="hist__status status--ok">Pago</span>
-      </div>
-      <div class="hist__item">
-        <span class="hist__data">05/03/2026</span>
-        <span class="hist__desc">Mensalidade · Plano Familiar</span>
-        <span class="hist__forma">Boleto</span>
-        <span class="hist__valor">R$ 290,00</span>
-        <span class="hist__status status--ok">Pago</span>
-      </div>
-      <div class="hist__item">
-        <span class="hist__data">05/02/2026</span>
-        <span class="hist__desc">Mensalidade · Plano Familiar</span>
-        <span class="hist__forma">Cartão</span>
-        <span class="hist__valor">R$ 290,00</span>
-        <span class="hist__status status--ok">Pago</span>
-      </div>
-      <div class="hist__item">
-        <span class="hist__data">05/01/2026</span>
-        <span class="hist__desc">Mensalidade · Plano Familiar</span>
-        <span class="hist__forma">Pix</span>
-        <span class="hist__valor">R$ 290,00</span>
-        <span class="hist__status status--ok">Pago</span>
-      </div>
-      <div class="hist__item">
-        <span class="hist__data">05/12/2025</span>
-        <span class="hist__desc">Mensalidade · Plano Familiar</span>
-        <span class="hist__forma">Boleto</span>
-        <span class="hist__valor">R$ 290,00</span>
-        <span class="hist__status status--ok">Pago</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Suporte -->
-  <section class="card card--soft">
-    <div class="card__head">
-      <h2>Precisa de ajuda?</h2>
-    </div>
-    <div class="suporte__grid">
-      <a href="https://wa.me/5582999903607" class="suporte__op"><span>💬</span><strong>WhatsApp 24h</strong><small>(82) 9 9990-3607</small></a>
-      <a href="tel:558298862020" class="suporte__op"><span>🩺</span><strong>Centro Ambulatorial</strong><small>(82) 9 8862-0220</small></a>
-      <a href="tel:558298116829" class="suporte__op"><span>🕊️</span><strong>Funerária Renascer</strong><small>(82) 9 8116-8529</small></a>
-      <a href="mailto:contato@planvidarenascer.com.br" class="suporte__op"><span>📧</span><strong>Email</strong><small>contato@planvidarenascer.com.br</small></a>
-    </div>
-  </section>
-
 </main>
 
-<script>
-  function fakeLogin(){
-    const login = document.getElementById('login');
-    const dash = document.getElementById('dash');
-    login.style.opacity = 0;
-    login.style.transition = 'opacity .6s ease';
-    setTimeout(()=>{
-      login.hidden = true;
-      dash.hidden = false;
-      window.scrollTo(0,0);
-      dash.animate([{opacity:0,transform:'translateY(20px)'},{opacity:1,transform:'translateY(0)'}],{duration:600,easing:'cubic-bezier(.22,.61,.36,1)'});
-    }, 500);
-  }
-  function logout(){ location.reload(); }
-
-  document.querySelectorAll('.pgto__tabs button').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.pgto__tabs button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      const tab = btn.dataset.tab;
-      document.querySelectorAll('.pgto__panel').forEach(p=>p.classList.remove('is-active'));
-      document.querySelector('.pgto__panel--'+tab).classList.add('is-active');
-    });
-  });
-
-  function copy(id, btn){
-    const text = document.getElementById(id).textContent;
-    navigator.clipboard.writeText(text);
-    const original = btn.textContent;
-    btn.textContent = '✓ Copiado!';
-    btn.style.background = 'var(--c-pine)';
-    btn.style.color = 'var(--c-bg)';
-    setTimeout(()=>{
-      btn.textContent = original;
-      btn.style.background = '';
-      btn.style.color = '';
-    }, 1800);
-  }
-</script>
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script src="portal.js"></script>
 </body>
 </html>

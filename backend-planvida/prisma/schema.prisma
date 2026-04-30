@@ -1,0 +1,138 @@
+// =========================================================
+// PlanVida Renascer — Schema Prisma
+// =========================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -----------------------------------------------------
+// USUÁRIO (titular do plano)
+// -----------------------------------------------------
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String   // bcrypt hash
+  nome          String
+  cpf           String   @unique
+  telefone      String
+  dataNasc      String?  // DD/MM/AAAA
+  endereco      String?
+  cidade        String?
+  cep           String?
+  emailVerified Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  subscriptions Subscription[]
+  payments      Payment[]
+
+  @@index([cpf])
+  @@index([email])
+}
+
+// -----------------------------------------------------
+// PLANO (catálogo: Individual, Familiar, Família Plus)
+// -----------------------------------------------------
+model Plan {
+  id            String   @id @default(cuid())
+  slug          String   @unique // "individual" | "familiar" | "plus"
+  nome          String
+  descricao     String
+  precoMensal   Decimal  @db.Decimal(10, 2)
+  beneficios    String[] // array de strings
+  ativo         Boolean  @default(true)
+  destaque      Boolean  @default(false) // para "Mais escolhido"
+  ordem         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  subscriptions Subscription[]
+
+  @@index([slug])
+}
+
+// -----------------------------------------------------
+// ASSINATURA (User <-> Plan)
+// -----------------------------------------------------
+enum SubscriptionStatus {
+  PENDING    // criado mas ainda não pago
+  ACTIVE     // pago e ativo
+  PAST_DUE   // atrasado
+  CANCELED   // cancelado pelo cliente ou admin
+  SUSPENDED  // suspenso por inadimplência
+}
+
+model Subscription {
+  id              String              @id @default(cuid())
+  userId          String
+  planId          String
+  status          SubscriptionStatus  @default(PENDING)
+  startDate       DateTime?           // setado quando ativa
+  nextDueDate     DateTime?           // próxima cobrança
+  canceledAt      DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan     Plan      @relation(fields: [planId], references: [id])
+  payments Payment[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+// -----------------------------------------------------
+// PAGAMENTO (Mercado Pago)
+// -----------------------------------------------------
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REFUNDED
+  CANCELED
+  IN_PROCESS
+}
+
+enum PaymentMethod {
+  PIX
+  BOLETO
+  CREDIT_CARD
+  DEBIT_CARD
+  OTHER
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  userId          String
+  subscriptionId  String?
+  status          PaymentStatus @default(PENDING)
+  method          PaymentMethod @default(PIX)
+  amount          Decimal       @db.Decimal(10, 2)
+
+  // Mercado Pago
+  mpPreferenceId  String?       // id da preference
+  mpPaymentId     String?       // id do payment recebido no webhook
+  mpInitPoint     String?       // URL pra o usuário pagar
+  mpQrCode        String?       // QR copia/cola PIX (se aplicável)
+  mpQrCodeBase64  String?       // QR base64 PIX (imagem)
+  mpPayload       Json?         // payload bruto do MP pra debug
+
+  paidAt          DateTime?
+  expiresAt       DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id])
+
+  @@index([userId])
+  @@index([mpPaymentId])
+  @@index([mpPreferenceId])
+  @@index([status])
+}
