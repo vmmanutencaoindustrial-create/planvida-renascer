@@ -14,6 +14,7 @@ import plansRoutes        from './routes/plans.js';
 import subscriptionRoutes from './routes/subscriptions.js';
 import paymentsRoutes     from './routes/payments.js';
 import dashboardRoutes    from './routes/dashboard.js';
+import adminRoutes        from './routes/admin.js';
 import { errorHandler }   from './middleware/error.js';
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
@@ -83,6 +84,7 @@ app.use('/api/plans',       apiLimiter,  plansRoutes);
 app.use('/api',             apiLimiter,  subscriptionRoutes); // /api/subscribe + /api/subscriptions/me
 app.use('/api/payments',    apiLimiter,  paymentsRoutes);     // inclui /webhook
 app.use('/api/dashboard',   apiLimiter,  dashboardRoutes);
+app.use('/api/admin',       authLimiter, adminRoutes);
 
 // -----------------------------------------------------
 // 404 + erros
