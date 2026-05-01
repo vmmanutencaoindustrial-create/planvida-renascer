@@ -109,11 +109,11 @@ em{
 }
 .nav__brand:hover{ opacity:.85; }
 .nav__logo{
-  height:64px; width:auto;
-  filter: drop-shadow(0 4px 12px rgba(255,230,0,0.4));
+  height:88px; width:auto;
+  filter: drop-shadow(0 4px 14px rgba(255,230,0,0.5));
   transition: all .4s;
 }
-.nav.is-scrolled .nav__logo{ height:54px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1)); }
+.nav.is-scrolled .nav__logo{ height:72px; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1)); }
 .nav__actions{
   display:inline-flex;
   align-items:center;
@@ -177,7 +177,7 @@ em{
   }
   .nav__cta{ padding:9px 16px; font-size:.72rem; }
   .nav{ padding:14px 18px; }
-  .nav__logo{ height:50px !important; }
+  .nav__logo{ height:76px !important; }
 }
 
 /* =============================================
@@ -1284,7 +1284,7 @@ body.intro-active{
 .rodape__col ul a:hover{ color: var(--navy); }
 
 .rodape__col--brand .rodape__logo{
-  height:54px;
+  height:78px;
   width:auto;
   margin-bottom: 18px;
 }

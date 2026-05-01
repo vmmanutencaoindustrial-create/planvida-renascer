@@ -20,16 +20,43 @@ function endIntro() {
   }, 600);
 }
 
+// Se chegou via hash (#quiz, #servicos, etc.), pula intro IMEDIATAMENTE
+const incomingHash = location.hash && location.hash.length > 1 ? location.hash : null;
+
 if (intro) {
   document.body.classList.add('intro-active');
-  // Auto-finish após duração
-  setTimeout(endIntro, INTRO_DURATION);
+
+  if (incomingHash) {
+    // Veio via link âncora — pula intro instantâneo pra rolar até o target
+    setTimeout(endIntro, 50);
+  } else {
+    // Auto-finish após duração normal
+    setTimeout(endIntro, INTRO_DURATION);
+  }
+
   // Skip
   introSkip?.addEventListener('click', endIntro);
   // ESC pula
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !intro.classList.contains('is-done')) endIntro();
   }, { once: true });
+}
+
+// Se chegou via #hash, força scroll DEPOIS que tudo carregou
+if (incomingHash) {
+  const scrollToTarget = () => {
+    const target = document.querySelector(incomingHash);
+    if (!target) return false;
+    const top = target.getBoundingClientRect().top + window.scrollY - 80;
+    // Fallback nativo PRIMEIRO (mais confiável)
+    window.scrollTo({ top, behavior: 'smooth' });
+    // Lenis em paralelo (se disponível, pra suavizar)
+    try { window.lenis?.scrollTo?.(target, { offset: -80, duration: 1.4 }); } catch(e){}
+    return true;
+  };
+  // Tenta múltiplas vezes (cobrindo carregamento de animations + DOM)
+  [1500, 2200, 3000].forEach(delay => setTimeout(scrollToTarget, delay));
+  setTimeout(() => history.replaceState(null, '', location.pathname + location.search), 3500);
 }
 
 // ===== Lenis Smooth Scroll (pattern oficial Lenis + GSAP) =====
@@ -41,6 +68,7 @@ const lenis = new Lenis({
   smoothWheel: true,
   smoothTouch: false,
 });
+window.lenis = lenis;  // expoe pra deep links / hash navigation
 
 // Sincroniza Lenis com ScrollTrigger
 lenis.on("scroll", ScrollTrigger.update);

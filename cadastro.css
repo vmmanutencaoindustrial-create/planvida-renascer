@@ -57,7 +57,7 @@
   color: var(--navy-deep);
 }
 .cad-header__brand img{
-  height: 56px;
+  height: 88px;
   width: auto;
   filter: drop-shadow(0 4px 12px rgba(255,230,0,0.3));
 }
@@ -72,26 +72,36 @@
   align-items: center;
   gap: 8px;
   font-size: 0.86rem;
-  font-weight: 500;
-  color: var(--navy-deep);
-  padding: 9px 18px;
+  font-weight: 600;
+  color: #fff;
+  padding: 11px 20px;
   border-radius: 100px;
   border: 1.5px solid transparent;
   transition: all 0.3s var(--ease);
+  letter-spacing: 0.01em;
 }
 .cad-header__help{
-  background: rgba(255, 230, 0, 0.15);
+  background: var(--gold);
+  color: var(--navy-deep);
+  box-shadow: 0 6px 18px rgba(255, 230, 0, 0.35);
 }
 .cad-header__help:hover{
-  background: var(--gold);
+  background: #fff;
+  color: var(--navy-deep);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(255, 230, 0, 0.5);
 }
 .cad-header__client{
-  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 .cad-header__client:hover{
-  border-color: var(--navy-deep);
-  background: var(--navy-deep);
-  color: white;
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy-deep);
 }
 
 /* ===== STEPPER ===== */
@@ -1070,6 +1080,6 @@
   .cad-actions{ flex-direction: column-reverse; }
   .cad-actions .btn{ width: 100%; }
   .cad-header{ padding: 12px 18px; }
-  .cad-header__brand img{ height: 44px; }
+  .cad-header__brand img{ height: 76px; }
   .cad-header__help span{ display: none; }
 }

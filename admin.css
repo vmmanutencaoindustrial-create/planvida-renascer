@@ -47,7 +47,7 @@
   justify-content: center;
 }
 .adm-login__brand img{
-  height: 56px;
+  height: 80px;
   filter: drop-shadow(0 6px 24px rgba(255,230,0,0.45));
 }
 .adm-login__brand span{
@@ -148,8 +148,8 @@
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 .adm-side__brand img{
-  height: 42px;
-  filter: brightness(1.1);
+  height: 60px;
+  filter: brightness(1.1) drop-shadow(0 2px 8px rgba(255,230,0,0.35));
 }
 .adm-side__brand strong{
   font-family: var(--serif);
