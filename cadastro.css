@@ -422,9 +422,9 @@
 .cad-form{
   background: var(--white);
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: 12px;
   padding: 44px 40px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
 }
 .cad-form__grid{
   display: grid;
@@ -500,9 +500,10 @@
 .cad-summary{
   background: var(--white);
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: 12px;
   padding: 32px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
 }
 .cad-summary__head{
   display: flex;
@@ -575,6 +576,14 @@
   font-family: var(--sans);
 }
 
+.cad-payment{
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+}
 .cad-payment__title{
   font-family: var(--serif);
   font-size: 1.4rem;
@@ -648,10 +657,12 @@
 }
 
 .cad-aceite{
-  background: var(--bg-soft);
-  padding: 20px;
-  border-radius: 4px;
-  margin-bottom: 28px;
+  background: var(--white);
+  padding: 22px 26px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
 }
 .cad-aceite__check{
   display: flex;
@@ -692,9 +703,10 @@
   display: none;
   background: var(--white);
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: 12px;
   overflow: hidden;
   animation: cadFadeIn 0.4s var(--ease);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
 }
 .cad-pay-panel.is-active{
   display: block;
@@ -869,8 +881,9 @@
   padding: 28px 32px;
   background: linear-gradient(135deg, #FFFEF5 0%, #FFFFFF 100%);
   border: 1.5px solid var(--gold);
-  border-radius: 4px;
+  border-radius: 12px;
   margin-bottom: 24px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
 }
 .cad-contrato__icon{
   flex-shrink: 0;
@@ -902,10 +915,12 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 20px;
-  background: var(--bg-soft);
-  border-radius: 4px;
+  padding: 22px 26px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
   margin-bottom: 24px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
 }
 .cad-status__item{
   display: flex;
@@ -964,9 +979,10 @@
   padding: 56px 32px;
   background: linear-gradient(135deg, #f0fff4 0%, #ffffff 100%);
   border: 2px solid #2f7d32;
-  border-radius: 4px;
+  border-radius: 12px;
   margin-bottom: 28px;
   animation: cadFadeIn 0.6s var(--ease);
+  box-shadow: 0 24px 60px rgba(47,125,50,0.35);
 }
 .cad-success__icon{
   display: inline-flex;
