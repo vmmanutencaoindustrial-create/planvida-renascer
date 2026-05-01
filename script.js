@@ -774,58 +774,120 @@ function goToStep(step) {
   }
 }
 
+// Catálogo de planos pra recomendação inteligente
+const QUIZ_PLAN_CATALOG = {
+  individual: {
+    slug: 'individual',
+    nome: 'Plano Individual',
+    preco: 170,
+    desc: 'Cobertura completa pra você. Sem complicação. Sem peso pra ninguém da família.',
+    bullets: [
+      'Urna funerária + velório 24h',
+      'Translado em todo o Brasil',
+      'Cremação OU sepultamento',
+      'Atendimento 24h',
+    ],
+  },
+  familiar: {
+    slug: 'familiar',
+    nome: 'Plano Familiar',
+    preco: 290,
+    desc: 'Cobre você + cônjuge + até 4 filhos. A escolha de 7 em cada 10 famílias.',
+    bullets: [
+      'Titular + cônjuge + 4 filhos',
+      'Tudo do Individual',
+      'Floricultura Renascer inclusa',
+      'Centro Ambulatorial PlanVida',
+    ],
+  },
+  plus: {
+    slug: 'plus',
+    nome: 'Plano Família Plus',
+    preco: 450,
+    desc: 'Cobre até 6 dependentes — inclui pais e sogros. Protege 3 gerações.',
+    bullets: [
+      'Até 6 dependentes',
+      'Inclui pais e sogros',
+      'Tudo do Familiar',
+      'Cobertura imediata por acidente',
+    ],
+  },
+};
+
 function generateDiagnosis() {
   const a = quizState.answers;
-  const titleEl = document.getElementById('diagnosisTitle');
-  const textEl = document.getElementById('diagnosisText');
-  const planEl = document.getElementById('recPlan');
-  const descEl = document.getElementById('recDesc');
+  const titleEl    = document.getElementById('diagnosisTitle');
+  const textEl     = document.getElementById('diagnosisText');
+  const planEl     = document.getElementById('recPlan');
+  const descEl     = document.getElementById('recDesc');
+  const valorEl    = document.getElementById('recValor');
+  const bulletsEl  = document.getElementById('recBullets');
+  const ctaBtn     = document.getElementById('ctaContratar');
+  const ctaWa      = document.getElementById('ctaWhatsapp');
+  const planCard   = document.getElementById('quizPlanCard');
+  const urgencyEl  = document.getElementById('quizUrgency');
 
+  // Análise das respostas
+  const isSolo     = a.q1 === 'solo';
+  const isCouple   = a.q1 === 'couple';
+  const isExtended = a.q1 === 'extended';
+  const isFamily   = a.q1 === 'family';
+  const notReady   = a.q2 === 'never' || a.q2 === 'avoid' || a.q2 === 'partial';
+  const ready      = a.q2 === 'ready';
+  const lowFunds   = a.q3 === 'lt5' || a.q3 === '5to15';
+  const hasPlan    = a.q3 === 'ready';
+
+  // ====== DIAGNÓSTICO (texto) ======
   let title = '';
-  let text = '';
-  let plan = '';
-  let desc = '';
-
-  // Análise simples baseada nas respostas
-  const isSolo = a.q1 === 'solo';
-  const isCouple = a.q1 === 'couple';
-  const isFamily = a.q1 === 'family' || a.q1 === 'extended';
-  const notReady = a.q2 === 'never' || a.q2 === 'avoid' || a.q2 === 'partial';
-  const lowFunds = a.q3 === 'lt5' || a.q3 === '5to15';
+  let text  = '';
 
   if (notReady && lowFunds) {
-    title = 'Sua família está vulnerável.';
-    text = 'Pelas suas respostas, sua família teria que tomar 32 decisões em 24 horas, com pouco dinheiro disponível e sem saber o que você gostaria. <em>Existe um caminho mais sereno.</em>';
-  } else if (notReady && !lowFunds) {
-    title = 'Sua família tem recurso, mas não tem direção.';
-    text = 'Vocês teriam o dinheiro, mas no momento da dor, ninguém sabe o que você gostaria. <em>Um plano não é só dinheiro — é o cuidado de já ter conversado.</em>';
-  } else if (a.q2 === 'ready' && a.q3 === 'ready') {
-    title = 'Você está bem preparado(a).';
-    text = 'Parabéns. Você já cuidou de algo que poucas famílias cuidam. <em>Vamos garantir que está tudo atualizado e na PlanVida.</em>';
+    title = 'Sua família precisa de proteção urgente.';
+    text  = 'Sem plano + sem dinheiro reservado, sua família teria que decidir 32 coisas em 24h — sob choque emocional. <em>Por menos de R$ 6/dia, isso não acontece.</em>';
+  } else if (notReady && !lowFunds && !hasPlan) {
+    title = 'Sua família tem recurso, mas <em>não tem direção.</em>';
+    text  = 'O dinheiro existe, mas no momento da dor, ninguém sabe o que você quer. <em>Um plano resolve isso em 2 minutos — e ainda economiza R$ 14.000.</em>';
+  } else if (ready && hasPlan) {
+    title = 'Você já está bem preparado(a).';
+    text  = 'Você fez o que poucas famílias fazem. Vale comparar — <em>nosso plano cobre mais por menos.</em>';
+  } else if (ready && !hasPlan) {
+    title = 'Você sabe o que quer — só falta formalizar.';
+    text  = 'Tudo conversado é metade do caminho. <em>O outro 50% é fechar a proteção. 2 minutos.</em>';
   } else {
-    title = 'Você está no caminho — falta só formalizar.';
-    text = 'Você já pensou no assunto, mas ainda não tem proteção formal. <em>O passo final é o mais importante.</em>';
+    title = 'Falta o passo final pra sua família ficar tranquila.';
+    text  = 'Você já pensou — agora é só ativar. <em>2 minutos no celular e está protegido.</em>';
   }
 
-  // Recomendação de plano
-  if (isSolo) {
-    plan = 'Plano Individual — a partir de R$ 170/mês';
-    desc = 'Cobertura completa para você. Sem complicação. Sem peso pra ninguém da família.';
-  } else if (isCouple) {
-    plan = 'Plano Casal — a partir de R$ 230/mês';
-    desc = 'Você e seu(sua) parceiro(a) protegidos. O que um sente, o outro não precisa carregar sozinho.';
-  } else if (a.q1 === 'extended') {
-    plan = 'Plano Família Plus — a partir de R$ 390/mês';
-    desc = 'Cobre até 6 dependentes incluindo pais e sogros. Tradição de 28 anos cuidando de gerações.';
-  } else {
-    plan = 'Plano Familiar — a partir de R$ 290/mês';
-    desc = 'Cobre cônjuge e filhos. Para que os pais possam cuidar do que mais importa: estar junto.';
-  }
+  // ====== RECOMENDAÇÃO INTELIGENTE (plano mais ACESSÍVEL compatível) ======
+  // Princípio: recomendar o plano de menor custo que cobre as pessoas dependentes
+  let recSlug;
+  if (isSolo)            recSlug = 'individual';
+  else if (isExtended)   recSlug = 'plus';
+  else                   recSlug = 'familiar';   // couple + family → familiar (mais acessível)
 
-  if (titleEl) titleEl.innerHTML = title;
-  if (textEl) textEl.innerHTML = text;
-  if (planEl) planEl.textContent = plan;
-  if (descEl) descEl.textContent = desc;
+  const plan = QUIZ_PLAN_CATALOG[recSlug];
+
+  // ====== URGÊNCIA contextual ======
+  let urgencyText = '⚡ Promoção: 1ª mensalidade com 20% off';
+  if (lowFunds && notReady) urgencyText = '🚨 Vagas limitadas este mês';
+  else if (hasPlan)         urgencyText = '🔄 Migre da concorrência sem custo';
+
+  // ====== ATUALIZA UI ======
+  if (titleEl)   titleEl.innerHTML  = title;
+  if (textEl)    textEl.innerHTML   = text;
+  if (planEl)    planEl.textContent = plan.nome;
+  if (descEl)    descEl.textContent = plan.desc;
+  if (valorEl)   valorEl.textContent = plan.preco;
+  if (urgencyEl) urgencyEl.textContent = urgencyText;
+  if (bulletsEl) bulletsEl.innerHTML = plan.bullets.map(b => `<li>${b}</li>`).join('');
+  if (planCard)  planCard.dataset.slug = plan.slug;
+
+  // ====== CTAs DINÂMICOS ======
+  if (ctaBtn) ctaBtn.href = `cadastro.html?plan=${plan.slug}`;
+  if (ctaWa) {
+    const msg = `Olá, fiz o quiz no site da PlanVida e a recomendação foi o ${plan.nome} (R$ ${plan.preco}/mês). Quero a proposta.`;
+    ctaWa.href = `https://wa.me/5582999903607?text=${encodeURIComponent(msg)}`;
+  }
 }
 
 // Mensagens empáticas por resposta
@@ -899,30 +961,20 @@ document.querySelectorAll('.quiz__opt').forEach(btn => {
   });
 });
 
-// Submit do quiz
-function enviarQuiz() {
-  const nome = document.getElementById('quizNome').value.trim();
-  const tel = document.getElementById('quizTel').value.trim();
-  if (!nome || !tel) return;
-
-  const a = quizState.answers;
-  const recPlan = document.getElementById('recPlan')?.textContent || '';
-
-  const msg = `Olá, sou ${nome}. Fiz o quiz no site e quero a proposta.\n\n` +
-    `📋 Minhas respostas:\n` +
-    `• Quem depende: ${a.q1 || '—'}\n` +
-    `• Família sabe: ${a.q2 || '—'}\n` +
-    `• Recursos em 24h: ${a.q3 || '—'}\n\n` +
-    `💡 Recomendação: ${recPlan}\n\n` +
-    `📞 WhatsApp: ${tel}`;
-
-  const url = `https://wa.me/5582999903607?text=${encodeURIComponent(msg)}`;
-  window.open(url, '_blank');
+// Persiste respostas do quiz pra retomar contexto no cadastro
+function salvarRespostasQuiz(){
+  try{
+    sessionStorage.setItem('planvida_quiz_answers', JSON.stringify({
+      answers: quizState.answers,
+      planSlug: document.getElementById('quizPlanCard')?.dataset.slug,
+      ts: Date.now(),
+    }));
+  }catch(e){ /* storage indisponível, ignora */ }
 }
 
-document.getElementById('quizCaptureForm')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  enviarQuiz();
+// CTA "Contratar agora →" — salva contexto antes de navegar
+document.getElementById('ctaContratar')?.addEventListener('click', () => {
+  salvarRespostasQuiz();
 });
 
 // Reveal do quiz

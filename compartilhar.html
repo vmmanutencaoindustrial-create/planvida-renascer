@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#3D45B8" />
+<title>Compartilhar — PlanVida Renascer</title>
+<meta name="robots" content="noindex, nofollow" />
+
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png" />
+<link rel="apple-touch-icon" sizes="192x192" href="assets/apple-touch-icon.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  --navy: #3D45B8;
+  --navy-deep: #2B33A0;
+  --navy-darker: #1d2570;
+  --gold: #FFE600;
+  --gold-deep: #c9a200;
+  --bg: #FAF8F4;
+  --ink: #1A1A1A;
+  --text: #2C2C2C;
+  --text-muted: #7A7A7A;
+  --line: rgba(26,26,26,0.08);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Inter', -apple-system, system-ui, sans-serif;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+html, body{
+  font-family: var(--sans);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  background: linear-gradient(135deg, #0d1230 0%, #1d2570 50%, #3D45B8 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 18px;
+}
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 30%, rgba(255,230,0,0.15) 0%, transparent 50%),
+              radial-gradient(circle at 80% 70%, rgba(255,230,0,0.10) 0%, transparent 50%);
+  pointer-events: none;
+}
+.share{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  background: white;
+  border-radius: 16px;
+  padding: 40px 36px;
+  box-shadow: 0 32px 80px rgba(13,18,48,0.4);
+}
+.share__brand{
+  text-align: center;
+  margin-bottom: 28px;
+}
+.share__brand img{
+  height: 64px;
+  width: auto;
+  filter: drop-shadow(0 6px 20px rgba(255,230,0,0.4));
+}
+.share__head{
+  text-align: center;
+  margin-bottom: 28px;
+}
+.share__eyebrow{
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 10px;
+}
+.share__title{
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-weight: 400;
+  color: var(--navy-deep);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 8px;
+}
+.share__title em{
+  color: var(--navy);
+  font-style: italic;
+}
+.share__sub{
+  color: var(--text-muted);
+  font-size: 0.96rem;
+}
+
+.qr-wrap{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 22px;
+  padding: 18px;
+  background: linear-gradient(135deg, #FFFEF5 0%, white 100%);
+  border-radius: 12px;
+  border: 1.5px solid var(--gold);
+}
+.qr-wrap img{
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.url-box{
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  background: #f5f3ed;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px;
+  margin-bottom: 24px;
+}
+.url-box input{
+  flex: 1;
+  background: transparent;
+  border: 0;
+  padding: 11px 14px;
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 0.84rem;
+  color: var(--ink);
+  outline: none;
+}
+.url-box button{
+  background: var(--navy-deep);
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  padding: 11px 18px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.url-box button:hover{ background: var(--navy); }
+.url-box button.copied{ background: #2f7d32; }
+
+.actions{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.actions a, .actions button{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.96rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1.5px solid var(--line);
+  background: white;
+  color: var(--navy-deep);
+  transition: all 0.25s var(--ease);
+}
+.actions a:hover, .actions button:hover{
+  transform: translateY(-2px);
+  border-color: var(--navy-deep);
+  box-shadow: 0 12px 28px rgba(61,69,184,0.15);
+}
+.actions .wa{ border-color: #25D366; color: #128C4D; }
+.actions .wa:hover{ background: #25D366; color: white; border-color: #25D366; }
+.actions .email{ }
+.actions .copy-full{ background: var(--gold); color: var(--navy-deep); border-color: var(--gold); grid-column: 1 / -1; }
+.actions .copy-full:hover{ background: var(--gold-deep); border-color: var(--gold-deep); color: white; }
+
+.links-list{
+  background: #f8f6ef;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+.links-list h3{
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--navy-deep);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.links-list a{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 0.92rem;
+  transition: background 0.2s;
+}
+.links-list a:hover{
+  background: rgba(255,230,0,0.15);
+}
+.links-list a span.icon{
+  font-size: 1.2rem;
+  width: 28px;
+}
+.links-list a strong{
+  font-weight: 600;
+  color: var(--navy-deep);
+}
+.links-list a small{
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-family: 'SF Mono', Monaco, monospace;
+}
+
+.share__foot{
+  text-align: center;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.share__foot a{
+  color: var(--navy-deep);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@media (max-width: 520px){
+  .share{ padding: 28px 22px; }
+  .share__title{ font-size: 1.7rem; }
+  .actions{ grid-template-columns: 1fr; }
+  .qr-wrap img{ max-width: 220px; }
+}
+
+.toast{
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2f7d32;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+.toast.show{
+  opacity: 1;
+  transform: translateX(-50%) translateY(8px);
+}
+</style>
+</head>
+<body>
+
+<main class="share">
+
+  <div class="share__brand">
+    <img src="assets/logo-planvida.png" alt="PlanVida Renascer" />
+  </div>
+
+  <header class="share__head">
+    <p class="share__eyebrow">Compartilhar</p>
+    <h1 class="share__title">Site do <em>PlanVida</em></h1>
+    <p class="share__sub">Mande o link, escaneia o QR, ou compartilha direto.</p>
+  </header>
+
+  <!-- QR Code (gerado por API gratuita; se cair, fallback no JS) -->
+  <div class="qr-wrap">
+    <img id="qrImg"
+         src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=10&data=https%3A%2F%2Fvmmanutencaoindustrial-create.github.io%2Fplanvida-renascer%2F"
+         alt="QR Code do site PlanVida"
+         loading="eager" />
+  </div>
+
+  <!-- URL principal -->
+  <div class="url-box">
+    <input type="text" id="urlInput" readonly value="https://vmmanutencaoindustrial-create.github.io/planvida-renascer/" />
+    <button id="btnCopy" type="button">Copiar</button>
+  </div>
+
+  <!-- Compartilhar nativo -->
+  <div class="actions">
+    <a class="wa" id="btnWa" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.2-.7.9-.9 1-.2.2-.3.2-.6.1-.3-.2-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2-.2-.5-.5-.5-.6-.5h-.5c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.1 1.7 2.7 4.2 3.7 2.1.8 2.5.7 3 .6.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.2-.1-.4-.2-.7-.4z"/></svg>
+      WhatsApp
+    </a>
+    <a class="email" id="btnEmail">
+      ✉ &nbsp;Email
+    </a>
+    <button class="copy-full" id="btnShareNative" type="button">
+      📤 Compartilhar (sistema)
+    </button>
+  </div>
+
+  <!-- Links auxiliares -->
+  <div class="links-list">
+    <h3>Outras páginas</h3>
+    <a href="cadastro.html">
+      <span class="icon">📝</span>
+      <span><strong>Página de cadastro</strong></span>
+      <small>/cadastro.html</small>
+    </a>
+    <a href="portal.html">
+      <span class="icon">👤</span>
+      <span><strong>Área do cliente</strong></span>
+      <small>/portal.html</small>
+    </a>
+    <a href="admin.html">
+      <span class="icon">🔐</span>
+      <span><strong>Painel admin</strong></span>
+      <small>/admin.html</small>
+    </a>
+  </div>
+
+  <p class="share__foot">
+    <a href="index.html">← Voltar pra home do site</a>
+  </p>
+</main>
+
+<div class="toast" id="toast">Copiado!</div>
+
+<script>
+const URL_PRINCIPAL = 'https://vmmanutencaoindustrial-create.github.io/planvida-renascer/';
+const TEXTO_PADRAO  = 'Conheça a PlanVida Renascer — 28 anos cuidando de famílias em Alagoas com respeito e dignidade.';
+const MENSAGEM_COMPLETA = `${TEXTO_PADRAO}\n\n${URL_PRINCIPAL}`;
+
+// === Toast helper ===
+const toast = document.getElementById('toast');
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+// === Copiar URL ===
+document.getElementById('btnCopy').addEventListener('click', async () => {
+  await navigator.clipboard.writeText(URL_PRINCIPAL);
+  const btn = document.getElementById('btnCopy');
+  btn.textContent = '✓ Copiado!';
+  btn.classList.add('copied');
+  showToast('Link copiado!');
+  setTimeout(() => {
+    btn.textContent = 'Copiar';
+    btn.classList.remove('copied');
+  }, 2000);
+});
+
+// === WhatsApp ===
+document.getElementById('btnWa').href =
+  `https://wa.me/?text=${encodeURIComponent(MENSAGEM_COMPLETA)}`;
+
+// === Email ===
+document.getElementById('btnEmail').href =
+  `mailto:?subject=${encodeURIComponent('PlanVida Renascer — Conhece?')}&body=${encodeURIComponent(MENSAGEM_COMPLETA)}`;
+
+// === Share nativo (mobile) ===
+const btnShare = document.getElementById('btnShareNative');
+if(navigator.share){
+  btnShare.addEventListener('click', async () => {
+    try{
+      await navigator.share({
+        title: 'PlanVida Renascer',
+        text:  TEXTO_PADRAO,
+        url:   URL_PRINCIPAL,
+      });
+    }catch(e){ /* user cancelou */ }
+  });
+} else {
+  // Fallback: copia tudo
+  btnShare.textContent = '📋 Copiar mensagem completa';
+  btnShare.addEventListener('click', async () => {
+    await navigator.clipboard.writeText(MENSAGEM_COMPLETA);
+    showToast('Mensagem copiada!');
+  });
+}
+
+// === Fallback do QR Code se a API externa cair ===
+document.getElementById('qrImg').addEventListener('error', function(){
+  // Fallback: usa Google Charts API
+  this.src = 'https://chart.googleapis.com/chart?cht=qr&chs=500x500&chl=' + encodeURIComponent(URL_PRINCIPAL);
+});
+</script>
+
+</body>
+</html>

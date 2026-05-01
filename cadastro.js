@@ -121,22 +121,59 @@ async function loadPlanos(){
 }
 loadPlanos();
 
-$$('.plano-card').forEach(card => {
-  const choose = () => {
-    const key = card.dataset.plan;
-    const preco = parseFloat(card.dataset.price);
-    state.plano = { slug: key, nome: PLANOS_FALLBACK[key].nome, precoMensal: preco, preco };
+function selecionarPlano(key, autoAvance = true){
+  const card = document.querySelector(`.plano-card[data-plan="${key}"]`);
+  if(!card) return false;
+  const preco = parseFloat(card.dataset.price);
+  state.plano = { slug: key, nome: PLANOS_FALLBACK[key].nome, precoMensal: preco, preco };
 
-    $$('.plano-card').forEach(c => c.classList.remove('is-selected'));
-    card.classList.add('is-selected');
-    setTimeout(() => goStep(2), 280);
-  };
+  $$('.plano-card').forEach(c => c.classList.remove('is-selected'));
+  card.classList.add('is-selected');
+  if(autoAvance) setTimeout(() => goStep(2), 280);
+  return true;
+}
+
+$$('.plano-card').forEach(card => {
+  const choose = () => selecionarPlano(card.dataset.plan, true);
   card.addEventListener('click', choose);
   card.querySelector('.plano-card__btn')?.addEventListener('click', e => {
     e.stopPropagation();
     choose();
   });
 });
+
+// === Pré-seleção via ?plan=X (vindo do quiz) com 3 fallbacks ===
+(function preselectFromUrl(){
+  // 1) Query string (?plan=familiar)
+  const params = new URLSearchParams(location.search);
+  let plan = params.get('plan');
+
+  // 2) Hash (#plan=familiar) — fallback se query for stripada
+  if(!plan && location.hash){
+    const m = location.hash.match(/plan=([\w-]+)/i);
+    if(m) plan = m[1];
+  }
+
+  // 3) sessionStorage do quiz
+  if(!plan){
+    try{
+      const cached = JSON.parse(sessionStorage.getItem('planvida_quiz_answers') || '{}');
+      if(cached.planSlug && Date.now() - (cached.ts || 0) < 30 * 60 * 1000){
+        plan = cached.planSlug;   // só usa se < 30 min
+      }
+    }catch{}
+  }
+
+  if(plan && PLANOS_FALLBACK[plan]){
+    setTimeout(() => {
+      selecionarPlano(plan, false);
+      const card = document.querySelector(`.plano-card[data-plan="${plan}"]`);
+      card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Avança em 1.2s pra dar tempo de ver
+      setTimeout(() => goStep(2), 1200);
+    }, 200);
+  }
+})();
 
 // ===========================================================
 // STEP 2 — DADOS PESSOAIS
