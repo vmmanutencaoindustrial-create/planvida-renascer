@@ -4,25 +4,57 @@
 ========================================================= */
 
 .cad-body{
-  background: var(--bg);
+  background: linear-gradient(135deg, #0d1230 0%, #1d2570 50%, #3D45B8 100%);
   min-height: 100vh;
   font-family: var(--sans);
   color: var(--text);
+  position: relative;
 }
+.cad-body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,230,0,0.12) 0%, transparent 55%),
+    radial-gradient(circle at 85% 75%, rgba(255,230,0,0.10) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+.cad-body > *{ position: relative; z-index: 1; }
 
 /* ===== HEADER ===== */
 .cad-header{
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(250, 248, 244, 0.96);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--line);
+  background: rgba(13, 18, 48, 0.65);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 32px;
+}
+.cad-header__brand img{
+  filter: drop-shadow(0 4px 16px rgba(255,230,0,0.5));
+}
+.cad-header__help{
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+.cad-header__help:hover{
+  background: var(--gold);
+  color: var(--navy-deep);
+}
+.cad-header__client{
+  border-color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.85);
+}
+.cad-header__client:hover{
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy-deep);
 }
 .cad-header__brand img{
   height: 56px;
@@ -64,8 +96,10 @@
 
 /* ===== STEPPER ===== */
 .cad-stepper{
-  background: var(--bg-soft);
-  border-bottom: 1px solid var(--line);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   padding: 28px 24px;
 }
 .cad-stepper__inner{
@@ -85,29 +119,30 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--bg);
-  border: 1.5px solid var(--line);
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.25);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
   font-size: 0.84rem;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.65);
   transition: all 0.4s var(--ease);
 }
 .cad-stepper__label{
   font-size: 0.82rem;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.65);
   font-weight: 500;
   letter-spacing: 0.02em;
 }
 .cad-stepper__step.is-active .cad-stepper__num{
-  background: var(--navy-deep);
-  border-color: var(--navy-deep);
-  color: var(--gold);
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy-deep);
+  box-shadow: 0 0 0 4px rgba(255,230,0,0.2);
 }
 .cad-stepper__step.is-active .cad-stepper__label{
-  color: var(--navy-deep);
+  color: var(--gold);
   font-weight: 600;
 }
 .cad-stepper__step.is-done .cad-stepper__num{
@@ -124,7 +159,7 @@
 .cad-stepper__line{
   flex: 1;
   height: 1.5px;
-  background: var(--line);
+  background: rgba(255,255,255,0.18);
   transition: background 0.4s;
 }
 .cad-stepper__line.is-done{
@@ -165,23 +200,26 @@
   text-align: center;
   margin-bottom: 56px;
 }
+.cad-step__head .eyebrow{
+  color: rgba(255, 230, 0, 0.85);
+}
 .cad-step__head h1{
   font-family: var(--serif);
   font-size: clamp(2rem, 4.5vw, 3.4rem);
   font-weight: 300;
   line-height: 1.05;
-  color: var(--ink);
+  color: var(--white);
   margin: 12px 0 20px;
   letter-spacing: -0.02em;
 }
 .cad-step__head h1 em{
-  color: var(--navy);
+  color: var(--gold);
   font-style: italic;
   font-weight: 400;
 }
 .cad-step__sub{
   font-size: 1.06rem;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.78);
   max-width: 540px;
   margin: 0 auto;
   line-height: 1.55;
@@ -346,22 +384,26 @@
 .cad-help{
   text-align: center;
   margin-top: 36px;
-  padding: 28px;
-  background: rgba(61, 69, 184, 0.05);
-  border-radius: 4px;
+  padding: 24px 28px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
 }
 .cad-help p{
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.85);
   font-size: 0.96rem;
 }
 .cad-help a{
-  color: var(--navy-deep);
+  color: var(--gold);
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-thickness: 1.5px;
   text-decoration-color: var(--gold);
 }
+.cad-help a:hover{ color: white; }
 
 /* ===== STEP 2 — FORMULÁRIO ===== */
 .cad-form{
@@ -946,13 +988,32 @@
   text-align: center;
   margin-top: 24px;
   font-size: 0.92rem;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.75);
 }
 .cad-support a{
-  color: var(--navy-deep);
+  color: var(--gold);
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-color: var(--gold);
+}
+.cad-support a:hover{ color: white; }
+
+.btn--ghost{
+  color: rgba(255,255,255,0.85);
+}
+.btn--ghost:hover{
+  color: var(--gold);
+}
+.btn--outline-navy{
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.4);
+  color: white;
+  backdrop-filter: blur(6px);
+}
+.btn--outline-navy:hover{
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy-deep);
 }
 
 /* ===== RESPONSIVO ===== */
