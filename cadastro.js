@@ -297,20 +297,34 @@ $$('.plano-card').forEach(card => {
     if(e.key === 'Escape' && !quiz.hidden) closeQuiz();
   });
 
-  // ============= STEPS =============
+  // ============= STEPS — transição suave (slide+fade) =============
   function showStep(n){
-    $$('.cqz__step', quiz).forEach(s => s.classList.remove('is-active'));
-    const target = $(`.cqz__step[data-cqz-step="${n}"]`, quiz);
-    target?.classList.add('is-active');
+    const current = $(`.cqz__step.is-active`, quiz);
+    const next = $(`.cqz__step[data-cqz-step="${n}"]`, quiz);
+    if(!next) return;
+    if(current === next) return;
+
+    // Fade-out atual com slide-left
+    if(current){
+      current.classList.add('is-leaving');
+      setTimeout(() => {
+        current.classList.remove('is-active', 'is-leaving');
+      }, 350);
+    }
+    // Fade-in novo
+    setTimeout(() => {
+      next.classList.add('is-active');
+    }, current ? 350 : 0);
+
     cqzState.current = n;
-    // Progress
+    // Progress (animação smooth via CSS transition)
     const totalSteps = 4;
-    const current = n === 'result' ? 4 : parseInt(n, 10);
-    const pct = (current / totalSteps) * 100;
+    const idx = n === 'result' ? 4 : parseInt(n, 10);
+    const pct = (idx / totalSteps) * 100;
     $('#cqzProgress').style.width = pct + '%';
   }
 
-  // Mensagem empática (overlay rápido)
+  // Mensagem empática — fade in 600ms, lê por 2400ms, fade out 500ms = 3.5s total
   function showEmpathy(message){
     return new Promise(resolve => {
       const stage = quiz.querySelector('.cqz__stage');
@@ -318,16 +332,21 @@ $$('.plano-card').forEach(card => {
       bubble.className = 'cqz__empathy';
       bubble.innerHTML = `
         <div class="cqz__empathy-icon">
-          <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <svg viewBox="0 0 24 24" width="44" height="44" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </div>
         <p class="cqz__empathy-text">${message}</p>
       `;
       stage.appendChild(bubble);
-      requestAnimationFrame(() => bubble.classList.add('is-visible'));
+      // Força reflow + adiciona class no próximo tick (mais confiável que rAF)
+      void bubble.offsetWidth;
+      setTimeout(() => bubble.classList.add('is-visible'), 16);
+      // 2600ms visível pra ler com calma
       setTimeout(() => {
+        bubble.classList.add('is-leaving');
         bubble.classList.remove('is-visible');
-        setTimeout(() => { bubble.remove(); resolve(); }, 380);
-      }, 1400);
+        // 500ms fade-out
+        setTimeout(() => { bubble.remove(); resolve(); }, 500);
+      }, 2600);
     });
   }
 
