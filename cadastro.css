@@ -114,6 +114,19 @@
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+  cursor: pointer;
+  padding: 6px 8px;
+  margin: -6px -8px;
+  border-radius: 100px;
+  transition: background 0.2s var(--ease);
+  user-select: none;
+}
+.cad-stepper__step:hover{
+  background: rgba(255,255,255,0.08);
+}
+.cad-stepper__step:hover .cad-stepper__num{
+  border-color: var(--gold);
+  color: var(--gold);
 }
 .cad-stepper__num{
   width: 32px;

@@ -97,6 +97,21 @@ $$('[data-go-step]').forEach(el => {
   });
 });
 
+// Stepper indicators clicáveis (navegação livre entre steps)
+$$('.cad-stepper__step').forEach(el => {
+  el.setAttribute('role', 'button');
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('aria-label', `Ir para o passo ${el.dataset.step}`);
+  const target = parseInt(el.dataset.step, 10);
+  const navigate = () => {
+    if(!isNaN(target) && target >= 1 && target <= 4) goStep(target);
+  };
+  el.addEventListener('click', navigate);
+  el.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); navigate(); }
+  });
+});
+
 // ===========================================================
 // STEP 1 — ESCOLHA DO PLANO (sincroniza com API se possível)
 // ===========================================================
