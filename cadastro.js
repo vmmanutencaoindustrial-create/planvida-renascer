@@ -157,6 +157,262 @@ $$('.plano-card').forEach(card => {
   });
 });
 
+// =============================================================
+// QUIZ INLINE PERSUASIVO (.cqz) — abre no botão "quiz de 30 seg"
+// Ajuda a DECIDIR entre os 3 planos (Individual / Familiar / Plus)
+// =============================================================
+(function quizInlineSetup(){
+  const quiz = $('#quizInline');
+  if(!quiz) return;
+
+  const cqzState = { answers: {}, current: 1 };
+
+  // Catálogo (mesmo do site, mas com economia/comparativo)
+  const PLAN_CATALOG = {
+    individual: {
+      slug: 'individual',
+      nome: 'Plano Individual',
+      preco: 170,
+      desc: 'Cobertura completa pra você, sem peso pra família. Em emergência custaria R$ 18 mil — você protege por R$ 170/mês.',
+      bullets: [
+        'Cobre 1 titular',
+        'Velório, urna, translado, documentação',
+        'Cremação OU sepultamento (sua escolha)',
+        'Atendimento 24h em todo o Brasil',
+      ],
+      economy: 'economiza R$ 16.040 vs emergência',
+    },
+    familiar: {
+      slug: 'familiar',
+      nome: 'Plano Familiar',
+      preco: 290,
+      desc: '7 em cada 10 famílias escolhem este. Cobre 6 pessoas — família inteira protegida por menos que um plano de saúde.',
+      bullets: [
+        'Cobre titular + cônjuge + 4 filhos',
+        'Tudo do plano Individual incluso',
+        'Floricultura Renascer + Ambulatorial',
+        'Suporte familiar pós-perda',
+      ],
+      economy: 'economiza até R$ 14.620 vs emergência',
+    },
+    plus: {
+      slug: 'plus',
+      nome: 'Plano Família Plus',
+      preco: 450,
+      desc: 'Único plano que cobre 3 gerações no mesmo contrato. Inclui pais, sogros e até odontologia.',
+      bullets: [
+        'Até 6 dependentes (incluindo pais e sogros)',
+        'Tudo do Familiar incluso',
+        'Clínica odontológica gratuita',
+        'Cobertura imediata por acidente',
+      ],
+      economy: 'economiza até R$ 14.470 vs emergência',
+    },
+  };
+
+  // Mensagens empáticas (entre as perguntas)
+  const EMPATHY = {
+    1: {
+      solo:     'Cuidar de si primeiro é sabedoria. A maioria esquece disso.',
+      couple:   'Esse vínculo merece proteção dos dois lados.',
+      family:   'Filhos primeiro, sempre. Estamos com você.',
+      extended: 'Quem te criou, você quer retribuir. Bonito.',
+    },
+    2: {
+      ready:    'Você está à frente de 90% das famílias. Continuemos.',
+      partial:  'Já avançou bastante. Vamos terminar o que começou.',
+      never:    'É natural empurrar — mas o cuidado é mostrado em silêncio também.',
+      avoid:    'Eu te entendo. É exatamente quem mais precisa de uma rede de apoio.',
+    },
+    3: {
+      lt5:      'É exatamente pra isso que o plano existe. Você não vai carregar isso sozinho(a).',
+      '5to15':  'Aperto na hora errada multiplica a dor. Existe um caminho mais leve.',
+      '15to30': 'Você fez a parte do dinheiro. Falta a parte do cuidado organizar.',
+      ready:    'Vamos mostrar por que vale a pena comparar.',
+    },
+  };
+
+  // Diagnóstico personalizado (combinação Q2 + Q3)
+  function buildDiagnosis(a){
+    const notReady = a.q2 === 'never' || a.q2 === 'avoid' || a.q2 === 'partial';
+    const lowFunds = a.q3 === 'lt5' || a.q3 === '5to15';
+    const hasPlan  = a.q3 === 'ready';
+
+    if(notReady && lowFunds){
+      return {
+        title: 'Sua família precisa de <em>uma rede agora.</em>',
+        text:  'Sem plano + sem reserva = 32 decisões em 24h, sob choque. <em>Por menos de R$ 6/dia, isso não acontece.</em>',
+        urgency: 'Vagas limitadas neste mês',
+      };
+    }
+    if(notReady && !lowFunds && !hasPlan){
+      return {
+        title: 'Você tem o dinheiro. <em>Falta a direção.</em>',
+        text:  'No momento da dor, ninguém quer decidir caixão, traslado, papel — quer chorar com quem ama. <em>O plano resolve em 2 minutos.</em>',
+        urgency: 'Promoção · 1ª mensalidade R$ 1',
+      };
+    }
+    if(hasPlan){
+      return {
+        title: 'Você já cuida. <em>Vale comparar.</em>',
+        text:  'Hoje, R$ 290/mês cobre o que você paga em outro lugar por R$ 380. <em>Sem multa pra trocar.</em>',
+        urgency: 'Migração sem custo',
+      };
+    }
+    return {
+      title: 'Você sabe o que quer. <em>Falta só formalizar.</em>',
+      text:  'Tudo conversado é metade do caminho. <em>O outro 50% é fechar a proteção. 2 minutos.</em>',
+      urgency: 'Promoção · 1ª mensalidade R$ 1',
+    };
+  }
+
+  // Recomenda o plano com base na Q1 (tamanho da família)
+  function recommendSlug(a){
+    if(a.q1 === 'solo')     return 'individual';
+    if(a.q1 === 'extended') return 'plus';
+    return 'familiar'; // couple + family
+  }
+
+  // ============= ABRIR / FECHAR =============
+  function openQuiz(){
+    cqzState.answers = {};
+    cqzState.current = 1;
+    quiz.hidden = false;
+    quiz.classList.add('is-open');
+    document.body.classList.add('cqz-open');
+    showStep(1);
+  }
+  function closeQuiz(){
+    quiz.classList.remove('is-open');
+    document.body.classList.remove('cqz-open');
+    setTimeout(() => quiz.hidden = true, 200);
+  }
+
+  $('#abrirQuizInline')?.addEventListener('click', e => {
+    e.preventDefault();
+    openQuiz();
+  });
+  $$('[data-cqz-close]', quiz).forEach(el => el.addEventListener('click', closeQuiz));
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && !quiz.hidden) closeQuiz();
+  });
+
+  // ============= STEPS =============
+  function showStep(n){
+    $$('.cqz__step', quiz).forEach(s => s.classList.remove('is-active'));
+    const target = $(`.cqz__step[data-cqz-step="${n}"]`, quiz);
+    target?.classList.add('is-active');
+    cqzState.current = n;
+    // Progress
+    const totalSteps = 4;
+    const current = n === 'result' ? 4 : parseInt(n, 10);
+    const pct = (current / totalSteps) * 100;
+    $('#cqzProgress').style.width = pct + '%';
+  }
+
+  // Mensagem empática (overlay rápido)
+  function showEmpathy(message){
+    return new Promise(resolve => {
+      const stage = quiz.querySelector('.cqz__stage');
+      const bubble = document.createElement('div');
+      bubble.className = 'cqz__empathy';
+      bubble.innerHTML = `
+        <div class="cqz__empathy-icon">
+          <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <p class="cqz__empathy-text">${message}</p>
+      `;
+      stage.appendChild(bubble);
+      requestAnimationFrame(() => bubble.classList.add('is-visible'));
+      setTimeout(() => {
+        bubble.classList.remove('is-visible');
+        setTimeout(() => { bubble.remove(); resolve(); }, 380);
+      }, 1400);
+    });
+  }
+
+  // ============= CLICK NAS OPÇÕES =============
+  $$('.cqz__opt', quiz).forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const q = btn.dataset.cqzQ;
+      const v = btn.dataset.cqzV;
+      cqzState.answers['q' + q] = v;
+
+      // visual feedback
+      const stepEl = btn.closest('.cqz__step');
+      $$('.cqz__opt', stepEl).forEach(b => b.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+
+      // Mensagem empática
+      const msg = EMPATHY[q]?.[v];
+      if(msg) await showEmpathy(msg);
+
+      // Avançar
+      const next = parseInt(q, 10) + 1;
+      if(next <= 3){
+        showStep(next);
+      } else {
+        renderResult();
+        showStep('result');
+      }
+    });
+  });
+
+  // ============= RESULTADO =============
+  function renderResult(){
+    const a = cqzState.answers;
+    const slug = recommendSlug(a);
+    const plan = PLAN_CATALOG[slug];
+    const diag = buildDiagnosis(a);
+
+    $('#cqzDiagTitle').innerHTML = diag.title;
+    $('#cqzDiagText').innerHTML  = diag.text;
+    $('#cqzUrgency').textContent = diag.urgency;
+
+    $('#cqzPlanName').textContent = plan.nome;
+    $('#cqzPlanDesc').textContent = plan.desc;
+    $('#cqzPlanValor').textContent = plan.preco;
+    $('#cqzPlanEconomy').textContent = plan.economy;
+    $('#cqzPlanBullets').innerHTML = plan.bullets.map(b => `<li>${b}</li>`).join('');
+
+    // Soft CTA contextual
+    const softMsgs = {
+      individual: 'Você está a 4 cliques de tirar esse peso das suas costas.',
+      familiar:   'Você está a 4 cliques de proteger sua família inteira.',
+      plus:       'Você está a 4 cliques de proteger 3 gerações de uma vez.',
+    };
+    $('#cqzCtaSoft').textContent = softMsgs[slug];
+
+    // Guarda slug pro CTA usar
+    quiz.dataset.recommendedSlug = slug;
+  }
+
+  // ============= CTA "Contratar" =============
+  $('#cqzContratar')?.addEventListener('click', () => {
+    const slug = quiz.dataset.recommendedSlug || 'familiar';
+    closeQuiz();
+    // Seleciona o card do plano + avança step 2
+    setTimeout(() => {
+      if(typeof selecionarPlano === 'function'){
+        selecionarPlano(slug, false);
+        const card = document.querySelector(`.plano-card[data-plan="${slug}"]`);
+        card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => goStep(2), 1100);
+      }
+    }, 250);
+  });
+
+  // ============= REFAZER =============
+  $$('[data-cqz-restart]', quiz).forEach(el => {
+    el.addEventListener('click', () => {
+      cqzState.answers = {};
+      cqzState.current = 1;
+      $$('.cqz__opt.is-selected', quiz).forEach(b => b.classList.remove('is-selected'));
+      showStep(1);
+    });
+  });
+})();
+
 // === Pré-seleção via ?plan=X (vindo do quiz) com 3 fallbacks ===
 (function preselectFromUrl(){
   // 1) Query string (?plan=familiar)

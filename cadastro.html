@@ -147,7 +147,7 @@
       </div>
 
       <div class="cad-help">
-        <p><strong>Não sabe qual escolher?</strong> Faça o <a href="index.html#quiz">quiz de 30 segundos</a> ou fale com um consultor: <a href="https://wa.me/5582999903607" target="_blank" rel="noopener">(82) 9 9990-3607</a></p>
+        <p><strong>Não sabe qual escolher?</strong> Faça o <a href="#" id="abrirQuizInline">quiz de 30 segundos</a> ou fale com um consultor: <a href="https://wa.me/5582999903607" target="_blank" rel="noopener">(82) 9 9990-3607</a></p>
       </div>
     </div>
   </section>
@@ -539,6 +539,150 @@
   </section>
 
 </main>
+
+<!-- =========================================================
+     QUIZ INLINE PERSUASIVO — Abre no botão "quiz de 30 seg"
+     3 perguntas com tom emocional + mensagens empáticas
+     Diagnóstico personalizado + CTA forte que seleciona o plano
+========================================================= -->
+<div class="cqz" id="quizInline" hidden>
+  <div class="cqz__overlay" data-cqz-close></div>
+  <div class="cqz__card">
+    <button type="button" class="cqz__close" data-cqz-close aria-label="Fechar">×</button>
+
+    <header class="cqz__head">
+      <p class="cqz__eyebrow">Apenas 30 segundos · 100% confidencial</p>
+      <h2 class="cqz__title">3 perguntas. <em>Honestas.</em></h2>
+      <p class="cqz__sub">Vou te ajudar a entender qual plano faz <em>real sentido</em> pra sua família — sem te empurrar nada.</p>
+      <div class="cqz__progress">
+        <div class="cqz__progress-bar" id="cqzProgress"></div>
+      </div>
+    </header>
+
+    <div class="cqz__stage">
+
+      <!-- Pergunta 1 — IDENTIDADE / AMOR -->
+      <div class="cqz__step is-active" data-cqz-step="1">
+        <p class="cqz__num">01 / 03 · Pra começar</p>
+        <h3 class="cqz__q">Quem é a pessoa mais<br/><em>importante</em> da sua vida hoje?</h3>
+        <p class="cqz__hint">Não tem resposta certa. Cada família é uma família.</p>
+        <div class="cqz__opts">
+          <button type="button" class="cqz__opt" data-cqz-q="1" data-cqz-v="solo">
+            <strong>Eu mesmo(a)</strong>
+            <small>Cuido de mim antes de tudo — e tá ótimo assim.</small>
+          </button>
+          <button type="button" class="cqz__opt" data-cqz-q="1" data-cqz-v="couple">
+            <strong>Meu(minha) parceiro(a)</strong>
+            <small>A gente cuida um do outro.</small>
+          </button>
+          <button type="button" class="cqz__opt" data-cqz-q="1" data-cqz-v="family">
+            <strong>Meus filhos</strong>
+            <small>Tudo gira em torno deles.</small>
+          </button>
+          <button type="button" class="cqz__opt" data-cqz-q="1" data-cqz-v="extended">
+            <strong>Meus pais (e/ou sogros)</strong>
+            <small>Devo tudo a eles. Quero retribuir.</small>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pergunta 2 — REALIDADE / VULNERABILIDADE -->
+      <div class="cqz__step" data-cqz-step="2">
+        <p class="cqz__num">02 / 03 · Pra refletir</p>
+        <h3 class="cqz__q">Se algo acontecesse com você <em>amanhã</em>…<br/>sua família saberia o que fazer?</h3>
+        <p class="cqz__hint">9 em cada 10 famílias evitam essa conversa. Tudo bem ser sincero(a).</p>
+        <div class="cqz__opts">
+          <button type="button" class="cqz__opt" data-cqz-q="2" data-cqz-v="ready">
+            <strong>Sim, está tudo conversado</strong>
+            <small>Documentos, desejos, contatos — tudo organizado.</small>
+          </button>
+          <button type="button" class="cqz__opt" data-cqz-q="2" data-cqz-v="partial">
+            <strong>Mais ou menos</strong>
+            <small>Algumas coisas a gente sabe, outras é nebuloso.</small>
+          </button>
+          <button type="button" class="cqz__opt" data-cqz-q="2" data-cqz-v="never">
+            <strong>Não, a gente nunca conversou</strong>
+            <small>É o tipo de assunto que a gente vai empurrando.</small>
+          </button>
+          <button type="button" class="cqz__opt" data-cqz-q="2" data-cqz-v="avoid">
+            <strong>Prefiro nem pensar nisso agora</strong>
+            <small>Dá um aperto só de imaginar.</small>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pergunta 3 — REALIDADE FINANCEIRA -->
+      <div class="cqz__step" data-cqz-step="3">
+        <p class="cqz__num">03 / 03 · Última, prometo</p>
+        <h3 class="cqz__q">Um funeral hoje custa, em média, <em>R$ 18 mil</em>.<br/>Sua família teria isso em <em>24 horas?</em></h3>
+        <p class="cqz__hint">Em emergência, é o que precisa ser pago à vista. Sem negociação.</p>
+        <div class="cqz__opts">
+          <button type="button" class="cqz__opt" data-cqz-q="3" data-cqz-v="lt5">
+            <strong>Não, seria bem difícil</strong>
+            <small>Esse valor a gente não tem reservado.</small>
+          </button>
+          <button type="button" class="cqz__opt" data-cqz-q="3" data-cqz-v="5to15">
+            <strong>Talvez, com muito aperto</strong>
+            <small>Daria pra arrumar, mas mexeria com tudo.</small>
+          </button>
+          <button type="button" class="cqz__opt" data-cqz-q="3" data-cqz-v="15to30">
+            <strong>Sim, eu tenho reserva</strong>
+            <small>Mas é dinheiro guardado pra outras coisas.</small>
+          </button>
+          <button type="button" class="cqz__opt" data-cqz-q="3" data-cqz-v="ready">
+            <strong>Já tenho um plano funeral</strong>
+            <small>Quero comparar com o de vocês.</small>
+          </button>
+        </div>
+      </div>
+
+      <!-- Resultado — DIAGNÓSTICO + PLANO + CTA -->
+      <div class="cqz__step cqz__result" data-cqz-step="result">
+        <p class="cqz__num">✓ Análise completa</p>
+        <h3 class="cqz__diag-title" id="cqzDiagTitle">—</h3>
+        <p class="cqz__diag-text" id="cqzDiagText">—</p>
+
+        <div class="cqz__plan" id="cqzPlanCard">
+          <div class="cqz__plan-tag-row">
+            <span class="cqz__plan-tag">Recomendado pra você</span>
+            <span class="cqz__plan-urgency" id="cqzUrgency">Promoção · 1ª mensalidade R$ 1</span>
+          </div>
+          <h4 class="cqz__plan-name" id="cqzPlanName">Plano Familiar</h4>
+          <p class="cqz__plan-desc" id="cqzPlanDesc">Escolha de 7 em cada 10 famílias atendidas pela PlanVida.</p>
+
+          <div class="cqz__plan-price">
+            <span class="cqz__plan-cifrao">R$</span>
+            <strong class="cqz__plan-valor" id="cqzPlanValor">290</strong>
+            <span class="cqz__plan-periodo">/mês</span>
+            <span class="cqz__plan-economy" id="cqzPlanEconomy">economia de R$ 14.620 vs emergência</span>
+          </div>
+
+          <ul class="cqz__plan-bullets" id="cqzPlanBullets">
+            <li>Cobre cônjuge + até 4 filhos</li>
+            <li>Velório, urna, translado, documentação</li>
+            <li>Cremação OU sepultamento (sua escolha)</li>
+            <li>Atendimento 24h em qualquer cidade do Brasil</li>
+          </ul>
+
+          <div class="cqz__plan-trust">
+            <span><svg class="i"><use href="assets/icons.svg#i-shield"/></svg> Regulamentado SUSEP</span>
+            <span><svg class="i"><use href="assets/icons.svg#i-clock"/></svg> Cancela quando quiser</span>
+            <span><svg class="i"><use href="assets/icons.svg#i-lock"/></svg> Sem fiador, sem vincular cartão obrigatório</span>
+          </div>
+        </div>
+
+        <div class="cqz__cta">
+          <button type="button" class="btn btn--gold btn--lg" id="cqzContratar">
+            Contratar em 2 minutos →
+          </button>
+          <p class="cqz__cta-soft" id="cqzCtaSoft">Você está a 4 cliques de tirar esse peso das costas.</p>
+          <button type="button" class="cqz__alt" data-cqz-restart>← Não foi o que esperava? Refazer</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script src="config.js"></script>
 <script src="api.js"></script>
