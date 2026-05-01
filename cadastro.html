@@ -67,8 +67,8 @@
 <main class="cad-stage" id="cadStage">
 
   <!-- ============================================
-       STEP 1 — ESCOLHA DO PLANO
-  ============================================ -->
+    STEP 1 — ESCOLHA DO PLANO
+ ============================================ -->
   <section class="cad-step is-active" data-step="1">
     <div class="cad-step__inner">
       <div class="cad-step__head">
@@ -153,8 +153,8 @@
   </section>
 
   <!-- ============================================
-       STEP 2 — DADOS PESSOAIS
-  ============================================ -->
+    STEP 2 — DADOS PESSOAIS
+ ============================================ -->
   <section class="cad-step" data-step="2">
     <div class="cad-step__inner cad-step__inner--narrow">
       <div class="cad-step__head">
@@ -223,8 +223,8 @@
   </section>
 
   <!-- ============================================
-       STEP 3 — CONFIRMAÇÃO + FORMA DE PAGAMENTO
-  ============================================ -->
+    STEP 3 — CONFIRMAÇÃO + FORMA DE PAGAMENTO
+ ============================================ -->
   <section class="cad-step" data-step="3">
     <div class="cad-step__inner cad-step__inner--narrow">
       <div class="cad-step__head">
@@ -274,7 +274,7 @@
           <label class="cad-payment__opt">
             <input type="radio" name="formapag" value="pix" checked />
             <div class="cad-payment__opt-body">
-              <div class="cad-payment__opt-icon">⚡</div>
+              <div class="cad-payment__opt-icon"><svg class="i i--xl i--solid i--gold"><use href="assets/icons.svg#i-bolt"/></svg></div>
               <div>
                 <strong>PIX</strong>
                 <p>Pagamento instantâneo. Plano ativa em segundos após confirmação.</p>
@@ -286,7 +286,7 @@
           <label class="cad-payment__opt">
             <input type="radio" name="formapag" value="boleto" />
             <div class="cad-payment__opt-body">
-              <div class="cad-payment__opt-icon">🧾</div>
+              <div class="cad-payment__opt-icon"><svg class="i i--xl i--navy"><use href="assets/icons.svg#i-receipt"/></svg></div>
               <div>
                 <strong>Boleto bancário</strong>
                 <p>Vencimento em 3 dias. Compensação em até 3 dias úteis após pagamento.</p>
@@ -297,7 +297,7 @@
           <label class="cad-payment__opt">
             <input type="radio" name="formapag" value="cartao" />
             <div class="cad-payment__opt-body">
-              <div class="cad-payment__opt-icon">💳</div>
+              <div class="cad-payment__opt-icon"><svg class="i i--xl i--navy"><use href="assets/icons.svg#i-credit-card"/></svg></div>
               <div>
                 <strong>Cartão de crédito recorrente</strong>
                 <p>Cobrança automática todo mês. Sem precisar lembrar.</p>
@@ -324,8 +324,8 @@
   </section>
 
   <!-- ============================================
-       STEP 4 — PAGAMENTO + ASSINATURA CONTRATO
-  ============================================ -->
+    STEP 4 — PAGAMENTO + ASSINATURA CONTRATO
+ ============================================ -->
   <section class="cad-step" data-step="4">
     <div class="cad-step__inner cad-step__inner--narrow">
       <div class="cad-step__head">
@@ -340,7 +340,7 @@
         <!-- Painel PIX -->
         <div class="cad-pay-panel cad-pay-panel--pix is-active" data-method="pix">
           <header class="cad-pay-panel__head">
-            <h3>⚡ Pague com PIX</h3>
+            <h3><svg class="i i--solid"><use href="assets/icons.svg#i-bolt"/></svg> Pague com PIX</h3>
             <span class="cad-pay-panel__chip">Confirma em segundos</span>
           </header>
 
@@ -406,9 +406,9 @@
                 </div>
 
                 <ul class="cad-pix__bullets">
-                  <li>✓ Validade: <strong>15 minutos</strong></li>
-                  <li>✓ Confirmação: <strong>imediata</strong></li>
-                  <li>✓ CNPJ destinatário: <strong>XX.XXX.XXX/0001-XX</strong></li>
+                  <li><svg class="i" style="color:#2f7d32"><use href="assets/icons.svg#i-check"/></svg> Validade: <strong>15 minutos</strong></li>
+                  <li><svg class="i" style="color:#2f7d32"><use href="assets/icons.svg#i-check"/></svg> Confirmação: <strong>imediata</strong></li>
+                  <li><svg class="i" style="color:#2f7d32"><use href="assets/icons.svg#i-check"/></svg> CNPJ destinatário: <strong>XX.XXX.XXX/0001-XX</strong></li>
                 </ul>
               </div>
             </div>
@@ -418,7 +418,7 @@
         <!-- Painel Boleto -->
         <div class="cad-pay-panel cad-pay-panel--boleto" data-method="boleto">
           <header class="cad-pay-panel__head">
-            <h3>🧾 Boleto bancário</h3>
+            <h3><svg class="i"><use href="assets/icons.svg#i-receipt"/></svg> Boleto bancário</h3>
             <span class="cad-pay-panel__chip">Vence em 3 dias</span>
           </header>
 
@@ -448,9 +448,9 @@
               </div>
 
               <div class="cad-boleto__actions">
-                <a href="#" class="btn btn--gold">📄 Baixar PDF</a>
-                <a href="#" class="btn btn--outline-navy" id="btnEmailBoleto">📧 Enviar por email</a>
-                <a href="https://wa.me/5582999903607" target="_blank" rel="noopener" class="btn btn--outline-navy">📱 Receber no WhatsApp</a>
+                <a href="#" class="btn btn--gold"><svg class="i"><use href="assets/icons.svg#i-file"/></svg> Baixar PDF</a>
+                <a href="#" class="btn btn--outline-navy" id="btnEmailBoleto"><svg class="i"><use href="assets/icons.svg#i-mail"/></svg> Enviar por email</a>
+                <a href="https://wa.me/5582999903607" target="_blank" rel="noopener" class="btn btn--outline-navy"><svg class="i"><use href="assets/icons.svg#i-mobile"/></svg> Receber no WhatsApp</a>
               </div>
             </div>
           </div>
@@ -459,7 +459,7 @@
         <!-- Painel Cartão -->
         <div class="cad-pay-panel cad-pay-panel--cartao" data-method="cartao">
           <header class="cad-pay-panel__head">
-            <h3>💳 Cartão de crédito recorrente</h3>
+            <h3><svg class="i"><use href="assets/icons.svg#i-credit-card"/></svg> Cartão de crédito recorrente</h3>
             <span class="cad-pay-panel__chip">Cobrança automática</span>
           </header>
 
@@ -484,7 +484,7 @@
                 </label>
               </div>
               <div class="cad-cartao__msg">
-                💡 Cartão guardado com criptografia SSL pela <strong>Asaas</strong> (gateway regulamentado pelo Banco Central). Cobrança automática todo mês.
+                <svg class="i i--gold"><use href="assets/icons.svg#i-lightbulb"/></svg> Cartão guardado com criptografia SSL pela <strong>Asaas</strong> (gateway regulamentado pelo Banco Central). Cobrança automática todo mês.
               </div>
             </form>
           </div>
@@ -525,7 +525,7 @@
 
       <!-- CTA pra área cliente após pagar+assinar (aparece dinamicamente) -->
       <div class="cad-success" id="cadSuccess" hidden>
-        <div class="cad-success__icon">✓</div>
+        <div class="cad-success__icon"><svg class="i i--xl" style="width:2.4em;height:2.4em;stroke-width:2.5"><use href="assets/icons.svg#i-check"/></svg></div>
         <h3>Pronto! Plano <em id="sucPlano">Familiar</em> ativado.</h3>
         <p>Enviamos suas credenciais de acesso pro WhatsApp <strong id="sucTel">—</strong> e email <strong id="sucEmail">—</strong>.</p>
         <a href="portal.html" class="btn btn--gold btn--lg">Acessar área do cliente →</a>

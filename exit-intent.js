@@ -79,7 +79,9 @@ function buildModal(){
       </div>
 
       <p class="exit-modal__trust">
-        ⏱ 30 seg · 🛡 Sem compromisso · 📜 Regulamentado SUSEP
+        <svg class="i"><use href="assets/icons.svg#i-clock"/></svg> 30 seg ·
+        <svg class="i"><use href="assets/icons.svg#i-shield"/></svg> Sem compromisso ·
+        <svg class="i"><use href="assets/icons.svg#i-scroll"/></svg> Regulamentado SUSEP
       </p>
     </div>
   `;

@@ -868,9 +868,9 @@ function generateDiagnosis() {
   const plan = QUIZ_PLAN_CATALOG[recSlug];
 
   // ====== URGÊNCIA contextual ======
-  let urgencyText = '⚡ Promoção: 1ª mensalidade com 20% off';
-  if (lowFunds && notReady) urgencyText = '🚨 Vagas limitadas este mês';
-  else if (hasPlan)         urgencyText = '🔄 Migre da concorrência sem custo';
+  let urgencyText = '<svg class="i i--solid"><use href="assets/icons.svg#i-bolt"/></svg> Promoção: 1ª mensalidade com 20% off';
+  if (lowFunds && notReady) urgencyText = '<svg class="i"><use href="assets/icons.svg#i-siren"/></svg> Vagas limitadas este mês';
+  else if (hasPlan)         urgencyText = '<svg class="i"><use href="assets/icons.svg#i-refresh"/></svg> Migre da concorrência sem custo';
 
   // ====== ATUALIZA UI ======
   if (titleEl)   titleEl.innerHTML  = title;
@@ -878,7 +878,7 @@ function generateDiagnosis() {
   if (planEl)    planEl.textContent = plan.nome;
   if (descEl)    descEl.textContent = plan.desc;
   if (valorEl)   valorEl.textContent = plan.preco;
-  if (urgencyEl) urgencyEl.textContent = urgencyText;
+  if (urgencyEl) urgencyEl.innerHTML = urgencyText;
   if (bulletsEl) bulletsEl.innerHTML = plan.bullets.map(b => `<li>${b}</li>`).join('');
   if (planCard)  planCard.dataset.slug = plan.slug;
 

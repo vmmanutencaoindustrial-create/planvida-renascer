@@ -611,9 +611,9 @@ async function abrirCliente(id){
   body.innerHTML = `
     <h2>${escapeHtml(c.nome)}</h2>
     <div class="modal-meta">
-      <span>📧 ${escapeHtml(c.email)}</span>
-      <span>📞 ${escapeHtml(c.telefone || '—')}</span>
-      <span>📍 ${escapeHtml(c.cidade || '—')}</span>
+      <span><svg class="i"><use href="assets/icons.svg#i-mail"/></svg> ${escapeHtml(c.email)}</span>
+      <span><svg class="i"><use href="assets/icons.svg#i-phone"/></svg> ${escapeHtml(c.telefone || '—')}</span>
+      <span><svg class="i"><use href="assets/icons.svg#i-pin"/></svg> ${escapeHtml(c.cidade || '—')}</span>
     </div>
 
     <h3>Dados pessoais</h3>
