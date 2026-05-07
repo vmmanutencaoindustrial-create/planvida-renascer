@@ -1108,9 +1108,9 @@
       .navbar-inner { padding: 0 16px; }
       .navbar-nav, .navbar-actions { display: none; }
       .nav-hamburger { display: flex; }
-      .btn-cliente-mobile { display: inline-flex !important; margin-left: auto; }
+      .navbar-mobile-right { display: flex !important; }
     }
-    @media (max-width: 340px) {
+    @media (max-width: 360px) {
       .btn-cliente-mobile span { display: none; }
       .btn-cliente-mobile { padding: 8px 10px; }
     }
@@ -2746,7 +2746,8 @@
       <a href="#planos" class="btn-gold-nav">Ver Planos</a>
     </div>
 
-    <a href="https://vmmanutencaoindustrial-create.github.io/planvida-renascer/portal.html?demo=1" onclick="event.preventDefault(); window.location.href='https://vmmanutencaoindustrial-create.github.io/planvida-renascer/portal.html?demo=1&_=' + Date.now(); return false;" target="_self" class="btn-cliente-mobile" aria-label="Área do Cliente" style="display:none;align-items:center;gap:6px;padding:8px 14px;border-radius:100px;background:linear-gradient(135deg,#0d1230 0%,#1d2570 100%);border:1.5px solid rgba(255,230,0,0.4);color:#fff;font-size:0.78rem;font-weight:600;text-decoration:none;margin-right:8px;">
+    <div class="navbar-mobile-right" style="display:none;align-items:center;gap:10px;margin-left:auto;">
+    <a href="https://vmmanutencaoindustrial-create.github.io/planvida-renascer/portal.html?demo=1" onclick="event.preventDefault(); window.location.href='https://vmmanutencaoindustrial-create.github.io/planvida-renascer/portal.html?demo=1&_=' + Date.now(); return false;" target="_self" class="btn-cliente-mobile" aria-label="Área do Cliente" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:100px;background:linear-gradient(135deg,#0d1230 0%,#1d2570 100%);border:1.5px solid rgba(255,230,0,0.4);color:#fff;font-size:0.78rem;font-weight:600;text-decoration:none;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFE600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       <span>Área do Cliente</span>
     </a>
@@ -2754,6 +2755,7 @@
     <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
+    </div>
     </div>
   </nav>
 
