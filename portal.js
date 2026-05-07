@@ -83,6 +83,27 @@ loginCpfEl?.addEventListener('input', e => { e.target.value = maskCPF(e.target.v
   });
 })();
 
+// Demo banner: mostra em localhost OU quando URL tem ?demo=1
+// Quando ?demo=1, também pré-preenche os campos para apresentação rápida
+(function showDemoIfLocal(){
+  const isLocal = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)/.test(location.hostname);
+  const params = new URLSearchParams(location.search);
+  const isDemoParam = params.get('demo') === '1' || params.get('demo') === 'true';
+
+  if(isLocal || isDemoParam){
+    const banner = document.getElementById('demoBanner');
+    if(banner) banner.hidden = false;
+  }
+
+  // Auto-preenche credenciais demo quando ?demo=1 na URL
+  if(isDemoParam){
+    const cpfField   = document.getElementById('loginCpf');
+    const senhaField = document.getElementById('loginSenha');
+    if(cpfField)   cpfField.value   = '123.456.789-00';
+    if(senhaField) senhaField.value = '123456';
+  }
+})();
+
 loginForm?.addEventListener('submit', async e => {
   e.preventDefault();
   const idInput = loginCpfEl.value.trim();
