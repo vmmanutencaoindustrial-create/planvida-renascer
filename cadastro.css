@@ -27,10 +27,9 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(13, 18, 48, 0.65);
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: #3D45B8;
+  border-bottom: 1px solid rgba(255,230,0,0.2);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
   display: flex;
   align-items: center;
   justify-content: space-between;
