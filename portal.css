@@ -9,6 +9,9 @@
   font-family: var(--sans);
 }
 
+/* Garante que [hidden] sempre esconda — override de display:flex/grid */
+[hidden]{ display: none !important; }
+
 /* ===== LOGIN ===== */
 .portal-login{
   min-height: calc(100vh - 200px);
